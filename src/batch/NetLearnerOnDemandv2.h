@@ -42,8 +42,8 @@ class DeepCL_EXPORT NetLearnerOnDemandv2 : public NetLearnerBase {
 protected:
     Timer timer;
     Trainable *net;
-    NetLearnLabeledAction *learnAction;
-    NetForwardAction *testAction;
+    NetAction *learnAction;
+    NetAction *testAction;
     OnDemandBatcherv2 *learnBatcher;
     OnDemandBatcherv2 *testBatcher;
 public:
@@ -65,9 +65,14 @@ public:
     // ]]]
     // generated, using cog:
     PUBLICAPI NetLearnerOnDemandv2(Trainer *trainer, Trainable *net,
-    GenericLoaderv2 *trainLoader, int Ntrain,
-    GenericLoaderv2 *validateLoader, int Ntest,
-    int fileReadBatches, int batchSize);
+                                   GenericLoaderv2 *trainLoader, int Ntrain,
+                                   GenericLoaderv2 *validateLoader, int Ntest,
+                                   int fileReadBatches, int batchSize);
+    //BatchNormalization version
+    PUBLICAPI NetLearnerOnDemandv2(Trainer *trainer, Trainable *net,
+                                   GenericLoaderv2 *trainLoader, int Ntrain,
+                                   GenericLoaderv2 *validateLoader, int Ntest,
+                                   int fileReadBatches, int batchSize, void *batchNormalizationConfig);
     VIRTUAL ~NetLearnerOnDemandv2();
     VIRTUAL void setSchedule(int numEpochs);
     VIRTUAL void setDumpTimings(bool dumpTimings);

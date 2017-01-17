@@ -39,8 +39,8 @@ class DeepCL_EXPORT NetLearnerOnDemand : public NetLearnerBase {
 protected:
     Timer timer;
     Trainable *net;
-    NetLearnLabeledAction *learnAction;
-    NetForwardAction *testAction;
+    NetAction *learnAction;
+    NetAction *testAction;
     OnDemandBatcher *learnBatcher;
     OnDemandBatcher *testBatcher;
 public:
@@ -62,9 +62,13 @@ public:
     // ]]]
     // generated, using cog:
     PUBLICAPI NetLearnerOnDemand(Trainer *trainer, Trainable *net,
-    std::string trainFilepath, int Ntrain,
-    std::string testFilepath, int Ntest,
-    int fileReadBatches, int batchSize);
+                                 std::string trainFilepath, int Ntrain,
+                                 std::string testFilepath, int Ntest,
+                                 int fileReadBatches, int batchSize);
+    PUBLICAPI NetLearnerOnDemand(Trainer *trainer, Trainable *net,
+                                 std::string trainFilepath, int Ntrain,
+                                 std::string testFilepath, int Ntest,
+                                 int fileReadBatches, int batchSize, void *batchNormalizationConfig);
     VIRTUAL ~NetLearnerOnDemand();
     VIRTUAL void setSchedule(int numEpochs);
     VIRTUAL void setDumpTimings(bool dumpTimings);

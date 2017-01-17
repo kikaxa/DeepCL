@@ -27,7 +27,7 @@ public:
 
 class DeepCL_EXPORT NormalizationHelper {
 public:
-    static void updateStatistics(float *Y, int length, int cubeSize, Statistics *statistics) {
+    static void updateStatistics(const float *Y, int length, int cubeSize, Statistics *statistics) {
         float thisSumY = 0;
         float thisSumYSquared = 0;
         float thisMin = Y[0];
@@ -53,7 +53,7 @@ public:
         *p_stdDev = sqrt(( statistics->sumYSquared - statistics->sumY * statistics->sumY / statistics->count) / (statistics->count - 1) );
     }
     
-    static void getMeanAndStdDev(float *data, int length, float *p_mean, float *p_stdDev) {
+    static void getMeanAndStdDev(const float *data, int length, float *p_mean, float *p_stdDev) {
         // get mean of the dataset, and stddev
     //    float thismax = 0;
         float sum = 0;
@@ -77,7 +77,7 @@ public:
         *p_stdDev = stdDev;
     }
     
-    static void getMeanAndMaxDev(float *data, int length, float *p_mean, float *p_maxDev) {
+    static void getMeanAndMaxDev(const float *data, int length, float *p_mean, float *p_maxDev) {
         // get mean of the dataset, and stddev
     //    float thismax = 0;
         float sum = 0;
@@ -100,7 +100,7 @@ public:
         *p_maxDev = std::max<float>(255-mean, mean);
     }
     
-    static void getMinMax(float *data, int length, float *p_middle, float *p_maxDev) {
+    static void getMinMax(const float *data, int length, float *p_middle, float *p_maxDev) {
         // get mean of the dataset, and stddev
         float thismin = 0;
         float thismax = 0;

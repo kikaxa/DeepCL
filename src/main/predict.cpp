@@ -13,6 +13,8 @@
 #include <io.h>
 #endif // _WIN32
 #include "clblas/ClBlasInstance.h"
+#include "normalize/NormalizationLayer.h"
+#include "normalize/NormalizationHelper.h"
 
 using namespace std;
 
@@ -25,6 +27,10 @@ using namespace std;
         # removing loadondemand for now, let's always load exactly one batch at a time for now
         # ('loadOnDemand', 'int', 'load data on demand [1|0]', 0, [0,1], True},
         {'name': 'batchSize', 'type': 'int', 'description': 'batch size', 'default': 128, 'ispublicapi': True},
+
+        ('normalization', 'string', '[stddev|maxmin]', 'stddev', True),
+        ('normalizationNumStds', 'float', 'with stddev normalization, how many stddevs from mean is 1?', 2.0, True),
+        ('renormalizationWeight', 'float', 'interpolate between input(1.) and stored(0.) normalizations', 0.0, True),
 
         # lets go with pipe for now, and then somehow shoehorn files in later?
         {'name': 'inputFile',  'type': 'string', 'description': 'file to read inputs from, if empty, read stdin (default)', 'default': ''},
@@ -47,6 +53,9 @@ public:
     int gpuIndex;
     string weightsFile;
     int batchSize;
+    string normalization;
+    float normalizationNumStds;
+    float renormalizationWeight;
     string inputFile;
     string outputFile;
     int outputLayer;
@@ -76,6 +85,9 @@ public:
         gpuIndex = -1;
         weightsFile = "weights.dat";
         batchSize = 128;
+        normalization = "stddev";
+        normalizationNumStds = 2.0f;
+        renormalizationWeight = 0;
         inputFile = "";
         outputFile = "";
         outputLayer = -1;
@@ -206,12 +218,50 @@ void go(Config config) {
     if(config.inputFile == "") {
         cin.read(reinterpret_cast< char * >(inputData), inputCubeSize * config.batchSize * 4l);
         more = !cin.eof();
+
+        if (config.renormalizationWeight > 0.01)
+            cout << "renormalization not supported for stdin, disabled" << endl;
     } else {
+        if (config.renormalizationWeight > 0.01) {
+            float translate;
+            float scale;
+            if(config.normalization == "stddev") {
+                float mean, stdDev;
+                NormalizeGetStdDev normalizeGetStdDev(inputData, 0);
+                BatchProcessv2::run(loader, 0, config.batchSize, N, inputCubeSize, &normalizeGetStdDev);
+                normalizeGetStdDev.calcMeanStdDev(&mean, &stdDev);
+                cout << " image stats mean " << mean << " stdDev " << stdDev << endl;
+                translate = - mean;
+                scale = 1.0f / stdDev / config.normalizationNumStds;
+            } else if(config.normalization == "maxmin") {
+                NormalizeGetMinMax normalizeGetMinMax(inputData, 0);
+                BatchProcessv2::run(loader, 0, config.batchSize, N, inputCubeSize, &normalizeGetMinMax);
+                normalizeGetMinMax.calcMinMaxTransform(&translate, &scale);
+            } else {
+                cout << "Error: Unknown normalization: " << config.normalization << endl;
+                return;
+            }
+
+            for (int layerId = 0; layerId < net->getNumLayers(); layerId++) {
+                Layer *layer = net->getLayer(layerId);
+                if (layer->getClassName() == "NormalizationLayer")
+                {
+                    NormalizationLayer *norm = static_cast<NormalizationLayer *>(layer);
+                    norm->scale = scale * config.renormalizationWeight +
+                            norm->scale * (1.f - config.renormalizationWeight);
+                    norm->translate = translate * config.renormalizationWeight +
+                            norm->translate * (1.f - config.renormalizationWeight);
+                    break;
+                }
+            }
+        }
+
         // pass 0 for labels, and this will cause GenericLoader to simply not try to load any labels
         // now, after modifying GenericLoader to have this new behavior
         // GenericLoader::load(config.inputFile.c_str(), inputData, 0, n, config.batchSize);
         loader->load(inputData, 0, n, config.batchSize);
     }
+
     while(more) {
         // no point in forwarding through all, so forward through each, one by one
         if(config.outputLayer < 0 || config.outputLayer > net->getNumLayers()) {
@@ -314,6 +364,9 @@ void printUsage(char *argv[], Config config) {
     cout << "    gpuindex=[gpu device index; default value is gpu if present, cpu otw.] (" << config.gpuIndex << ")" << endl;
     cout << "    weightsfile=[file to read weights from] (" << config.weightsFile << ")" << endl;
     cout << "    batchsize=[batch size] (" << config.batchSize << ")" << endl;
+    cout << "    normalization=[[stddev|maxmin]] (" << config.normalization << ")" << endl;
+    cout << "    normalizationnumstds=[with stddev normalization, how many stddevs from mean is 1?] (" << config.normalizationNumStds << ")" << endl;
+    cout << "    renormalizationweight=[interpolate between input(1.) and stored(0.) normalizations] (" << config.renormalizationWeight << ")" << endl;
     cout << "" << endl; 
     cout << "unstable, might change within major version:" << endl; 
     cout << "    inputfile=[file to read inputs from, if empty, read stdin (default)] (" << config.inputFile << ")" << endl;
@@ -360,6 +413,12 @@ int main(int argc, char *argv[]) {
                 config.weightsFile = (value);
             } else if(key == "batchsize") {
                 config.batchSize = atoi(value);
+            } else if(key == "normalization") {
+                config.normalization = (value);
+            } else if(key == "normalizationnumstds") {
+                config.normalizationNumStds = atof(value);
+            } else if(key == "renormalizationweight") {
+                config.renormalizationWeight = atof(value);
             } else if(key == "inputfile") {
                 config.inputFile = (value);
             } else if(key == "outputfile") {

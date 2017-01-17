@@ -6,6 +6,7 @@ Batcher.cpp
 BatchLearnerOnDemand.cpp
 BatchProcess.cpp
 EpochMaker.cpp
+RenormalizeAction.cpp
 NetAction.cpp
 NetLearner.cpp
 NetLearnerOnDemand.cpp

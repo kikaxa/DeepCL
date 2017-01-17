@@ -13,6 +13,7 @@
 #include "batch/OnDemandBatcher.h"
 #include "util/stringhelper.h"
 #include "batch/NetLearnerOnDemand.h"
+#include "batch/RenormalizeAction.hpp"
 
 using namespace std;
 
@@ -32,6 +33,25 @@ PUBLICAPI NetLearnerOnDemand::NetLearnerOnDemand(Trainer *trainer, Trainable *ne
         {
     learnAction = new NetLearnLabeledAction(trainer);
     testAction = new NetForwardAction();
+    learnBatcher = new OnDemandBatcher(net, learnAction, trainFilepath, Ntrain, fileReadBatches, batchSize);
+    testBatcher = new OnDemandBatcher(net, testAction, testFilepath, Ntest, fileReadBatches, batchSize);
+//    annealLearningRate = 1.0f;
+    numEpochs = 12;
+    nextEpoch = 0;
+    learningDone = false;
+    dumpTimings = false;
+}
+PUBLICAPI NetLearnerOnDemand::NetLearnerOnDemand(Trainer *trainer, Trainable *net,
+            std::string trainFilepath, int Ntrain,
+            std::string testFilepath, int Ntest,
+            int fileReadBatches, int batchSize, void *batchNormalizationConfig) :
+        net(net),
+        learnBatcher(0),
+        testBatcher(0)
+//    batchSize = 128;
+        {
+    learnAction = new RenormalizeAction(new NetLearnLabeledAction(trainer), *((RenormalizeActionConfig *)batchNormalizationConfig));
+    testAction = new RenormalizeAction(new NetForwardAction(), *((RenormalizeActionConfig *)batchNormalizationConfig));
     learnBatcher = new OnDemandBatcher(net, learnAction, trainFilepath, Ntrain, fileReadBatches, batchSize);
     testBatcher = new OnDemandBatcher(net, testAction, testFilepath, Ntest, fileReadBatches, batchSize);
 //    annealLearningRate = 1.0f;

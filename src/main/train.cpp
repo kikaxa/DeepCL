@@ -11,6 +11,7 @@
 #include "DeepCL.h"
 //#include "test/Sampler.h"  // TODO: REMOVE THIS
 #include "clblas/ClBlasInstance.h"
+#include "batch/RenormalizeAction.hpp"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ using namespace std;
         ('writeWeightsInterval', 'float', 'write weights every this many minutes', 0, True),
         ('normalization', 'string', '[stddev|maxmin]', 'stddev', True),
         ('normalizationNumStds', 'float', 'with stddev normalization, how many stddevs from mean is 1?', 2.0, True),
+        ('batchNormalization', 'int', 'normalize each batch (input) separately', 0, True),
         ('dumpTimings', 'int', 'dump detailed timings each epoch? [1|0]', 0, True),
         ('multiNet', 'int', 'number of Mcdnn columns to train', 1, True),
         ('loadOnDemand', 'int', 'load data on demand [1|0]', 0, True),
@@ -74,6 +76,7 @@ public:
     float writeWeightsInterval;
     string normalization;
     float normalizationNumStds;
+    int batchNormalization;
     int dumpTimings;
     int multiNet;
     int loadOnDemand;
@@ -121,6 +124,7 @@ public:
         writeWeightsInterval = 0.0f;
         normalization = "stddev";
         normalizationNumStds = 2.0f;
+        batchNormalization = 0;
         dumpTimings = 0;
         multiNet = 1;
         loadOnDemand = 0;
@@ -215,7 +219,7 @@ void go(Config config) {
     const int inputCubeSize = numPlanes * imageSize * imageSize;
     float translate;
     float scale;
-    int normalizationExamples = config.normalizationExamples > Ntrain ? Ntrain : config.normalizationExamples;
+    int normalizationExamples = std::min<int>(config.normalizationExamples, Ntrain);
     if(!config.loadOnDemand) {
         if(config.normalization == "stddev") {
             float mean, stdDev;
@@ -356,18 +360,37 @@ void go(Config config) {
 
     Trainable *trainable = net;
     MultiNet *multiNet = 0;
-    if(config.multiNet > 1) {
+    if (config.multiNet > 1) {
         multiNet = new MultiNet(config.multiNet, net);
         trainable = multiNet;
     }
     NetLearnerBase *netLearner = 0;
     if(config.loadOnDemand) {
-        netLearner = new NetLearnerOnDemandv2(trainer, trainable,
-            &trainLoader, Ntrain,
-            &testLoader, Ntest,
-            config.fileReadBatches, config.batchSize
-        );
+        if (!config.batchNormalization || config.multiNet > 1) {
+            if (config.batchNormalization)
+                cout << "batch normalization is not supported with multinet, disabled it";
+
+            netLearner = new NetLearnerOnDemandv2(trainer, trainable,
+                                                  &trainLoader, Ntrain,
+                                                  &testLoader, Ntest,
+                                                  config.fileReadBatches, config.batchSize
+                                                  );
+        } else {
+            RenormalizeActionConfig rac;
+            rac.size = config.batchSize;
+            rac.normalizationNumStds = config.normalizationNumStds;
+            rac.normalization = config.normalization;
+            netLearner = new NetLearnerOnDemandv2(trainer, trainable,
+                                                  &trainLoader, Ntrain,
+                                                  &testLoader, Ntest,
+                                                  config.fileReadBatches, config.batchSize,
+                                                  (void *)&rac
+                                                  );
+        }
     } else {
+        if (config.batchNormalization)
+            cout << "batch normalization is unsupported without on-demand loading, disabled it";
+
         netLearner = new NetLearner(trainer, trainable,
             Ntrain, trainData, trainLabels,
             Ntest, testData, testLabels,
@@ -386,6 +409,7 @@ void go(Config config) {
     while(!netLearner->isLearningDone()) {
 //        netLearnerBase->tickEpoch();
         netLearner->tickBatch();
+
         if(netLearner->getEpochDone()) {
 //            cout << "epoch done" << endl;
             if(config.weightsFile != "") {
@@ -477,6 +501,7 @@ void printUsage(char *argv[], Config config) {
     cout << "    writeweightsinterval=[write weights every this many minutes] (" << config.writeWeightsInterval << ")" << endl;
     cout << "    normalization=[[stddev|maxmin]] (" << config.normalization << ")" << endl;
     cout << "    normalizationnumstds=[with stddev normalization, how many stddevs from mean is 1?] (" << config.normalizationNumStds << ")" << endl;
+    cout << "    batchnormalization=[normalize each batch[1|0]] (" << config.batchNormalization << ")" << endl;
     cout << "    dumptimings=[dump detailed timings each epoch? [1|0]] (" << config.dumpTimings << ")" << endl;
     cout << "    multinet=[number of Mcdnn columns to train] (" << config.multiNet << ")" << endl;
     cout << "    loadondemand=[load data on demand [1|0]] (" << config.loadOnDemand << ")" << endl;
@@ -553,6 +578,8 @@ int main(int argc, char *argv[]) {
                 config.normalization = (value);
             } else if(key == "normalizationnumstds") {
                 config.normalizationNumStds = atof(value);
+            } else if(key == "batchnormalization") {
+                config.batchNormalization = atoi(value);
             } else if(key == "dumptimings") {
                 config.dumpTimings = atoi(value);
             } else if(key == "multinet") {
