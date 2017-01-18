@@ -12,7 +12,7 @@
 
 
 RenormalizeAction::RenormalizeAction(NetAction *_wrap, RenormalizeActionConfig _config) :
-    wrap(_wrap), config(config)
+    wrap(_wrap), config(_config)
 {
 
 }
@@ -59,7 +59,7 @@ void RenormalizeAction::run(Trainable *_net, int epoch, int batch, float const*c
 
 #if 0 //TODO is Action2 used anywhere?
 RenormalizeAction2::RenormalizeAction2(NetAction2 *_wrap, RenormalizeActionConfig _config) :
-    wrap(_wrap), config(config)
+    wrap(_wrap), config(_config)
 {
 
 }
