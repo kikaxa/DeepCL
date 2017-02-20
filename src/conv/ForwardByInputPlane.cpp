@@ -38,7 +38,7 @@ VIRTUAL void ForwardByInputPlane::forward(int batchSize, CLWrapper *dataWrapper,
 
     // [n][filterId][outRow][outCol][inputPlane]
     int output1Size = batchSize * dim.numFilters * dim.outputSizeSquared * dim.numInputPlanes;
-//    cout << "output1size: " << output1Size << endl;
+//    cerr << "output1size: " << output1Size << endl;
     float *output1 = new float[output1Size];
     CLWrapper *output1Wrapper = cl->wrap(output1Size, output1);
 
@@ -55,7 +55,7 @@ VIRTUAL void ForwardByInputPlane::forward(int batchSize, CLWrapper *dataWrapper,
     }
     int numWorkgroups = dim.numInputPlanes;
     int globalSize = workgroupsize * numWorkgroups;
-//    cout << "forwardbyinputplane numworkgroups " << numWorkgroups << " globalsize " << globalSize << " workgroupsize " << workgroupsize << " numinputplanes=" << dim.numInputPlanes << endl;
+//    cerr << "forwardbyinputplane numworkgroups " << numWorkgroups << " globalsize " << globalSize << " workgroupsize " << workgroupsize << " numinputplanes=" << dim.numInputPlanes << endl;
     kernel->run_1d(globalSize, workgroupsize);
     cl->finish();
     StatefulTimer::timeCheck("ForwardByInputPlane::forward after kernel1");
@@ -63,7 +63,7 @@ VIRTUAL void ForwardByInputPlane::forward(int batchSize, CLWrapper *dataWrapper,
 //    {
 //        output1Wrapper->copyToHost();
 //        for(int i = 0; i < output1Size + 10; i++) {
-//            cout << "output1[" << i << "]=" << output1[i] << " " << (i < output1Size) << endl;
+//            cerr << "output1[" << i << "]=" << output1[i] << " " << (i < output1Size) << endl;
 //        }
 //    }
 

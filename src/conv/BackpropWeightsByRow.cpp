@@ -28,13 +28,13 @@ VIRTUAL BackpropWeightsByRow::~BackpropWeightsByRow() {
 VIRTUAL void BackpropWeightsByRow::backpropWeights(int batchSize, float learningRate,  CLWrapper *gradOutputWrapper, CLWrapper *imagesWrapper, CLWrapper *weightsWrapper, CLWrapper *biasWrapper) {
     StatefulTimer::instance()->timeCheck("BackpropWeightsByRow start");
 
-    cout << "input buffer:" << endl;
+    cerr << "input buffer:" << endl;
     PrintBuffer::printFloats(cl, imagesWrapper, batchSize * dim.inputSize, dim.inputSize);
-    cout << endl;
+    cerr << endl;
 
-    cout << "errors buffer:" << endl;
+    cerr << "errors buffer:" << endl;
     PrintBuffer::printFloats(cl, gradOutputWrapper, batchSize * dim.outputSize, dim.outputSize);
-    cout << endl;
+    cerr << endl;
 
     int globalSize = workgroupSize * numWorkgroups;
     globalSize = (( globalSize + workgroupSize - 1) / workgroupSize) * workgroupSize;
@@ -92,9 +92,9 @@ VIRTUAL void BackpropWeightsByRow::backpropWeights(int batchSize, float learning
     kernel->run_1d(globalSize, workgroupSize);
     cl->finish();
 
-    cout << "weights1wrapper after first kernel:" << endl;
+    cerr << "weights1wrapper after first kernel:" << endl;
     PrintBuffer::printFloats(cl, weights1Wrapper, dim.filterSize * dim.outputSize, dim.filterSize);
-    cout << endl;
+    cerr << endl;
 
     reduce->in(dim.filtersSize)->in(dim.outputSize)
         ->in(weights1Wrapper)->out(weights2Wrapper);
@@ -140,7 +140,7 @@ BackpropWeightsByRow::BackpropWeightsByRow(EasyCL *cl, LayerDimensions dim) :
             {
     workgroupSize = std::max(32, dim.filterSize); // no point in wasting cores...
     numWorkgroups = dim.inputPlanes * dim.numFilters * dim.outputSize;
-    cout << "numWorkgroups " << numWorkgroups << " workgropuSize=" << workgroupSize << endl;
+    cerr << "numWorkgroups " << numWorkgroups << " workgropuSize=" << workgroupSize << endl;
     if(workgroupSize > cl->getMaxWorkgroupSize()) {
         throw runtime_error("filtersize larger than maxworkgroupsize, so cannot use BackpropWeightsByRow kernel");
     }    

@@ -29,7 +29,7 @@ TEST(testCopyBuffer, floats) {
     CopyBuffer::copy(cl, aWrapper, b);
     
     for(int i = 0; i < N; i++) {
-//        cout << b[i] << endl;
+//        cerr << b[i] << endl;
         EXPECT_EQ(3 + i, b[i]);
     }
 
@@ -37,7 +37,7 @@ TEST(testCopyBuffer, floats) {
     CopyBuffer::copy(cl, aWrapper, b);
     
     for(int i = 0; i < N; i++) {
-//        cout << b[i] << endl;
+//        cerr << b[i] << endl;
         EXPECT_EQ(3 + i, b[i]);
     }
 
@@ -66,7 +66,7 @@ TEST(testCopyBuffer, ints) {
     CopyBuffer::copy(cl, aWrapper, b);
     
     for(int i = 0; i < N; i++) {
-//        cout << b[i] << endl;
+//        cerr << b[i] << endl;
         EXPECT_EQ(3 + i, b[i]);
     }
 
@@ -74,7 +74,7 @@ TEST(testCopyBuffer, ints) {
     CopyBuffer::copy(cl, aWrapper, b);
     
     for(int i = 0; i < N; i++) {
-//        cout << b[i] << endl;
+//        cerr << b[i] << endl;
         EXPECT_EQ(3 + i, b[i]);
     }
 

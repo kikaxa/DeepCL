@@ -84,7 +84,7 @@ VIRTUAL float * Backward::backward(int batchSize, float *input, float *gradOutpu
     weightsWrapper->copyToDevice();
 
     int outputDataSize = batchSize * dim.inputCubeSize;
-//    cout << " batchsize " << batchSize << " " << dim << endl;
+//    cerr << " batchsize " << batchSize << " " << dim << endl;
     int allocatedOutputNumElements = std::max(5000, outputDataSize);
     float *gradInput = new float[allocatedOutputNumElements];
     CLWrapper *gradInputWrapper = cl->wrap(allocatedOutputNumElements, gradInput);

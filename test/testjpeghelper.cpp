@@ -35,7 +35,7 @@ TEST( testjpeghelper, writeread ) {
         int absdiff = diff > 0 ? diff : - diff;
         if( absdiff > 50 ) {
             allOk = false;
-            cout << "diff [" << i << "]: " << (int)data[i] << " " << (int)data2[i] << endl;
+            cerr << "diff [" << i << "]: " << (int)data[i] << " " << (int)data2[i] << endl;
         }
     }
     EXPECT_TRUE( allOk );

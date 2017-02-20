@@ -50,7 +50,7 @@ VIRTUAL void BackwardGpuCached::backward(int batchSize,
 //    gradInputWrapper->copyToHost();
     StatefulTimer::instance()->timeCheck("BackwardGpuCached after first kernel");
 //    for(int i = 0; i < min(40, batchSize * dim.inputCubeSize); i++) {
-//        cout << "efu[" << i << "]=" << gradInput[i] << endl;
+//        cerr << "efu[" << i << "]=" << gradInput[i] << endl;
 //    }
 
 //    applyActivationDeriv->in(batchSize * dim.inputCubeSize)->in(gradInputWrapper)->in(inputDataWrapper);
@@ -61,7 +61,7 @@ VIRTUAL void BackwardGpuCached::backward(int batchSize,
 //    StatefulTimer::instance()->timeCheck("BackwardGpuCached after applyActivationDeriv");
 //    gradInputWrapper->copyToHost();
 //    for(int i = 0; i < min(40, batchSize * dim.inputCubeSize); i++) {
-//        cout << "efu2[" << i << "]=" << gradInput[i] << endl;
+//        cerr << "efu2[" << i << "]=" << gradInput[i] << endl;
 //    }
     
     StatefulTimer::instance()->timeCheck("BackwardGpuCached end");

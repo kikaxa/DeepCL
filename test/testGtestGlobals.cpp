@@ -14,9 +14,9 @@
 using namespace std;
 
 TEST( testDeepCLGtestGlobals, basic ) {
-    cout << "There are " << DeepCLGtestGlobals::instance()->argc << " parameters: " << endl;
+    cerr << "There are " << DeepCLGtestGlobals::instance()->argc << " parameters: " << endl;
     for( int i = 0; i < DeepCLGtestGlobals::instance()->argc; i++ ) {
-        cout << "   argv[" << i << "]=" << DeepCLGtestGlobals::instance()->argv[i] << endl;
+        cerr << "   argv[" << i << "]=" << DeepCLGtestGlobals::instance()->argv[i] << endl;
     }
 }
 

@@ -30,13 +30,13 @@ TEST(SLOW_testNorbLoader, loadall) {
     NorbLoader::getDimensions(norbDataDir + "/" + trainingFilename + "-dat.mat", &N, &numPlanes, &imageSize);
     unsigned char *images = NorbLoader::loadImages(norbDataDir + "/" + trainingFilename + "-dat.mat", &N, &numPlanes, &imageSize);
     int *labels = NorbLoader::loadLabels(norbDataDir + "/" + trainingFilename + "-cat.mat", N);
-    cout << "labels here, please open testNorbLoader.png, and compare" << endl;
+    cerr << "labels here, please open testNorbLoader.png, and compare" << endl;
     for(int i = 0; i < 4; i++) {
         string thisRow = "";
         for(int j = 0; j < 4; j++) {
             thisRow += toString(labels[i*4+j]) + " ";
         }
-        cout << thisRow << endl;
+        cerr << thisRow << endl;
     }
 #ifdef PNG_AVAILABLE
     png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * 8, imageSize * 4);
@@ -69,15 +69,15 @@ TEST(DATA_testNorbLoader, load1000) {
 //    string trainingFilename = "testing-sampled";
 
     unsigned char *images = NorbLoader::loadImages(norbDataDir + "/" + trainingFilename + "-dat.mat", &N, &numPlanes, &imageSize, 1000);
-    cout << "N: " << N << endl;
+    cerr << "N: " << N << endl;
     int *labels = NorbLoader::loadLabels(norbDataDir + "/" + trainingFilename + "-cat.mat", N);
-    cout << "labels here, please open testNorbLoader.png, and compare" << endl;
+    cerr << "labels here, please open testNorbLoader.png, and compare" << endl;
     for(int i = 0; i < 4; i++) {
         string thisRow = "";
         for(int j = 0; j < 4; j++) {
             thisRow += toString(labels[i*4+j]) + " ";
         }
-        cout << thisRow << endl;
+        cerr << thisRow << endl;
     }
 #ifdef PNG_AVAILABLE
     png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * 8, imageSize * 4);

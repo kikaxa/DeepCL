@@ -80,11 +80,11 @@ VIRTUAL BatchResult Annealer::trainNet(
     // hmmmm, so all we need to do is calculate:
     // annealedLearningRate = learningRate * pow(anneal, epoch)
     // weightsWrapper = weightsWrapper - annealedLearningRate * gradWeightsWrapper
-//    cout << " epoch=" << epoch << " learningrate=" << learningRate << " anneal=" << anneal << endl;
+//    cerr << " epoch=" << epoch << " learningrate=" << learningRate << " anneal=" << anneal << endl;
 
     float annealedLearningRate = learningRate * pow(anneal, context->epoch);
     if(context->batch == 0) {
-        cout << "Annealer annealedLearningRate=" << annealedLearningRate << endl;
+        cerr << "Annealer annealedLearningRate=" << annealedLearningRate << endl;
     }
 
     bindState(net);

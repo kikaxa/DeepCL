@@ -78,14 +78,14 @@ PUBLICAPI VIRTUAL int OnDemandBatcher::getN() {
 //    }
 //}
 PUBLICAPI void OnDemandBatcher::reset() {
-//    cout << "OnDemandBatcher::reset()" << endl;
+//    cerr << "OnDemandBatcher::reset()" << endl;
     numRight = 0;
     loss = 0;
     nextFileBatch = 0;
     epochDone = false;
 }
 PUBLICAPI bool OnDemandBatcher::tick(int epoch) {
-//    cout << "OnDemandBatcher::tick nextFileBatch=" << nextFileBatch << " numRight=" << numRight << 
+//    cerr << "OnDemandBatcher::tick nextFileBatch=" << nextFileBatch << " numRight=" << numRight << 
 //        " loss=" << loss << " epochDone=" << epochDone << endl;
 //    updateBuffers();
     if(epochDone) {
@@ -98,7 +98,7 @@ PUBLICAPI bool OnDemandBatcher::tick(int epoch) {
         thisFileBatchSize = N - fileBatchStart;
     }
     netActionBatcher->setN(thisFileBatchSize);
-//    cout << "batchlearnerondemand, read data... filebatchstart=" << fileBatchStart << " filebatchsize=" << thisFileBatchSize << endl;
+//    cerr << "batchlearnerondemand, read data... filebatchstart=" << fileBatchStart << " filebatchsize=" << thisFileBatchSize << endl;
     GenericLoader::load(filepath.c_str(), dataBuffer, labelsBuffer, fileBatchStart, thisFileBatchSize);
     EpochResult epochResult = netActionBatcher->run(epoch);
     loss += epochResult.loss;
@@ -111,7 +111,7 @@ PUBLICAPI bool OnDemandBatcher::tick(int epoch) {
     return !epochDone;
 }
 PUBLICAPI EpochResult OnDemandBatcher::run(int epoch) {
-//    cout << "OnDemandBatcher::run() epochDone=" << epochDone << endl;
+//    cerr << "OnDemandBatcher::run() epochDone=" << epochDone << endl;
     if(epochDone) {
         reset();
     }

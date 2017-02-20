@@ -91,7 +91,7 @@ PUBLIC void Im2Col::col2Im(CLWrapper *columnsWrapper, CLWrapper *imagesWrapper, 
     int workgroupSize = cl->getMaxWorkgroupSize();
     int numWorkgroups = this->numKernelsCol2Im;
 
-//        cout << "numworkgroups=" << numWorkgroups << " workgorupSize=" << workgroupSize << endl;
+//        cerr << "numworkgroups=" << numWorkgroups << " workgorupSize=" << workgroupSize << endl;
     kernelCol2Im->run_1d(numWorkgroups * workgroupSize, workgroupSize);
 }
 STATIC std::string Im2Col::getKernelTemplate() {

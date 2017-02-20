@@ -88,9 +88,9 @@ TEST(testClBlas, transA) {
     transpose(A, 3, 2);
     for(int row=0; row < 2; row++) {
         for(int col=0; col < 3; col++) {
-            cout << A[row*3 + col] << " ";
+            cerr << A[row*3 + col] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();
@@ -136,9 +136,9 @@ TEST(testClBlas, transB) {
     transpose(B, 2, 1);
     for(int row=0; row < 2; row++) {
         for(int col=0; col < 1; col++) {
-            cout << B[row*1 + col] << " ";
+            cerr << B[row*1 + col] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();
@@ -185,9 +185,9 @@ TEST(testClBlas, colMajor) {
     transpose(B, 2, 1);
 //    for(int row=0; row < 2; row++) {
 //        for(int col=0; col < 1; col++) {
-//            cout << B[row*1 + col] << " ";
+//            cerr << B[row*1 + col] << " ";
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();
@@ -235,9 +235,9 @@ TEST(testClBlas, colMajor2) {
     transpose(B, 2, 3);
 //    for(int row=0; row < 2; row++) {
 //        for(int col=0; col < 1; col++) {
-//            cout << B[row*1 + col] << " ";
+//            cerr << B[row*1 + col] << " ";
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();
@@ -285,9 +285,9 @@ TEST(testClBlas, colMajorTransA) {
     transpose(B, 2, 1);
 //    for(int row=0; row < 2; row++) {
 //        for(int col=0; col < 1; col++) {
-//            cout << B[row*1 + col] << " ";
+//            cerr << B[row*1 + col] << " ";
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();
@@ -334,9 +334,9 @@ TEST(testClBlas, colMajorTransB) {
 //    transpose(B, 2, 1);
 //    for(int row=0; row < 2; row++) {
 //        for(int col=0; col < 1; col++) {
-//            cout << B[row*1 + col] << " ";
+//            cerr << B[row*1 + col] << " ";
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
     ClBlasInstance clblasInstance;
 //    ClBlasInstance::initializeIfNecessary();

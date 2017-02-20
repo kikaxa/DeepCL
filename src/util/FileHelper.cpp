@@ -31,7 +31,7 @@ PUBLIC STATIC char *FileHelper::readBinary(std::string filepath, long *p_filesiz
         throw std::runtime_error("couldnt open file " + localPath);
     }
     *p_filesize = static_cast<long>(file.tellg());
-//    std::cout << " filesize " << *p_filesize << std::endl;
+//    std::cerr << " filesize " << *p_filesize << std::endl;
     char *data = new char[*p_filesize];
     file.seekg(0, std::ios::beg);
     if(!file.read(data, *p_filesize)) {
@@ -113,7 +113,7 @@ PUBLIC STATIC void FileHelper::remove(std::string filename) {
 }
 PUBLIC STATIC std::string FileHelper::localizePath(std::string path) {
     std::replace(path.begin(), path.end(), '/', pathSeparator().c_str()[0]);
-    //std::cout << "localized path: " << path << std::endl;
+    //std::cerr << "localized path: " << path << std::endl;
     return path;
 }
 PUBLIC STATIC std::string FileHelper::pathSeparator() {

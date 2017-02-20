@@ -36,7 +36,7 @@ void ScenarioImage::setNet(NeuralNet *net) {
 }
 void ScenarioImage::printQRepresentation() {
     ScenarioImage *scenario = this;
-    cout << "q directions:" << endl;
+    cerr << "q directions:" << endl;
     int size = scenario->getPerceptionSize();
     float *input = new float[ size * size * 2 ];
     arrayZero(input, size * size * 2);
@@ -67,7 +67,7 @@ void ScenarioImage::printQRepresentation() {
                 thisLine += "^";
             }
         }
-        cout << thisLine << endl;
+        cerr << thisLine << endl;
     }
     delete[]input;
 }
@@ -84,7 +84,7 @@ VIRTUAL void ScenarioImage::print() {
                 line += ".";
             }
         }
-        cout << line << endl;
+        cerr << line << endl;
     }
 }
 VIRTUAL ScenarioImage::~ScenarioImage() {
@@ -149,7 +149,7 @@ VIRTUAL void ScenarioImage::reset() {
     if(net != 0) {
         this->print();
         this->printQRepresentation();
-        cout << "game: " << game << " moves: " << numMoves << endl;
+        cerr << "game: " << game << " moves: " << numMoves << endl;
     }
     if(appleMoves) {
         appleX = myrand() % size;

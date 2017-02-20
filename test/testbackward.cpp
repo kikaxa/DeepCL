@@ -45,7 +45,7 @@ TEST(testbackward, squareloss) {
     NeuralNet *net = new NeuralNet(cl, 3, 5);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(SquareLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     int batchSize = 32;
     net->setBatchSize(batchSize);
@@ -56,7 +56,7 @@ TEST(testbackward, squareloss) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];
@@ -82,24 +82,24 @@ TEST(testbackward, squareloss) {
     for(int i = 0; i < numSamples; i++) {
         int inputIndex;
         WeightRandomizer::randomizeInts(i + 1, &inputIndex, 1, 0, inputTotalSize);
-//        cout << "i=" << i << " index " << inputIndex << endl;
+//        cerr << "i=" << i << " index " << inputIndex << endl;
         float oldValue = input[inputIndex];
         // grad for this index is....
         float grad = net->getLayer(2)->getGradInput()[inputIndex];
-//        cout << "grad=" << grad << endl;
+//        cerr << "grad=" << grad << endl;
         // tweak slightly
         float newValue = oldValue * 1.01f;
         float inputDelta = newValue - oldValue;
         float predictedLossChange = inputDelta * grad;
         input[inputIndex] = newValue;
-//        cout << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
+//        cerr << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
         // forwardProp
         net->forward(input);
         input[inputIndex] = oldValue;
 //        net->printOutput();
         float lossAfter = net->calcLoss(expectedOutput);
         float lossChange = lossAfter - lossBefore;
-        cout << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
+        cerr << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
     }
 
     delete[] expectedOutput;
@@ -122,7 +122,7 @@ TEST(testbackward, crossentropyloss) {
     NeuralNet *net = new NeuralNet(cl, 3, 5);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(CrossEntropyLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     int batchSize = 4;
     net->setBatchSize(batchSize);
@@ -133,7 +133,7 @@ TEST(testbackward, crossentropyloss) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];
@@ -159,24 +159,24 @@ TEST(testbackward, crossentropyloss) {
     for(int i = 0; i < numSamples; i++) {
         int inputIndex;
         WeightRandomizer::randomizeInts(i + 1, &inputIndex, 1, 0, inputTotalSize);
-//        cout << "i=" << i << " index " << inputIndex << endl;
+//        cerr << "i=" << i << " index " << inputIndex << endl;
         float oldValue = input[inputIndex];
         // grad for this index is....
         float grad = net->getLayer(2)->getGradInput()[inputIndex];
-//        cout << "grad=" << grad << endl;
+//        cerr << "grad=" << grad << endl;
         // tweak slightly
         float newValue = oldValue * 1.001f;
         float inputDelta = newValue - oldValue;
         float predictedLossChange = inputDelta * grad;
         input[inputIndex] = newValue;
-//        cout << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
+//        cerr << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
         // forwardProp
         net->forward(input);
         input[inputIndex] = oldValue;
 //        net->printOutput();
         float lossAfter = net->calcLoss(expectedOutput);
         float lossChange = lossAfter - lossBefore;
-        cout << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
+        cerr << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
     }
 
     delete[] expectedOutput;
@@ -214,7 +214,7 @@ TEST(testbackward, softmaxloss) {
     NeuralNet *net = new NeuralNet(cl, 5, 1);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(SoftMaxMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     const int batchSize = 2;
     net->setBatchSize(batchSize);
@@ -226,7 +226,7 @@ TEST(testbackward, softmaxloss) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];
@@ -249,7 +249,7 @@ TEST(testbackward, softmaxloss) {
 //        expectedOutput[ n * outputPlanes + chosenLabel ] = 1;
 //    }
 //    for(int i = 0; i < outputTotalSize; i++) {
-//        cout << "expected[" << i << "]=" << expectedOutput[i] << endl;
+//        cerr << "expected[" << i << "]=" << expectedOutput[i] << endl;
 //    }
 //        
     // now, forward prop
@@ -270,24 +270,24 @@ TEST(testbackward, softmaxloss) {
     for(int i = 0; i < numSamples; i++) {
         int inputIndex;
         WeightRandomizer::randomizeInts(i + 1, &inputIndex, 1, 0, inputTotalSize);
-//        cout << "i=" << i << " index " << inputIndex << endl;
+//        cerr << "i=" << i << " index " << inputIndex << endl;
         float oldValue = input[inputIndex];
         // grad for this index is....
         float grad = net->getLayer(2)->getGradInput()[inputIndex];
-//        cout << "grad=" << grad << endl;
+//        cerr << "grad=" << grad << endl;
         // tweak slightly
         float newValue = oldValue * 1.001f;
         float inputDelta = newValue - oldValue;
         float predictedLossChange = inputDelta * grad;
         input[inputIndex] = newValue;
-//        cout << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
+//        cerr << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
         // forwardProp
         net->forward(input);
         input[inputIndex] = oldValue;
 //        net->printOutput();
         float lossAfter = net->calcLoss(expectedOutput);
         float lossChange = lossAfter - lossBefore;
-        cout << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
+        cerr << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
     }
 
     delete[] expectedOutput;
@@ -306,10 +306,10 @@ void checkLayer(NeuralNet *net, int targetLayerIndex) {
     // calculate gradInput
     // change some of the inputs, forward prop, recalculate loss, check corresponds
     // to the gradient
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     int batchSize = dynamic_cast< InputLayer *>(net->getLayer(0))->batchSize;
-    cout << "batchSize: " << batchSize << endl;
+    cerr << "batchSize: " << batchSize << endl;
     const int outputPlanes = net->getOutputPlanes();
 
     int inputCubeSize = net->getInputCubeSize();
@@ -318,7 +318,7 @@ void checkLayer(NeuralNet *net, int targetLayerIndex) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];
@@ -328,7 +328,7 @@ void checkLayer(NeuralNet *net, int targetLayerIndex) {
 //    if(layer->getPersistSize() > 0) {
 //        int weightsSize = layer->getWeightsSize();
 //        int biasSize = layer->getBiasSize();
-//        cout << "weightsize=" << weightsSize << " biassize=" << biasSize << endl;
+//        cerr << "weightsize=" << weightsSize << " biassize=" << biasSize << endl;
 //        float *weights = new float[weightsSize];
 //        float *bias = new float[biasSize];
 //        WeightRandomizer::randomize(2, weights, weightsSize, -0.1f, 0.1f);
@@ -340,7 +340,7 @@ void checkLayer(NeuralNet *net, int targetLayerIndex) {
 //        delete[] bias;
 //    }
 
-    cout << "layer " << layer->asString() << endl;
+    cerr << "layer " << layer->asString() << endl;
     WeightRandomizer::randomize(1, input, inputTotalSize, -1.0f, 1.0f);
     WeightRandomizer::randomize(2, expectedOutput, outputTotalSize, 0.0f, 1.0f);
 
@@ -369,24 +369,24 @@ void checkLayer(NeuralNet *net, int targetLayerIndex) {
     for(int i = 0; i < numSamples; i++) {
         int inputIndex;
         WeightRandomizer::randomizeInts(i + 1, &inputIndex, 1, 0, inputTotalSize);
-//        cout << "i=" << i << " index " << inputIndex << endl;
+//        cerr << "i=" << i << " index " << inputIndex << endl;
         float oldValue = input[inputIndex];
         // grad for this index is....
         float grad = net->getLayer(2)->getGradInput()[inputIndex];
-//        cout << "grad=" << grad << endl;
+//        cerr << "grad=" << grad << endl;
         // tweak slightly
         float newValue = oldValue * 1.01f;
         float inputDelta = newValue - oldValue;
         float predictedLossChange = inputDelta * grad;
         input[inputIndex] = newValue;
-//        cout << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
+//        cerr << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
         // forwardProp
         net->forward(input);
         input[inputIndex] = oldValue;
 //        net->printOutput();
         float lossAfter = net->calcLoss(expectedOutput);
         float lossChange = lossAfter - lossBefore;
-        cout << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
+        cerr << "idx=" << inputIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
     }
 
     delete[] expectedOutput;
@@ -398,7 +398,7 @@ TEST(testbackward, squareloss2) {
     NeuralNet *net = new NeuralNet(cl, 5, 1);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(SquareLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
 //    int batchSize = ;
     net->setBatchSize(32);
@@ -413,7 +413,7 @@ TEST(testbackward, crossentropy2) {
     NeuralNet *net = new NeuralNet(cl, 5, 1);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(CrossEntropyLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
 //    int batchSize = ;
     net->setBatchSize(2);
@@ -428,7 +428,7 @@ TEST(testbackward, softmax2) {
     NeuralNet *net = new NeuralNet(cl, 5, 1);
     net->addLayer(ForceBackpropLayerMaker::instance());
     net->addLayer(SoftMaxMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
 //    int batchSize = ;
     net->setBatchSize(2);
@@ -447,7 +447,7 @@ TEST(testbackward, conv1) {
     net->addLayer(SquareLossMaker::instance());
 //    net->addLayer(SoftMaxMaker::instance()); // maybe should use square loss maker, or cross entropy,
                           // so that dont have to make filtersize == input image size?
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     net->setBatchSize(4);
 
@@ -465,7 +465,7 @@ TEST(testbackward, fc1) {
     net->addLayer(SquareLossMaker::instance());
 //    net->addLayer(SoftMaxMaker::instance()); // maybe should use square loss maker, or cross entropy,
                           // so that dont have to make filtersize == input image size?
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     net->setBatchSize(4);
 
@@ -482,7 +482,7 @@ TEST(testbackward, act1) {
     net->addLayer(SquareLossMaker::instance());
 //    net->addLayer(SoftMaxMaker::instance()); // maybe should use square loss maker, or cross entropy,
                           // so that dont have to make filtersize == input image size?
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     net->setBatchSize(1);
 
@@ -551,7 +551,7 @@ void testNumerically(float learningRate, int batchSize, int imageSize, int filte
 
         float loss2 = net->calcLoss(expectedOutput);
         float lossChange = loss - loss2;
-        cout << " loss " << loss << " loss2 " << loss2 << " change: " << lossChange << endl;
+        cerr << " loss " << loss << " loss2 " << loss2 << " change: " << lossChange << endl;
 
         float *newWeights = net->getLayer(1)->getWeights();
         float sumWeightDiff = 0;
@@ -567,16 +567,16 @@ void testNumerically(float learningRate, int batchSize, int imageSize, int filte
             sumWeightDiff += diff;
             sumWeightDiffSquared += diff * diff;
         }
-        cout << "sumweightsdiff " << sumWeightDiff << endl;
-    //    cout << "sumweightsdiff / learningrate " << (sumWeightDiff / learningRate) << endl;
-    //    cout << "sum weightsdiffsquared " << (sumWeightDiffSquared/ learningRate / learningRate * imageSize) << endl;
+        cerr << "sumweightsdiff " << sumWeightDiff << endl;
+    //    cerr << "sumweightsdiff / learningrate " << (sumWeightDiff / learningRate) << endl;
+    //    cerr << "sum weightsdiffsquared " << (sumWeightDiffSquared/ learningRate / learningRate * imageSize) << endl;
 
         float estimatedLossChangeFromW = sumWeightDiffSquared/ learningRate; // / filterSize;
 
-        cout << " loss change              " << lossChange << endl;
-        cout << " estimatedLossChangeFromW " << estimatedLossChangeFromW << endl;
-    //    cout << abs(estimatedLossChangeFromW - lossChange) / lossChange << endl;    
-    //    cout << abs(estimatedLossChangeFromW - lossChange) / estimatedLossChangeFromW << endl;    
+        cerr << " loss change              " << lossChange << endl;
+        cerr << " estimatedLossChangeFromW " << estimatedLossChangeFromW << endl;
+    //    cerr << abs(estimatedLossChangeFromW - lossChange) / lossChange << endl;    
+    //    cerr << abs(estimatedLossChangeFromW - lossChange) / estimatedLossChangeFromW << endl;    
         EXPECT_GT(0.01f * imageSize * imageSize, abs(estimatedLossChangeFromW - lossChange) / lossChange); 
         EXPECT_GT(0.01f * imageSize * imageSize, abs(estimatedLossChangeFromW - lossChange) / estimatedLossChangeFromW); 
         delete[] weightsBefore1;
@@ -669,14 +669,14 @@ TEST(SLOW_testbackward, perf_kgsgo_32c5) {
     LayerDimensions dim;
     dim.setInputPlanes(32).setInputSize(19).setNumFilters(32).setFilterSize(5)
         .setPadZeros(true).setBiased(true);  
-    cout << dim.buildOptionsString() << endl;  
+    cerr << dim.buildOptionsString() << endl;  
 //    ActivationFunction *fn = new ReluActivation();
 
     measurePerf(2, batchSize, dim);
 }
 
 void compareSpecific(int instance0, int instance1, int numIts, int batchSize, LayerDimensions dim) {
-    cout << "batchsize=" << batchSize << " " << dim << endl;
+    cerr << "batchsize=" << batchSize << " " << dim << endl;
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
     ClBlasInstance clblasInstance;
 
@@ -722,33 +722,33 @@ void compareSpecific(int instance0, int instance1, int numIts, int batchSize, La
         errorsForUpstreamWrapper1->copyToHost();
 
         int outputNumElements = errorsForUpstreamSize;
-        cout << dim << endl;
+        cerr << dim << endl;
         bool same = true;
         for(int i = 0; i < max(20, outputNumElements); i++) {
             if(i < outputNumElements) {
                 if(abs(errorsForUpstream0[i] - errorsForUpstream1[i]) < 0.000001 || abs(errorsForUpstream0[i] - errorsForUpstream1[i]) <= 0.001 * max(abs(errorsForUpstream0[i]), abs(errorsForUpstream1[i]))) {
                     if(it == 0 && i < 20) {
-                        cout << "output[" << i << "]=" << errorsForUpstream0[i] << " " << errorsForUpstream1[i];
-                        cout << " SAME";
+                        cerr << "output[" << i << "]=" << errorsForUpstream0[i] << " " << errorsForUpstream1[i];
+                        cerr << " SAME";
                     }
                 } else {
-                    cout << "output[" << i << "]=" << errorsForUpstream0[i] << " " << errorsForUpstream1[i];
-                    cout << " DIFF";
+                    cerr << "output[" << i << "]=" << errorsForUpstream0[i] << " " << errorsForUpstream1[i];
+                    cerr << " DIFF";
                     same = false;
                 }
             } else {
                  if(it == 0 && i < 20) {
-                     cout << "     ";
+                     cerr << "     ";
                  }
             }
             if(it == 0 && i < 20) {
-                cout << "  || " << errorsForUpstream1[100+i] ;
-                cout << "  || " << errorsForUpstream1[200+i] ;
-                cout << "  || " << errorsForUpstream1[300+i] ;
-                cout << "  || " << errorsForUpstream1[400+i] ;
-                cout << "  || " << errorsForUpstream1[500+i] ;
-                cout << "  || " << errorsForUpstream1[600+i] ;
-                cout << "  || " << errorsForUpstream1[700+i] << endl;
+                cerr << "  || " << errorsForUpstream1[100+i] ;
+                cerr << "  || " << errorsForUpstream1[200+i] ;
+                cerr << "  || " << errorsForUpstream1[300+i] ;
+                cerr << "  || " << errorsForUpstream1[400+i] ;
+                cerr << "  || " << errorsForUpstream1[500+i] ;
+                cerr << "  || " << errorsForUpstream1[600+i] ;
+                cerr << "  || " << errorsForUpstream1[700+i] << endl;
             }
         }
         EXPECT_EQ(true, same);
@@ -803,12 +803,12 @@ TEST(testbackward, compare_1_n_kgsgo_32c5) {
     LayerDimensions dim;
     dim.setInputPlanes(32).setInputSize(19).setNumFilters(32).setFilterSize(5)
         .setPadZeros(true).setBiased(true);  
-    cout << dim.buildOptionsString() << endl;  
+    cerr << dim.buildOptionsString() << endl;  
 //    ActivationFunction *fn = new ReluActivation();
 
     compareSpecific(0, 1, 1, batchSize, dim);
     for(int instance=2; instance < Backward::getNumImplementations(); instance++) {
-        cout << "instance " << instance << endl;
+        cerr << "instance " << instance << endl;
         dim.setInputSize(19);
         if(instance == 2 && maxWorkgroupSize < 19 * 19) {
             dim.setInputSize(15);
@@ -822,7 +822,7 @@ TEST(SLOW_testbackward, compare_kgsgo_32c5mini) {
     LayerDimensions dim;
     dim.setInputPlanes(2).setInputSize(3).setNumFilters(2).setFilterSize(3)
         .setPadZeros(true).setBiased(true);  
-    cout << dim.buildOptionsString() << endl;  
+    cerr << dim.buildOptionsString() << endl;  
 //    ActivationFunction *fn = new ReluActivation();
 
     compareSpecific(1, 2, 1, batchSize, dim);
@@ -835,7 +835,7 @@ TEST(SLOW_testbackward, compare_kgsgo_32c5mini2) {
     LayerDimensions dim;
     dim.setInputPlanes(1).setInputSize(imageSize).setNumFilters(1).setFilterSize(imageSize)
         .setPadZeros(true).setBiased(true);
-    cout << dim.buildOptionsString() << endl;
+    cerr << dim.buildOptionsString() << endl;
 //    ActivationFunction *fn = new ReluActivation();
 
     compareSpecific(1, 2, 1, batchSize, dim);
@@ -1038,35 +1038,35 @@ TEST(testbackward, comparespecific) {
     float *errorsForUpstream2 = backwardImpl2->backward(batchSize, output, weights, bias, errors);
 
     int errorsForUpstreamSize = batchSize * dim.inputCubeSize;
-    cout << dim << endl;
+    cerr << dim << endl;
     for(int i = 0; i < 25; i++) {
-        cout << "output[" << i << "]=" << errorsForUpstream1[i] << " " << errorsForUpstream2[i];
+        cerr << "output[" << i << "]=" << errorsForUpstream1[i] << " " << errorsForUpstream2[i];
         if(i < outputNumElements) {
             if(errorsForUpstream1[i] == errorsForUpstream2[i]) {
-                cout << " SAME";
+                cerr << " SAME";
             } else {
-                cout << " DIFF";
+                cerr << " DIFF";
             }
         } else {
-            cout << "     ";
+            cerr << "     ";
         }
-        cout << "  || " << errorsForUpstream2[100+i] ;
-        cout << "  || " << errorsForUpstream2[200+i] ;
-        cout << "  || " << errorsForUpstream2[300+i] ;
-        cout << "  || " << errorsForUpstream2[400+i] ;
-        cout << "  || " << errorsForUpstream2[500+i] ;
-        cout << "  || " << errorsForUpstream2[600+i] ;
-        cout << "  || " << errorsForUpstream2[700+i] << endl;
+        cerr << "  || " << errorsForUpstream2[100+i] ;
+        cerr << "  || " << errorsForUpstream2[200+i] ;
+        cerr << "  || " << errorsForUpstream2[300+i] ;
+        cerr << "  || " << errorsForUpstream2[400+i] ;
+        cerr << "  || " << errorsForUpstream2[500+i] ;
+        cerr << "  || " << errorsForUpstream2[600+i] ;
+        cerr << "  || " << errorsForUpstream2[700+i] << endl;
     }
     bool same = true;
     int errCount = 0;
     for(int i = 0; i < errorsForUpstreamSize; i++) {
         if(errorsForUpstream1[i] != errorsForUpstream2[i]) {
-            cout << "DIFF: i " << i << " " << errorsForUpstream1[i] << " != " << errorsForUpstream2[i] << endl;
+            cerr << "DIFF: i " << i << " " << errorsForUpstream1[i] << " != " << errorsForUpstream2[i] << endl;
             same = false;
             errCount++;
             if(errCount == 5) {
-                cout << " ... " << endl;
+                cerr << " ... " << endl;
                 break;
             }
         }

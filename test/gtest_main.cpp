@@ -31,7 +31,7 @@ GTEST_API_ int main(int argc, char **argv) {
         }
         else if( split( string( argv[i] ), "=" )[0] == "gpuindex" ) {
             DeepCLGtestGlobals::instance()->gpuindex = atoi(split( string( argv[i] ), "=" )[1]);
-            cout << "Using gpu " << DeepCLGtestGlobals::instance()->gpuindex << endl;
+            cerr << "Using gpu " << DeepCLGtestGlobals::instance()->gpuindex << endl;
         }
     }
     // default to -DATA*:SLOW*
@@ -50,11 +50,11 @@ GTEST_API_ int main(int argc, char **argv) {
         argc = newargc;
         deleteargv = true;
     }
-    cout << "args:";
+    cerr << "args:";
     for( int i = 0; i < argc; i++ ) {
-        cout << " " << argv[i];
+        cerr << " " << argv[i];
     }
-    cout << endl;
+    cerr << endl;
     testing::InitGoogleTest(&argc, argv);
     DeepCLGtestGlobals::instance()->argc = argc;
     DeepCLGtestGlobals::instance()->argv = argv;

@@ -23,25 +23,25 @@ VIRTUAL CLMathWrapper::~CLMathWrapper() {
     delete gpuOp;
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator=(const float scalar) {
-//    cout << "CLMathWrapper.operator*=(scalar)" << endl;
+//    cerr << "CLMathWrapper.operator*=(scalar)" << endl;
     Op2Equal op;
     gpuOp->apply2_inplace(N, wrapper, scalar, &op);
     return *this;    
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator*=(const float scalar) {
-//    cout << "CLMathWrapper.operator*=(scalar)" << endl;
+//    cerr << "CLMathWrapper.operator*=(scalar)" << endl;
     Op2Mul op;
     gpuOp->apply2_inplace(N, wrapper, scalar, &op);
     return *this;    
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator+=(const float scalar) {
-//    cout << "CLMathWrapper.operator*=(scalar)" << endl;
+//    cerr << "CLMathWrapper.operator*=(scalar)" << endl;
     Op2Add op;
     gpuOp->apply2_inplace(N, wrapper, scalar, &op);
     return *this;    
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator*=(const CLMathWrapper &two) {
-//    cout << "CLMathWrapper.operator*=(scalar)" << endl;
+//    cerr << "CLMathWrapper.operator*=(scalar)" << endl;
     if(two.N != N) {
         throw runtime_error("CLMathWrapper::operator+, array size mismatch, cannot assign " + toString(two.N) + 
             " vs " + toString(N) );
@@ -51,7 +51,7 @@ VIRTUAL CLMathWrapper &CLMathWrapper::operator*=(const CLMathWrapper &two) {
     return *this;    
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator+=(const CLMathWrapper &two) {
-//    cout << "CLMathWrapper.operator+=()" << endl;
+//    cerr << "CLMathWrapper.operator+=()" << endl;
     if(two.N != N) {
         throw runtime_error("CLMathWrapper::operator+, array size mismatch, cannot assign " + toString(two.N) + 
             " vs " + toString(N) );
@@ -61,7 +61,7 @@ VIRTUAL CLMathWrapper &CLMathWrapper::operator+=(const CLMathWrapper &two) {
     return *this;    
 }
 VIRTUAL CLMathWrapper &CLMathWrapper::operator=(const CLMathWrapper &rhs) {
-//    cout << "CLMathWrapper.operator=()" << endl;
+//    cerr << "CLMathWrapper.operator=()" << endl;
     if(rhs.N != N) {
         throw runtime_error("CLMathWrapper::operator= array size mismatch, cannot assign " + toString(rhs.N) + 
             " vs " + toString(N) );

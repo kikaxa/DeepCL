@@ -44,10 +44,10 @@ MultiplyInPlace::MultiplyInPlace(EasyCL *cl) :
     std::string kernelName = "copy.multiplyInplace";
     if(cl->kernelExists(kernelName) ) {
         this->kernel = cl->getKernel(kernelName);
-//        cout << "MultiplyInPlace kernel already built => reusing" << endl;
+//        cerr << "MultiplyInPlace kernel already built => reusing" << endl;
         return;
     }
-    cout << "MultiplyInPlace: building kernel" << endl;
+    cerr << "MultiplyInPlace: building kernel" << endl;
 
     // [[[cog
     // import stringify

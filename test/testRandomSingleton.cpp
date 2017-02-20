@@ -18,7 +18,7 @@ using namespace std;
 
 TEST( testRandomSingleton, testMockRandom ) {
     for( int i = 0; i < 10; i++ ) {
-        cout << RandomSingleton::uniform() << endl;
+        cerr << RandomSingleton::uniform() << endl;
     }
     MockRandomSingletonUniforms mock;
     float values[] = { 0.2f, 0.8f,0.3f };

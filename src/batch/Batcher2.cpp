@@ -78,19 +78,19 @@ VIRTUAL void Batcher2::setN(int N) {
 /// if most recent epoch has finished, then resets, and starts a new
 /// set of learning
 bool Batcher2::tick(int epoch) {
-//    cout << "Batcher2::tick epochDone=" << epochDone << " batch=" <<  nextBatch << endl;
+//    cerr << "Batcher2::tick epochDone=" << epochDone << " batch=" <<  nextBatch << endl;
 //    updateVars();
     if(epochDone) {
         reset();
     }
     int batch = nextBatch;
-//    std::cout << "BatchLearner.tick() batch=" << batch << std::endl;
+//    std::cerr << "BatchLearner.tick() batch=" << batch << std::endl;
     int batchStart = batch * batchSize;
     int thisBatchSize = batchSize;
     if(batch == numBatches - 1) {
         thisBatchSize = N - batchStart;
     }
-//    std::cout << "batchSize=" << batchSize << " thisBatchSize=" << thisBatchSize << " batch=" << batch <<
+//    std::cerr << "batchSize=" << batchSize << " thisBatchSize=" << thisBatchSize << " batch=" << batch <<
 //            " batchStart=" << batchStart << " data=" << (void *)data << " labels=" << labels << 
 //            std::endl;
     net->setBatchSize(thisBatchSize);
@@ -98,7 +98,7 @@ bool Batcher2::tick(int epoch) {
 
 //    float thisLoss = net->calcLossFromLabels(&(labels[batchStart]));
 //    int thisNumRight = net->calcNumRight(&(labels[batchStart]));
-//        std::cout << "thisloss " << thisLoss << " thisnumright " << thisNumRight << std::endl; 
+//        std::cerr << "thisloss " << thisLoss << " thisnumright " << thisNumRight << std::endl; 
 //    loss += thisLoss;
 //    numRight += thisNumRight;
     nextBatch++;

@@ -17,19 +17,19 @@ using namespace std;
 #define VIRTUAL
 
 void NetLearnLabeledAction::run(Trainable *net, int epoch, int batch, float const*const batchData, int const*const batchLabels) {
-//    cout << "NetLearnLabeledBatch learningrate=" << learningRate << endl;
+//    cerr << "NetLearnLabeledBatch learningrate=" << learningRate << endl;
     TrainingContext context(epoch, batch);
     trainer->trainFromLabels(net, &context, batchData, batchLabels);
 }
 
 void NetForwardAction::run(Trainable *net, int epoch, int batch, float const*const batchData, int const*const batchLabels) {
-//    cout << "NetForwardBatch" << endl;
+//    cerr << "NetForwardBatch" << endl;
     net->forward(batchData);
 //    trainer->train(net, batchData, batchLabels);
 }
 
 //void NetBackpropAction::run(Trainable *net, float const*const batchData, int const*const batchLabels) {
-////    cout << "NetBackpropBatch learningrate=" << learningRate << endl;
+////    cerr << "NetBackpropBatch learningrate=" << learningRate << endl;
 //    net->backwardFromLabels(learningRate, batchLabels);
 //}
 

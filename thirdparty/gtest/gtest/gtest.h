@@ -3142,7 +3142,7 @@ namespace testing {
 //
 //   testing::Message foo;
 //   foo << 1 << " != " << 2;
-//   std::cout << foo;
+//   std::cerr << foo;
 //
 // will print "1 != 2".
 //

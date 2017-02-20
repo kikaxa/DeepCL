@@ -43,8 +43,8 @@ PUBLIC VIRTUAL void ForwardIm2Col::forward(int batchSize, CLWrapper *dataWrapper
     float *columns = new float[columnsSize];
     CLWrapper *columnsWrapper = cl->wrap(columnsSize, columns);
     columnsWrapper->createOnDevice();
-//    cout << "columnsSize: " << columnsSize << endl;
-//    cout << "weightsize: " << weightsWrapper->size() << endl;
+//    cerr << "columnsSize: " << columnsSize << endl;
+//    cerr << "weightsize: " << weightsWrapper->size() << endl;
 
     StatefulTimer::timeCheck("ForwardIm2Col::forward after alloc");
 
@@ -54,7 +54,7 @@ PUBLIC VIRTUAL void ForwardIm2Col::forward(int batchSize, CLWrapper *dataWrapper
         long m = dim.outputSizeSquared;
         long n = dim.numFilters;
         long k = dim.inputPlanes * dim.filterSizeSquared;
-//        cout << "m=" << m << " n=" << n << " k=" << k << endl;
+//        cerr << "m=" << m << " n=" << n << " k=" << k << endl;
 
         ClBlasHelper::Gemm(
             cl, clblasColumnMajor, clblasNoTrans, clblasNoTrans,

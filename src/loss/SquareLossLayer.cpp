@@ -35,18 +35,18 @@ VIRTUAL float SquareLossLayer::calcLoss(float const *expected) {
     float loss = 0;
 //    float *output = getOutput();
     float *input = previousLayer->getOutput();
-//    cout << "SquareLossLayer::calcLoss" << endl;
+//    cerr << "SquareLossLayer::calcLoss" << endl;
     int numPlanes = previousLayer->getOutputPlanes();
     int imageSize = previousLayer->getOutputSize();
     int totalLinearSize = batchSize * numPlanes * imageSize * imageSize;
     for(int i = 0; i < totalLinearSize; i++) {
-//        if(i < 5) cout << "input[" << i << "]=" << input[i] << endl;
+//        if(i < 5) cerr << "input[" << i << "]=" << input[i] << endl;
         float diff = input[i] - expected[i];
         float diffSquared = diff * diff;
         loss += diffSquared;
     }
     loss *= 0.5f;
-//    cout << "loss " << loss << endl;
+//    cerr << "loss " << loss << endl;
     return loss;
  }
 VIRTUAL void SquareLossLayer::setBatchSize(int batchSize) {

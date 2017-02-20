@@ -38,8 +38,8 @@ public:
             thisSumYSquared += (float)thisValue * (float)thisValue;
             thisMin = thisValue < thisMin ? thisValue : thisMin;
             thisMax = thisValue > thisMax ? thisValue : thisMax;
-//            std::cout << "Y[i] " << (int)Y[i] << std::endl;
-//            std::cout << "updatestatistics " << i << " thissumy=" << thisSumY << " thisSumYSquared=" << thisSumYSquared << std::endl;
+//            std::cerr << "Y[i] " << (int)Y[i] << std::endl;
+//            std::cerr << "updatestatistics " << i << " thissumy=" << thisSumY << " thisSumYSquared=" << thisSumYSquared << std::endl;
         }
         statistics->count += length * cubeSize;
         statistics->maxY = thisMax > statistics->maxY ? thisMax : statistics->maxY;
@@ -66,7 +66,7 @@ public:
         float sumSquaredDiff = 0;
         for(int i = 0; i < length; i++) {
             float thisValue = data[i];
-//            std::cout << "i " << i << "=" << thisValue << std::endl;
+//            std::cerr << "i " << i << "=" << thisValue << std::endl;
             float diffFromMean = thisValue - mean;
             float diffSquared = diffFromMean * diffFromMean;
             sumSquaredDiff += diffSquared;

@@ -52,7 +52,7 @@ VIRTUAL void NetLearner::setSchedule(int numEpochs, int nextEpoch) {
     this->nextEpoch = nextEpoch;
 }
 PUBLICAPI VIRTUAL void NetLearner::reset() {
-//    cout << "NetLearner::reset()" << endl;
+//    cerr << "NetLearner::reset()" << endl;
     learningDone = false;
     nextEpoch = 0;
 //    net->setTraining(true);
@@ -66,13 +66,13 @@ VIRTUAL void NetLearner::postEpochTesting() {
     }
 //        cout << "-----------------------" << endl;
     cout << endl;
-    timer.timeCheck("after epoch " + toString(nextEpoch+1));
+    std::cout << "after epoch " + toString(nextEpoch+1) << " " << timer.lap() << " ms" << std::endl;
 //    cout << "annealed learning rate: " << trainBatcher->getLearningRate() <<
     cout << " training loss: " << trainBatcher->getLoss() << endl;
     cout << " train accuracy: " << trainBatcher->getNumRight() << "/" << trainBatcher->getN() << " " << (trainBatcher->getNumRight() * 100.0f/ trainBatcher->getN()) << "%" << std::endl;
     net->setTraining(false);
     testBatcher->run(nextEpoch);
-    cout << "test accuracy: " << testBatcher->getNumRight() << "/" << testBatcher->getN() << " " << 
+    cout << "test accuracy: " << testBatcher->getNumRight() << "/" << testBatcher->getN() << " " <<
         (testBatcher->getNumRight() * 100.0f / testBatcher->getN()) << "%" << endl;
     timer.timeCheck("after tests");
 }

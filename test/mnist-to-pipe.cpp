@@ -22,7 +22,7 @@ using namespace std;
 
 int main( int argc, char *argv[] ) {
     if( argc != 3 ) {
-        cout << "Usage: " << argv[0] << " [mnist images file (input)] [num examples]" << endl;
+        cerr << "Usage: " << argv[0] << " [mnist images file (input)] [num examples]" << endl;
         return 1;
     }
     string mnistImagesFile = argv[1];
@@ -48,8 +48,8 @@ int main( int argc, char *argv[] ) {
     dims[0] = planes;
     dims[1] = size;
     dims[2] = size;
-    cout.write( reinterpret_cast< char * >( dims ), 3 * 4l );
-    cout.write( reinterpret_cast< char * >( imageData ), linearLength * 4l );
+    cerr.write( reinterpret_cast< char * >( dims ), 3 * 4l );
+    cerr.write( reinterpret_cast< char * >( imageData ), linearLength * 4l );
 //    FileHelper::writeBinary( outFile, reinterpret_cast< char * >(imageData), linearLength * 4l );
 
     delete[] labels;

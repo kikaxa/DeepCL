@@ -33,7 +33,7 @@ void loadMnist( string mnistDir, string setName, int *p_N, int *p_imageSize, flo
          throw runtime_error("mismatch between number of images, and number of labels " + toString(Nimages ) + " vs " +
              toString(Nlabels ) );
     }
-    if( myrank == 0 ) cout << "loaded " << Nimages << " images.  " << endl;
+    if( myrank == 0 ) cerr << "loaded " << Nimages << " images.  " << endl;
 //    MnistLoader::shuffle( images, labels, Nimages, imageSize );
     float ***imagesFloat = ImagesHelper::allocateImagesFloats( Nimages, imageSize );
     ImagesHelper::copyImages( imagesFloat, images, Nimages, imageSize );
@@ -112,7 +112,7 @@ float printAccuracy( string name, NeuralNet *net, float ***images, int *labels, 
         testNumRight += thisnumright;
     }
     float accuracy = ( testNumRight * 100.0f / N );
-    if( myrank == 0 ) cout << name << " overall: " << testNumRight << "/" << N << " " << accuracy << "%" << endl;
+    if( myrank == 0 ) cerr << name << " overall: " << testNumRight << "/" << N << " " << accuracy << "%" << endl;
     return accuracy;
 }
 
@@ -140,7 +140,7 @@ void go(Config config) {
 //    getStats( imagesFloat, config.numTrain, imageSize, &mean, &thismax );
     mean = 33;
     thismax = 255;
-    if( myrank == 0 ) cout << " image stats mean " << mean << " max " << thismax << " imageSize " << imageSize << endl;
+    if( myrank == 0 ) cerr << " image stats mean " << mean << " max " << thismax << " imageSize " << imageSize << endl;
     normalize( imagesFloat, config.numTrain, imageSize, mean, thismax );
     normalize( imagesTest, config.numTest, imageSize, mean, thismax );
     if( myrank == 0 ) timer.timeCheck("after load images");
@@ -164,7 +164,7 @@ void go(Config config) {
     timer.timeCheck("before learning start");
     StatefulTimer::timeCheck("START");
     const int totalWeightsSize = WeightsPersister::getTotalNumWeights(net);
-    cout << "totalweightssize: " << totalWeightsSize << endl;
+    cerr << "totalweightssize: " << totalWeightsSize << endl;
     float *weightsCopy = new float[totalWeightsSize];
     float *newWeights = new float[totalWeightsSize];
     float *weightsChange = new float[totalWeightsSize];
@@ -231,10 +231,10 @@ void go(Config config) {
             #endif            
         }
         StatefulTimer::dump(true);
-        if( myrank == 0 ) cout << "       loss L: " << loss << endl;
+        if( myrank == 0 ) cerr << "       loss L: " << loss << endl;
         if( myrank == 0 ) timer.timeCheck("after epoch " + toString(epoch) );
 //        net->print();
-        if( myrank == 0 ) std::cout << "train accuracy: " << trainNumRight << "/" << trainTotalNumber << " " << (trainNumRight * 100.0f/ trainTotalNumber) << "%" << std::endl;
+        if( myrank == 0 ) std::cerr << "train accuracy: " << trainNumRight << "/" << trainTotalNumber << " " << (trainNumRight * 100.0f/ trainTotalNumber) << "%" << std::endl;
         if( myrank == 0 ) printAccuracy( "test", net, imagesTest, labelsTest, batchSize, config.numTest );
         if( myrank == 0 ) timer.timeCheck("after tests");
 //        if( config.restartable ) {
@@ -262,7 +262,7 @@ void go(Config config) {
         totalNumber += thisBatchSize;
         totalNumRight += net->calcNumRight( &(labelsTest[batchStart]) );
     }
-    if( myrank == 0 ) cout << "test accuracy : " << totalNumRight << "/" << totalNumber << endl;
+    if( myrank == 0 ) cerr << "test accuracy : " << totalNumRight << "/" << totalNumber << endl;
 
     delete net;
 
@@ -283,31 +283,31 @@ int main( int argc, char *argv[] ) {
     Config config;
     if( myrank == 0 ) {
         if( argc == 2 && ( string(argv[1]) == "--help" || string(argv[1]) == "--?" || string(argv[1]) == "-?" || string(argv[1]) == "-h" ) ) {
-            cout << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
-            cout << "Possible key=value pairs:" << endl;
-            cout << "    datadir=[data directory] (" << config.dataDir << ")" << endl;
-            cout << "    trainset=[train|t10k|other set name] (" << config.trainSet << ")" << endl;
-            cout << "    testset=[train|t10k|other set name] (" << config.testSet << ")" << endl;
-            cout << "    numtrain=[num training examples] (" << config.numTrain << ")" << endl;
-            cout << "    numtest=[num test examples] (" << config.numTest << ")" << endl;
-            cout << "    batchsize=[batch size] (" << config.batchSize << ")" << endl;
-            cout << "    numepochs=[number epochs] (" << config.numEpochs << ")" << endl;
-            cout << "    numlayers=[number convolutional layers] (" << config.numLayers << ")" << endl;
-            cout << "    numfilters=[number filters] (" << config.numFilters << ")" << endl;
-            cout << "    filtersize=[filter size] (" << config.filterSize << ")" << endl;
-            cout << "    biased=[0|1] (" << config.biased << ")" << endl;
-            cout << "    padzeros=[0|1] (" << config.padZeros << ")" << endl;
-            cout << "    learningrate=[learning rate, a float value] (" << config.learningRate << ")" << endl;
-//            cout << "    restartable=[weights are persistent?] (" << config.restartable << ")" << endl;
-//            cout << "    restartablefilename=[filename to store weights] (" << config.restartableFilename << ")" << endl;
-//            cout << "    outputfilename=[filename to store output] (" << config.outputFilename << ")" << endl;
+            cerr << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
+            cerr << "Possible key=value pairs:" << endl;
+            cerr << "    datadir=[data directory] (" << config.dataDir << ")" << endl;
+            cerr << "    trainset=[train|t10k|other set name] (" << config.trainSet << ")" << endl;
+            cerr << "    testset=[train|t10k|other set name] (" << config.testSet << ")" << endl;
+            cerr << "    numtrain=[num training examples] (" << config.numTrain << ")" << endl;
+            cerr << "    numtest=[num test examples] (" << config.numTest << ")" << endl;
+            cerr << "    batchsize=[batch size] (" << config.batchSize << ")" << endl;
+            cerr << "    numepochs=[number epochs] (" << config.numEpochs << ")" << endl;
+            cerr << "    numlayers=[number convolutional layers] (" << config.numLayers << ")" << endl;
+            cerr << "    numfilters=[number filters] (" << config.numFilters << ")" << endl;
+            cerr << "    filtersize=[filter size] (" << config.filterSize << ")" << endl;
+            cerr << "    biased=[0|1] (" << config.biased << ")" << endl;
+            cerr << "    padzeros=[0|1] (" << config.padZeros << ")" << endl;
+            cerr << "    learningrate=[learning rate, a float value] (" << config.learningRate << ")" << endl;
+//            cerr << "    restartable=[weights are persistent?] (" << config.restartable << ")" << endl;
+//            cerr << "    restartablefilename=[filename to store weights] (" << config.restartableFilename << ")" << endl;
+//            cerr << "    outputfilename=[filename to store output] (" << config.outputFilename << ")" << endl;
         } 
     }
     for( int i = 1; i < argc; i++ ) {
        vector<string> splitkeyval = split( argv[i], "=" );
        if( splitkeyval.size() != 2 ) {
             if( myrank == 0  ){
-                cout << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
+                cerr << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
             }
             #ifdef MPI_AVAILABLE
             MPI_Finalize();

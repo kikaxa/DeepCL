@@ -45,14 +45,14 @@ STATIC PoolingForward *PoolingForward::instanceSpecific(int idx, EasyCL *cl, boo
     if(idx == 1) {
         return new PoolingForwardGpuNaive(cl, padZeros, numPlanes, inputSize, poolingSize);
     }
-    cout << "idx " << idx << " not known" << endl;
+    cerr << "idx " << idx << " not known" << endl;
     throw runtime_error("PoolingForward::instanceSpecific idx not known: " + toString(idx) );
 }
 VIRTUAL void PoolingForward::forward(int batchSize, CLWrapper *inputData, CLWrapper *selectors, CLWrapper *outputData) {
     throw runtime_error("forward not implemented for this child type");
 }
 VIRTUAL void PoolingForward::forward(int batchSize, float *input, int *selectors, float *output) {
-//    cout << "PoolingForward::forward(float *)" << endl;
+//    cerr << "PoolingForward::forward(float *)" << endl;
     CLWrapper *inputWrapper = cl->wrap(getInputNumElements(batchSize), input);
     CLWrapper *selectorsWrapper = cl->wrap(getOutputNumElements(batchSize), selectors);
     CLWrapper *outputWrapper = cl->wrap(getOutputNumElements(batchSize), output);

@@ -78,7 +78,7 @@ NeuralNet *NeuralNet::clone() {
         copy->addLayer(makerCopy);
     }
     copy->print();
-    cout << "outputimagesize: " << copy->getOutputSize() << endl;
+    cerr << "outputimagesize: " << copy->getOutputSize() << endl;
     return copy;
 }
 EasyCL *NeuralNet::getCl() {
@@ -86,7 +86,7 @@ EasyCL *NeuralNet::getCl() {
 }
 /// Add a network layer, using a LayerMaker2 object
 PUBLICAPI void NeuralNet::addLayer(LayerMaker2 *maker) {
-//    cout << "neuralnet::insert numplanes " << inputLayerMaker._numPlanes << " imageSize " << inputLayerMaker._imageSize << endl;
+//    cerr << "neuralnet::insert numplanes " << inputLayerMaker._numPlanes << " imageSize " << inputLayerMaker._imageSize << endl;
     maker->setCl(cl);
     Layer *layer = maker->createLayer(getLastLayer());
     layers.push_back(layer);
@@ -253,18 +253,18 @@ PUBLICAPI VIRTUAL int NeuralNet::getOutputNumElements() const {
     return getLastLayer()->getOutputNumElements();
 }
 void NeuralNet::print() {
-    cout << this->asString();
+    cerr << this->asString();
     printParamStats();
 //    int i = 0; 
 //    for(std::vector< Layer* >::iterator it = layers.begin(); it != layers.end(); it++) {
-//        std::cout << "layer " << i << ":" << (*it)->asString() << endl;
+//        std::cerr << "layer " << i << ":" << (*it)->asString() << endl;
 //        i++;
 //    }
 }
 void NeuralNet::printWeights() {
     int i = 0; 
     for(std::vector< Layer* >::iterator it = layers.begin(); it != layers.end(); it++) {
-        std::cout << "layer " << i << ":" << std::endl;
+        std::cerr << "layer " << i << ":" << std::endl;
         (*it)->printWeights();
         i++;
     }
@@ -272,7 +272,7 @@ void NeuralNet::printWeights() {
 void NeuralNet::printOutput() {
     int i = 0; 
     for(std::vector< Layer* >::iterator it = layers.begin(); it != layers.end(); it++) {
-        std::cout << "layer " << i << ":" << std::endl;
+        std::cerr << "layer " << i << ":" << std::endl;
         (*it)->printOutput();
         i++;
     }
@@ -283,8 +283,8 @@ VIRTUAL void NeuralNet::setTrainer(Trainer *trainer) {
 void NeuralNet::printParamStats() {
     int sum = 0;
     int skip = 0;
-    int precision = (int)std::cout.precision();
-//    cout << "precision: " << precision << endl;
+    int precision = (int)std::cerr.precision();
+//    cerr << "precision: " << precision << endl;
     for(std::vector< Layer* >::iterator it = layers.begin(); it != layers.end(); it++) {
         int size = (*it)->getPersistSize(WeightsPersister::latestVersion);
         sum += size;
@@ -292,23 +292,23 @@ void NeuralNet::printParamStats() {
             skip++;
         }
     }
-    std::cout << "Parameters overview: (skipping " << skip << " layers with 0 params)" << std::endl;
+    std::cerr << "Parameters overview: (skipping " << skip << " layers with 0 params)" << std::endl;
     int i = 0;
     for(std::vector< Layer* >::iterator it = layers.begin(); it != layers.end(); it++, i++) {
         int size = (*it)->getPersistSize(WeightsPersister::latestVersion);
         if(size) {
-            std::cout << "layer " << i << ": params=" << size << "\t";
-            std::cout << std::fixed << std::setprecision(1) << ((float) 100 * size)/sum << "%";
-            std::cout << std::endl;
+            std::cerr << "layer " << i << ": params=" << size << "\t";
+            std::cerr << std::fixed << std::setprecision(1) << ((float) 100 * size)/sum << "%";
+            std::cerr << std::endl;
         }
     }
     if(i){
-        std::cout << "TOTAL  : params=" << sum << std::endl;
+        std::cerr << "TOTAL  : params=" << sum << std::endl;
     }
-    // reset the cout properties, so that I dont spend 2 hours figuring out why my weights
+    // reset the cerr properties, so that I dont spend 2 hours figuring out why my weights
     // all changed to 0.0 and 0.1 :-P
-    std::cout << setprecision(precision);
-    std::cout.unsetf(ios_base::floatfield);
+    std::cerr << setprecision(precision);
+    std::cerr.unsetf(ios_base::floatfield);
 }
 PUBLICAPI std::string NeuralNet::asString() {
     std::string result = "";

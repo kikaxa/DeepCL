@@ -28,7 +28,7 @@ void RenormalizeAction::run(Trainable *_net, int epoch, int batch, float const*c
     if (config.normalization == "stddev") {
         float mean, stdDev;
         NormalizationHelper::getMeanAndStdDev(batchData, config.size * _net->getInputCubeSize(), &mean, &stdDev);
-        //std::cout << " image stats mean " << mean << " stdDev " << stdDev << std::endl;
+        //std::cerr << " image stats mean " << mean << " stdDev " << stdDev << std::endl;
         translate = - mean;
         scale = 1.0f / stdDev / config.normalizationNumStds;
     } else if (config.normalization == "maxmin") {
@@ -37,7 +37,7 @@ void RenormalizeAction::run(Trainable *_net, int epoch, int batch, float const*c
         translate = - mean;
         scale = 1.0f / stdDev;
     } else {
-        std::cout << "Error: Unknown normalization: " << config.normalization << std::endl;
+        std::cerr << "Error: Unknown normalization: " << config.normalization << std::endl;
         return;
     }
 
@@ -75,7 +75,7 @@ void RenormalizeAction2::run(Trainable *_net, int epoch, int batch, InputData *i
     if (config.normalization == "stddev") {
         float mean, stdDev;
         NormalizationHelper::getMeanAndStdDev(inputData->inputs, config.size * inputData->inputCubeSize, &mean, &stdDev);
-        //std::cout << " image stats mean " << mean << " stdDev " << stdDev << std::endl;
+        //std::cerr << " image stats mean " << mean << " stdDev " << stdDev << std::endl;
         translate = - mean;
         scale = 1.0f / stdDev / config.normalizationNumStds;
     } else if (config.normalization == "maxmin") {
@@ -84,7 +84,7 @@ void RenormalizeAction2::run(Trainable *_net, int epoch, int batch, InputData *i
         translate = - mean;
         scale = 1.0f / stdDev;
     } else {
-        std::cout << "Error: Unknown normalization: " << config.normalization << std::endl;
+        std::cerr << "Error: Unknown normalization: " << config.normalization << std::endl;
         return;
     }
 

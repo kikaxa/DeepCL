@@ -32,7 +32,7 @@ VIRTUAL void Forward1::forward(int batchSize, CLWrapper *dataWrapper, CLWrapper 
     int globalSize = batchSize * dim.outputCubeSize;
     int workgroupsize = std::min(globalSize, cl->getMaxWorkgroupSize());
     globalSize = (( globalSize + workgroupsize - 1) / workgroupsize) * workgroupsize;
-//    cout << "forward1 globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
+//    cerr << "forward1 globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
 
     kernel->run_1d(globalSize, workgroupsize);
     cl->finish();

@@ -44,7 +44,7 @@ TEST( testdroplayer, simple_exception ) {
         float const*output = net->getOutput();
         float sum = 0;
         for( int i = 0; i < net->getLayer(0)->getOutputPlanes(); i++ ) {
-            //cout << "output[" << i << "]=" << output[i] << endl;
+            //cerr << "output[" << i << "]=" << output[i] << endl;
             sum += output[i];
             EXPECT_LE( 0, output[i] );
             EXPECT_GE( 3, output[i] );
@@ -55,7 +55,7 @@ TEST( testdroplayer, simple_exception ) {
         net->backward(expectedOutput);
 
     } catch(runtime_error e) {
-        cout << "Something went wrong: " << e.what() << endl;
+        cerr << "Something went wrong: " << e.what() << endl;
         exception = true;
     } catch (...) {
         exception = true;

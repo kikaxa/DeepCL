@@ -19,7 +19,7 @@ EasyCL *DeepCLGtestGlobals_createEasyCL() {
     int gpuindex = DeepCLGtestGlobals::instance()->gpuindex;
     if(gpuindex == 0) {
         EasyCL *cl = EasyCL::createForFirstGpuOtherwiseCpu();
-        // cout << "got cl, returning..." << endl;
+        // cerr << "got cl, returning..." << endl;
         return cl;
     } else {
         return EasyCL::createForIndexedGpu(gpuindex);

@@ -41,14 +41,14 @@ STATIC ActivationForward *ActivationForward::instanceSpecific(int idx, EasyCL *c
     if(idx == 1) {
         return new ActivationForwardGpuNaive(cl, numPlanes, inputSize, fn);
     }
-    cout << "idx " << idx << " not known" << endl;
+    cerr << "idx " << idx << " not known" << endl;
     throw runtime_error("ActivationForward::instanceSpecific idx not known: " + toString(idx) );
 }
 VIRTUAL void ActivationForward::forward(int batchSize, CLWrapper *inputData, CLWrapper *outputData) {
     throw runtime_error("forward not implemented for this child type");
 }
 VIRTUAL void ActivationForward::forward(int batchSize, float *input, float *output) {
-//    cout << "ActivationForward::forward(float *)" << endl;
+//    cerr << "ActivationForward::forward(float *)" << endl;
     CLWrapper *inputWrapper = cl->wrap(getInputNumElements(batchSize), input);
     CLWrapper *outputWrapper = cl->wrap(getOutputNumElements(batchSize), output);
 

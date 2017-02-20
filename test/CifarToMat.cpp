@@ -24,7 +24,7 @@ void doTestFiles( string dir ) {
 
     int N = CifarLoader::getNumExamples( cifarFilename );
     int imagesSize = CifarLoader::getImagesSize( cifarFilename );
-    cout << "num examples: " << N << " imagesSize " << imagesSize << endl;
+    cerr << "num examples: " << N << " imagesSize " << imagesSize << endl;
     unsigned char *images = new unsigned char[imagesSize];
     int *labels = new int[ N ];
     CifarLoader::load( cifarFilename, images, labels );
@@ -70,7 +70,7 @@ void go( string dir ) {
 // this is for cifar10 apparently...
 int main( int argc, char *argv[] ) {
     if( argc != 2  ) {
-        cout << "Usage: " << argv[0] << " [directory path]" << endl;
+        cerr << "Usage: " << argv[0] << " [directory path]" << endl;
         return -1;
     }
 
@@ -80,7 +80,7 @@ int main( int argc, char *argv[] ) {
     try {
         go( dir );
     } catch( runtime_error e ) {
-        cout << "Something went wrong: " << e.what() << endl;
+        cerr << "Something went wrong: " << e.what() << endl;
         return -1;
     }
 

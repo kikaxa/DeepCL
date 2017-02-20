@@ -65,7 +65,7 @@ VIRTUAL int SoftMaxLayer::getBatchSize() {
 }
 // need to calculate multinomial logistic /cross-entropy loss
 VIRTUAL float SoftMaxLayer::calcLossFromLabels(int const *labels) {
-//    cout << "softmaxlayer::calcloss" << endl;
+//    cerr << "softmaxlayer::calcloss" << endl;
     StatefulTimer::timeCheck("start SoftMaxLayer calcLossfromlabels");
     float loss = 0;
     if(perPlane) {
@@ -126,7 +126,7 @@ VIRTUAL float SoftMaxLayer::calcLoss(float const *expectedValues) {
 // (multinomial cross-entropy) loss derivative wrt our output, and
 // derivative of softmax wrt our inputs
 VIRTUAL void SoftMaxLayer::calcGradInputFromLabels(int const *labels) {
-//    cout << "softmaxlayer::calcerrors" << endl;
+//    cerr << "softmaxlayer::calcerrors" << endl;
     StatefulTimer::timeCheck("start SoftMaxLayer calcGradInputfromlabels");
     if(perPlane) {
         for(int n = 0; n < batchSize; n++) {
@@ -164,7 +164,7 @@ VIRTUAL void SoftMaxLayer::calcGradInputFromLabels(int const *labels) {
 // (multinomial cross-entropy) loss derivative wrt our output, and
 // derivative of softmax wrt our inputs
 VIRTUAL void SoftMaxLayer::calcGradInput(float const *expectedValues) {
-//    cout << "softmaxlayer::calcerrors" << endl;
+//    cerr << "softmaxlayer::calcerrors" << endl;
     StatefulTimer::timeCheck("start SoftMaxLayer calcGradInput");
     if(perPlane) {
         for(int n = 0; n < batchSize; n++) {
@@ -219,7 +219,7 @@ VIRTUAL int SoftMaxLayer::calcNumRightFromLabels(int const*labels) {
                     }
                 }
                 if(label == iMax) {
-//                    cout << "n " << n << " plane " << plane << " label " << label << endl;
+//                    cerr << "n " << n << " plane " << plane << " label " << label << endl;
                     numRight++;
                 }
             }
@@ -251,7 +251,7 @@ VIRTUAL int SoftMaxLayer::calcNumRightFromLabels(int const*labels) {
 }
 // for forward, we just need to apply the softmax activation. "just" :-P
 VIRTUAL void SoftMaxLayer::forward() {
-//    cout << "softmaxlayer::forward" << endl;
+//    cerr << "softmaxlayer::forward" << endl;
     StatefulTimer::timeCheck("start SoftMaxLayer forward");
     float *input = previousLayer->getOutput(); // just retrieve as host-side array for now
     if(perPlane) {
@@ -321,7 +321,7 @@ VIRTUAL void SoftMaxLayer::getLabels(int *labels) { // need to allocate labels a
 // certainly, we dont have any weights to update, and we already handled error
 // propagation in 'calcGradInput' method above
 //VIRTUAL void SoftMaxLayer::backward(float learningRate) {
-//    cout << "softmaxlayer::backproperrors" << endl;
+//    cerr << "softmaxlayer::backproperrors" << endl;
     // nop, do nothing :-)
 //}
 VIRTUAL std::string SoftMaxLayer::asString() const {

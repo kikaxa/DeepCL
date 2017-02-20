@@ -24,7 +24,7 @@ PoolingForwardCpu::PoolingForwardCpu(EasyCL *cl, bool padZeros, int numPlanes, i
         PoolingForward(cl, padZeros, numPlanes, inputSize, poolingSize) {
 }
 VIRTUAL void PoolingForwardCpu::forward(int batchSize, CLWrapper *inputWrapper, CLWrapper *selectorsWrapper, CLWrapper *outputWrapper) {
-//    cout << "PoolingForwardCpu::forward(CLWrapper *)" << endl;
+//    cerr << "PoolingForwardCpu::forward(CLWrapper *)" << endl;
 
     inputWrapper->copyToHost();
 
@@ -48,7 +48,7 @@ VIRTUAL void PoolingForwardCpu::forward(int batchSize, CLWrapper *inputWrapper, 
 }
 VIRTUAL void PoolingForwardCpu::forward(int batchSize, float *input, int *selectors, float *output) {
 //    float *output = new float[ getOutputNumElements(batchSize) ];
-//    cout << "PoolingForwardCpu::forward(float *)" << endl;
+//    cerr << "PoolingForwardCpu::forward(float *)" << endl;
     StatefulTimer::instance()->timeCheck("PoolingForwardCpu::forward start");
     for(int n = 0; n < batchSize; n++) {
         for(int plane = 0; plane < numPlanes; plane++) {

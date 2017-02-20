@@ -15,28 +15,28 @@
 
 PUBLIC STATIC void NetTestHelper::printWeightsAsCode( Layer *layer ) {
     int layerIndex = layer->getLayerIndex();
-    std::cout << "float weights" << layerIndex << "[] = {";
+    std::cerr << "float weights" << layerIndex << "[] = {";
     const int numWeights = layer->getWeightsSize();
     float const*weights = layer->getWeights();
     for( int i = 0; i < numWeights; i++ ) {
-        std::cout << weights[i] << "f";
-        if( i < numWeights - 1 ) std::cout << ", ";
-        if( i > 0 && i % 20 == 0 ) std::cout << std::endl;
+        std::cerr << weights[i] << "f";
+        if( i < numWeights - 1 ) std::cerr << ", ";
+        if( i > 0 && i % 20 == 0 ) std::cerr << std::endl;
     }
-    std::cout << "};" << std::endl;
+    std::cerr << "};" << std::endl;
 }
 PUBLIC STATIC void NetTestHelper::printBiasAsCode( Layer *layer ) {
     int layerIndex = layer->getLayerIndex();
-    std::cout << "float bias" << layerIndex << "[] = {";
+    std::cerr << "float bias" << layerIndex << "[] = {";
     const int numBias = layer->getBiasSize();
     float const*bias = layer->getBias();
     for( int i = 0; i < numBias; i++ ) {
-        std::cout << bias[i] << "f";
-        if( i < numBias - 1 ) std::cout << ", ";
-        if( i > 0 && i % 20 == 0 ) std::cout << std::endl;
+        std::cerr << bias[i] << "f";
+        if( i < numBias - 1 ) std::cerr << ", ";
+        if( i > 0 && i % 20 == 0 ) std::cerr << std::endl;
     }
-    std::cout << "};" << std::endl;
-//        std::cout << netObjectName << "->layers[" << layerIndex << "]->weights[
+    std::cerr << "};" << std::endl;
+//        std::cerr << netObjectName << "->layers[" << layerIndex << "]->weights[
 }
 PUBLIC STATIC void NetTestHelper::printWeightsAsCode(NeuralNet *net) {
     int numLayers = net->getNumLayers();

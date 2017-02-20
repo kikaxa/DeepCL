@@ -25,7 +25,7 @@ STATIC void NorbLoader::getDimensions(std::string trainFilepath, int *p_N, int *
     unsigned int *headerValues = reinterpret_cast< unsigned int *>(headerBytes);
 
     int magic = headerValues[0];
-//    std::cout << "magic: " << magic << std::endl;
+//    std::cerr << "magic: " << magic << std::endl;
     if(magic != 0x1e3d4c55) {
         throw std::runtime_error("magic value doesnt match expections: " + toString(magic));
     }
@@ -34,7 +34,7 @@ STATIC void NorbLoader::getDimensions(std::string trainFilepath, int *p_N, int *
     int numPlanes = headerValues[3];
     int imageSize = headerValues[4];
     int imageSizeRepeated = headerValues[5];
-//    std::cout << "ndim " << ndim << " " << N << " " << numPlanes << " " << imageSize << " " << imageSizeRepeated << std::endl;
+//    std::cerr << "ndim " << ndim << " " << N << " " << numPlanes << " " << imageSize << " " << imageSizeRepeated << std::endl;
     checkSame("imageSize", imageSize, imageSizeRepeated);
 
 //    if(maxN > 0) {
@@ -100,7 +100,7 @@ STATIC void NorbLoader::loadImages(unsigned char *images, std::string filepath, 
     unsigned int *headerValues = reinterpret_cast< unsigned int *>(headerBytes);
 
     int magic = headerValues[0];
-//    std::cout << "magic: " << magic << std::endl;
+//    std::cerr << "magic: " << magic << std::endl;
     if(magic != 0x1e3d4c55) {
         throw std::runtime_error("magic value doesnt match expections: " + toString(magic));
     }
@@ -109,7 +109,7 @@ STATIC void NorbLoader::loadImages(unsigned char *images, std::string filepath, 
     int numPlanes = headerValues[3];
     int imageSize = headerValues[4];
     int imageSizeRepeated = headerValues[5];
-//    std::cout << "ndim " << ndim << " " << N << " " << numPlanes << " " << imageSize << " " << imageSizeRepeated << std::endl;
+//    std::cerr << "ndim " << ndim << " " << N << " " << numPlanes << " " << imageSize << " " << imageSizeRepeated << std::endl;
     checkSame("imageSize", imageSize, imageSizeRepeated);
 
     if(numExamples > 0 && numExamples > (N - startN) ) {
@@ -124,7 +124,7 @@ STATIC void NorbLoader::loadImages(unsigned char *images, std::string filepath, 
     long fileStartPos = 6 * 4 + (long)startN * numPlanes * imageSize * imageSize;
     long fileReadLength = (long)numExamples * numPlanes * imageSize * imageSize;
     char *imagesAsCharArray = reinterpret_cast< char *>(images);
-//    cout << "images, filestartpos " << fileStartPos << " readlength " << fileReadLength << endl;
+//    cerr << "images, filestartpos " << fileStartPos << " readlength " << fileReadLength << endl;
     FileHelper::readBinaryChunk(imagesAsCharArray, filepath, fileStartPos, fileReadLength);
 //    unsigned char *imagesDataUnsigned = reinterpret_cast< unsigned char *>(imagesDataSigned);
 
@@ -139,7 +139,7 @@ STATIC void NorbLoader::loadLabels(int *labels, std::string filepath, int startN
     unsigned int *headerValues = reinterpret_cast< unsigned int *>(headerBytes);
 
     int magic = headerValues[0];
-//    std::cout << "magic: " << magic << std::endl;
+//    std::cerr << "magic: " << magic << std::endl;
     if(magic != 0x1e3d4c54) {
         throw std::runtime_error("magic value doesnt match expections: " + toString(magic) + " expected: " + toString(0x1e3d4c54) );
     }
@@ -158,7 +158,7 @@ STATIC void NorbLoader::loadLabels(int *labels, std::string filepath, int startN
     char *labelsAsCharArray = reinterpret_cast< char *>(labels);
     long fileStartPos = 5 * 4 + (long)startN * 4;
     long fileReadLength = (long)numExamples * 4;
-//    cout << "labels file read start " << fileStartPos << " length " << fileReadLength << endl;
+//    cerr << "labels file read start " << fileStartPos << " length " << fileReadLength << endl;
     FileHelper::readBinaryChunk(labelsAsCharArray, filepath, fileStartPos, fileReadLength);
 //    int *labels = reinterpret_cast< int *>(labelsAsByteArray);
 //    return labels;

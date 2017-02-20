@@ -87,7 +87,7 @@ public:
             cols++;
         }
         int rows = (numImages + cols - 1) / cols;
-        std::cout << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
+        std::cerr << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
         png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * rows, imageSize * cols);
 
 
@@ -96,7 +96,7 @@ public:
                 if(x * rows + y >= numImages) {
                     continue;
                 }
-//                cout << "image at x " << x << " y " << y << endl;
+//                cerr << "image at x " << x << " y " << y << endl;
                 int **imagearray = images[x*rows + y];
                 int maxvalue = std::max(1, getImageMax(imagearray, imageSize) );
                 for(int i = 0; i < imageSize; i++) {
@@ -118,7 +118,7 @@ public:
             cols++;
         }
         int rows = (numImages + cols - 1) / cols;
-        std::cout << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
+        std::cerr << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
         png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * rows, imageSize * cols);
 
 
@@ -127,7 +127,7 @@ public:
                 if(x * rows + y >= numImages) {
                     continue;
                 }
-//                cout << "image at x " << x << " y " << y << endl;
+//                cerr << "image at x " << x << " y " << y << endl;
                 float **imagearray = images[x*rows + y];
                 float maxvalue = std::max(1.0f, getImageMax(imagearray, imageSize) );
                 for(int i = 0; i < imageSize; i++) {
@@ -149,7 +149,7 @@ public:
             cols++;
         }
         int rows = (numImages + cols - 1) / cols;
-        std::cout << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
+        std::cerr << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
         png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * rows, imageSize * cols);
 
 
@@ -158,7 +158,7 @@ public:
                 if(x * rows + y >= numImages) {
                     continue;
                 }
-//                cout << "image at x " << x << " y " << y << endl;
+//                cerr << "image at x " << x << " y " << y << endl;
                 float const*imagearray = &(images[imageSize * imageSize * (x*rows + y) ]);
                 float maxValue = getImageMax(imagearray, imageSize);
                 float minValue = getImageMin(imagearray, imageSize);
@@ -181,7 +181,7 @@ public:
             cols++;
         }
         int rows = (numImages + cols - 1) / cols;
-        std::cout << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
+        std::cerr << "numImages " << numImages << " rows " << rows << " cols " << cols << std::endl;
         png::image< png::rgb_pixel > *image = new png::image< png::rgb_pixel >(imageSize * rows, imageSize * cols);
 
 
@@ -190,7 +190,7 @@ public:
                 if(x * rows + y >= numImages) {
                     continue;
                 }
-//                cout << "image at x " << x << " y " << y << endl;
+//                cerr << "image at x " << x << " y " << y << endl;
                 unsigned char const*imagearray = &(images[imageSize * imageSize * (x*rows + y) ]);
                 float maxValue = 255; // getImageMax(image, imageSize);
                 float minValue = 0; // getImageMin(image, imageSize);

@@ -29,7 +29,7 @@ VIRTUAL void BackpropWeightsScratchLarge::calcGradWeights(int batchSize, CLWrapp
     int numWorkgroups = dim.inputPlanes * dim.numFilters;
     int globalSize = workgroupSize * numWorkgroups;
 //    globalSize = (( globalSize + workgroupSize - 1) / workgroupSize) * workgroupSize;
-//    cout << "workgroupsize " << workgroupSize << " numworkgroups " << numWorkgroups << " globalsize " << globalSize << endl;
+//    cerr << "workgroupsize " << workgroupSize << " numworkgroups " << numWorkgroups << " globalsize " << globalSize << endl;
 
     const float learningMultiplier = learningRateToMultiplier(batchSize);
 
@@ -64,21 +64,21 @@ BackpropWeightsScratchLarge::BackpropWeightsScratchLarge(EasyCL *cl, LayerDimens
     // # stringify.write_kernel("kernelSource", "ClConvolve.cl")
     // ]]]
     // [[[end]]]
-//    cout << "dim: " << dim << endl;
+//    cerr << "dim: " << dim << endl;
     std::string options = dim.buildOptionsString();
 
     int localMemoryRequirementsFullImage = dim.inputSize * dim.inputSize * 4 + dim.outputSize * dim.outputSize * 4;
     int availableLocal = cl->getLocalMemorySize();
-//    cout << "localmemoryrequirementsfullimage: " << localMemoryRequirementsFullImage << endl;
-//    cout << "availablelocal: " << availableLocal << endl;
+//    cerr << "localmemoryrequirementsfullimage: " << localMemoryRequirementsFullImage << endl;
+//    cerr << "availablelocal: " << availableLocal << endl;
     // make the local memory used about one quarter of what is available? half of what is available?
     // let's try one quarter :-)
     int localWeCanUse = availableLocal / 4;
     numStripes = (localMemoryRequirementsFullImage + localWeCanUse - 1) / localWeCanUse;
-//    cout << "numStripes: " << numStripes << endl;
+//    cerr << "numStripes: " << numStripes << endl;
     // make it a power of 2
     numStripes = EasyCL::getNextPower2(numStripes);
-//    cout << "numStripes: " << numStripes << endl;
+//    cerr << "numStripes: " << numStripes << endl;
 
     int inputStripeMarginRows = dim.filterSize - 1;
     int inputStripeInnerNumRows = dim.inputSize / numStripes;
@@ -108,7 +108,7 @@ BackpropWeightsScratchLarge::BackpropWeightsScratchLarge(EasyCL *cl, LayerDimens
     options += " -DgOutputStripeNumRows=" + toString(outputStripeNumRows);
     options += " -DgOutputStripeSize=" + toString(outputStripeSize);
     // [[[end]]]
-    cout << "options: " << options << endl;
+    cerr << "options: " << options << endl;
 
     // [[[cog
     // import stringify

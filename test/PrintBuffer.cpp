@@ -24,9 +24,9 @@ void PrintBuffer::printFloats(EasyCL *cl, CLWrapper *buffer, int rows, int cols)
 
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
-            cout << " " << copiedBuffer[ i * cols + j ];
+            cerr << " " << copiedBuffer[ i * cols + j ];
         }
-        cout << endl;
+        cerr << endl;
     }
 
     delete[] copiedBuffer;
@@ -40,9 +40,9 @@ void PrintBuffer::printInts(EasyCL *cl, CLWrapper *buffer, int rows, int cols) {
 
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
-            cout << " " << copiedBuffer[ i * cols + j ];
+            cerr << " " << copiedBuffer[ i * cols + j ];
         }
-        cout << endl;
+        cerr << endl;
     }
 
     delete[] copiedBuffer;

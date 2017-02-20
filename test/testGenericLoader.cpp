@@ -20,7 +20,7 @@ void go(string trainFilepath, int startN, int numExamples) {
     int imageSize;
 //    int totalSize;
     GenericLoader::getDimensions(trainFilepath.c_str(), &N, &numPlanes, &imageSize);
-    cout << "N " << N << " numplanes " << numPlanes << " imageSize " << imageSize << endl;
+    cerr << "N " << N << " numplanes " << numPlanes << " imageSize " << imageSize << endl;
     float *images = new float[ numExamples * numPlanes * imageSize * imageSize ];
     int *labels = new int[ numExamples ];
     GenericLoader::load(trainFilepath.c_str(), images, labels, startN, numExamples);
@@ -31,10 +31,10 @@ void go(string trainFilepath, int startN, int numExamples) {
     float thismin;
     float thismax;
     NormalizationHelper::getMinMax(images, numExamples * numPlanes * imageSize * imageSize, &thismin, &thismax);
-    cout << "min: " << thismin << " max: " << thismax << endl;
+    cerr << "min: " << thismin << " max: " << thismax << endl;
     ImagePng::writeImagesToPng("testGenericLoader.png", images, numExamples * numPlanes, imageSize);
     for(int i = 0; i < numExamples; i++) {
-        cout << "labels[" << i << "]=" << labels[i] << endl;
+        cerr << "labels[" << i << "]=" << labels[i] << endl;
     }
 //    float *translated = new float[N * numPlanes * imageSize * imageSize];
 //    Translator::translate(n, numPlanes, imageSize, translateRows, translateCols, images, translated);
@@ -43,7 +43,7 @@ void go(string trainFilepath, int startN, int numExamples) {
 
 int main(int argc, char *argv[]) {
     if(argc != 4) {
-        cout << "Usage: [trainfilepath] [startn] [numexamples]" << endl;
+        cerr << "Usage: [trainfilepath] [startn] [numexamples]" << endl;
         return -1;
     }
     string trainFilepath = string(argv[1]);

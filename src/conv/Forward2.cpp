@@ -31,10 +31,10 @@ VIRTUAL void Forward2::forward(int batchSize, CLWrapper *dataWrapper, CLWrapper 
     kernel->input(dataWrapper);
     kernel->input(weightsWrapper);
     kernel->output(outputWrapper);
-//        cout << "square(outputSize) " << square(outputSize) << endl;
+//        cerr << "square(outputSize) " << square(outputSize) << endl;
     kernel->localFloats(square(dim.inputSize) );
     kernel->localFloats(square(dim.filterSize) * dim.inputPlanes);
-//    cout << "forward2 globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
+//    cerr << "forward2 globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
     kernel->run_1d(globalSize, workgroupSize);
     cl->finish();
     StatefulTimer::timeCheck("Forward2::forward after call forward");

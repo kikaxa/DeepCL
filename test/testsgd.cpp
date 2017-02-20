@@ -34,7 +34,7 @@ TEST( testsgd, basic ) {
     NeuralNet *net = new NeuralNet( cl, 1, 5 );
     net->addLayer( ConvolutionalMaker::instance()->numFilters(1)->filterSize(3)->biased(0)->padZeros(0) );
     net->addLayer( SquareLossMaker::instance() );
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
     net->setBatchSize(2);
 
     int batchSize = dynamic_cast< InputLayer *>(net->getLayer(0))->batchSize;
@@ -46,7 +46,7 @@ TEST( testsgd, basic ) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];

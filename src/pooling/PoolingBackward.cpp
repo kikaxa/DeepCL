@@ -57,7 +57,7 @@ VIRTUAL int PoolingBackward::getOutputNumElements(int batchSize) {
     return batchSize * numPlanes * outputSize * outputSize;
 }
 VIRTUAL void PoolingBackward::backward(int batchSize, float *gradOutput, int *selectors, float *gradInput) {
-//    cout << "PoolingBackward::backward(float *)" << endl;
+//    cerr << "PoolingBackward::backward(float *)" << endl;
     StatefulTimer::instance()->timeCheck("PoolingBackward::backward float->wrapper start");
     CLWrapper *gradOutputWrapper = cl->wrap(getOutputNumElements(batchSize), gradOutput);
     CLWrapper *selectorsWrapper = cl->wrap(getOutputNumElements(batchSize), selectors);

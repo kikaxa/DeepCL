@@ -103,7 +103,7 @@ public:
 //       }
 //       ss << "\n";
 //    }
-//    std::cout << ss.str() << std::endl;
+//    std::cerr << ss.str() << std::endl;
 //}
 
 //static void print(float const*const*const image, int imageSize) {
@@ -115,7 +115,7 @@ public:
 //       }
 //       ss << "\n";
 //    }
-//    std::cout << ss.str() << std::endl;
+//    std::cerr << ss.str() << std::endl;
 //}
 
 static void _printImage(int *image, int imageSize) {
@@ -140,7 +140,7 @@ static void _printImage(int *image, int imageSize) {
         }
         ss << "\n";
     }
-    std::cout << ss.str() << std::endl;
+    std::cerr << ss.str() << std::endl;
 }
 
 static void _printImage(float *image, int imageSize) {
@@ -165,7 +165,7 @@ static void _printImage(float *image, int imageSize) {
         }
         ss << "\n";
     }
-    std::cout << ss.str() << std::endl;
+    std::cerr << ss.str() << std::endl;
 }
 
 //static void printImage(int const *const *const image, int imageSize) {
@@ -208,10 +208,10 @@ static void _printImage(float *image, int imageSize) {
 //   f >> thisline;
 //   *p_imageSize = (int)thisline.length();
 //   if(*p_imageSize == 0) {
-//      std::cout << "imagehelper::loadImage. error: imagesize 0, " << filepath << std::endl;
+//      std::cerr << "imagehelper::loadImage. error: imagesize 0, " << filepath << std::endl;
 //      throw "imagehelper::loadImage. error: imagesize 0 " + filepath;
 //   }
-//   //cout << "imagesize: " << imageSize << std::endl;
+//   //cerr << "imagesize: " << imageSize << std::endl;
 //   int **image = allocateImage(*p_imageSize);
 //    for(int i = 0; i < *p_imageSize; i++) {
 //       if(i == 0) {

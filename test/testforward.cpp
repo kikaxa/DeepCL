@@ -88,7 +88,7 @@ TEST( testforward, imagesize2_nopadzeros ) {
         (-0.5f) * (-19) + 0.5f * 2.3f,
         0.2f*13 + 0.3f* 17 + 0.7f *(-19) -1.1f * 2.3f 
     };
-    cout << "expected number of output: " << resultSize << endl;
+    cerr << "expected number of output: " << resultSize << endl;
 //    int outputSize = 0;
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
     for( int i = 1; i <= 4; i++ ) {
@@ -130,9 +130,9 @@ TEST( testforward, DISABLED_imagesize2_nopadzeros_skip1 ) {
                          0.7f, -1.1f,
  };
     int outputSize = ( imageSize - filterWidth ) / ( skip + 1 ) + 1;
-    cout << "outputimagesize: " << outputSize << endl;
+    cerr << "outputimagesize: " << outputSize << endl;
     int outputNumElements = outputSize * numOutPlanes * batchSize;
-    cout << "outputsize: " << outputNumElements << endl;
+    cerr << "outputsize: " << outputNumElements << endl;
     float expectedOutput[] = {
         -2,  0,
         0, 0,
@@ -148,7 +148,7 @@ TEST( testforward, DISABLED_imagesize2_nopadzeros_skip1 ) {
 
 
     };
-    cout << "expected number of output: " << outputNumElements << endl;
+    cerr << "expected number of output: " << outputNumElements << endl;
 //    int outputSize = 0;
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
     for( int i = 1; i <= 1; i++ ) {
@@ -158,7 +158,7 @@ TEST( testforward, DISABLED_imagesize2_nopadzeros_skip1 ) {
         float *output = new float[forward->getOutputTotalSize(batchSize)];
         forward->forward( batchSize, data, filter1, 0, output );  
         for( int result = 0; result < outputNumElements; result++ ) {
-            cout << "checking result " << result << endl;
+            cerr << "checking result " << result << endl;
             EXPECT_EQ( expectedOutput[result], output[result] );
         }
         delete forward;
@@ -249,7 +249,7 @@ TEST( testforward, imagesize2_padzeros ) {
 
     for( int result = 0; result < resultSize; result++ ) {
         if( expectedOutput[result] != -9999 ) {
-            cout << " checking result[" << result << "]=" << output[result] << " expecting: " << expectedOutput[result] << endl;
+            cerr << " checking result[" << result << "]=" << output[result] << " expecting: " << expectedOutput[result] << endl;
             ASSERT_FLOAT_EQ( expectedOutput[result], output[result] );
         }
     }
@@ -315,7 +315,7 @@ TEST( testforward, imagesize3 ) {
     EXPECT_EQ( 7, output[7] );
     EXPECT_EQ( 0.5f, output[8] );
     EXPECT_EQ( 0.5f, output[9] );
-        cout << "test1 ok" << endl;
+        cerr << "test1 ok" << endl;
     delete forward;
     delete[] output;
     delete cl;
@@ -398,8 +398,8 @@ TEST( testforward, test3 ) {
                                0.5f*0.7f+0.7f*0.8f
   };
    for( int i = 0; i < 8; i++ ) {
-//      cout << " checking result " << i << endl;
-//        cout << "output[" << i << "]=" << output[i] << endl;
+//      cerr << " checking result " << i << endl;
+//        cerr << "output[" << i << "]=" << output[i] << endl;
       EXPECT_FLOAT_NEAR( expectedOutput[i], output[i] );
    }
     delete[] output;
@@ -408,7 +408,7 @@ TEST( testforward, test3 ) {
 }
 
 void compareSpecific( bool debug, int N, int batchSize, LayerDimensions dim, int instance0, int instance1 ) {
-    cout << dim << endl;
+    cerr << dim << endl;
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
     ClBlasInstance clblasInstance;
 
@@ -440,7 +440,7 @@ void compareSpecific( bool debug, int N, int batchSize, LayerDimensions dim, int
     WeightRandomizer::randomize( 2, filters, filtersAllocated, -0.1f, 0.1f );
     WeightRandomizer::randomize( 3, biasFilters, biasFiltersAllocated, -0.1f, 0.1f );
     for( int i = 0; i < 8; i++ ) {
-        if( debug ) cout << "i " << i << " input[i]=" << inputs[i] << " filters[i]=" << filters[i] << endl;
+        if( debug ) cerr << "i " << i << " input[i]=" << inputs[i] << " filters[i]=" << filters[i] << endl;
     }
 
     int outputNumElements = N * dim.outputCubeSize;
@@ -468,7 +468,7 @@ void compareSpecific( bool debug, int N, int batchSize, LayerDimensions dim, int
             if( batch == numBatches - 1 ) {
                 thisBatchSize = N - batch * batchSize;
             }
-            cout << "batch " << batch << " batchsize " << thisBatchSize << endl;
+            cerr << "batch " << batch << " batchsize " << thisBatchSize << endl;
             float *outputtemp = new float[thisBatchSize * dim.outputCubeSize * sizeof(float)];
 //            memset( outputtemp, 123, thisBatchSize * dim.outputCubeSize * sizeof(float) ); // so kernel
                 // cant just reuse the work of previous forward :-)
@@ -482,38 +482,38 @@ void compareSpecific( bool debug, int N, int batchSize, LayerDimensions dim, int
         StatefulTimer::dump(true);
     }
 
-    cout << dim << endl;
+    cerr << dim << endl;
     bool same = true;
     int numDiff = 0;
     for( int i = 0; i < max( 20, outputNumElements ); i++ ) {
         if( i < outputNumElements ) {
             if( abs( output1[i] - output2[i] ) < 0.00001f || abs( output1[i] - output2[i] ) <= 0.001f * max( abs( output1[i] ), abs( output2[i] ) ) ) {
                 if( i < 20 ) {
-                    if( debug ) cout << "output[" << i << "]=" << output1[i] << " " << output2[i];
-                    if( debug ) cout << " SAME";
+                    if( debug ) cerr << "output[" << i << "]=" << output1[i] << " " << output2[i];
+                    if( debug ) cerr << " SAME";
                 }
             } else {
-                cout << "output[" << i << "]=" << output1[i] << " " << output2[i];
-                cout << " DIFF";
+                cerr << "output[" << i << "]=" << output1[i] << " " << output2[i];
+                cerr << " DIFF";
                 same = false;
                 numDiff++;
             }
         } else {
              if( i < 20 ) {
-                 if( debug ) cout << "     ";
+                 if( debug ) cerr << "     ";
              }
         }
         if( i < 20 ) {
-            if( debug ) cout << "  || " << output2[100+i] ;
-            if( debug ) cout << "  || " << output2[200+i] ;
-            if( debug ) cout << "  || " << output2[300+i] ;
-            if( debug ) cout << "  || " << output2[400+i] ;
-            if( debug ) cout << "  || " << output2[500+i] ;
-            if( debug ) cout << "  || " << output2[600+i] ;
-            if( debug ) cout << "  || " << output2[700+i] << endl;
+            if( debug ) cerr << "  || " << output2[100+i] ;
+            if( debug ) cerr << "  || " << output2[200+i] ;
+            if( debug ) cerr << "  || " << output2[300+i] ;
+            if( debug ) cerr << "  || " << output2[400+i] ;
+            if( debug ) cerr << "  || " << output2[500+i] ;
+            if( debug ) cerr << "  || " << output2[600+i] ;
+            if( debug ) cerr << "  || " << output2[700+i] << endl;
         }
         if( numDiff > 30 ) {
-            cout << "..." << endl;
+            cerr << "..." << endl;
             break;
         }
     }
@@ -571,7 +571,7 @@ TEST( testforward, compare_1_n_biased_nopad ) {
         if( instance == 5 ) {
             continue; // forwardfc, cant use for inputimagesize != filtersize
         }
-        cout << "instance: " << instance << endl;
+        cerr << "instance: " << instance << endl;
         compareSpecific( false, N, batchSize, dim, 1, instance );
     }
 }
@@ -599,7 +599,7 @@ TEST( testforward, compare_1_n_biased_pad ) {
         if(instance == 3 && maxWorkgroupSize < 19 * 19) {
             dim.setInputSize(15);
         }
-        cout << "instance: " << instance << endl;
+        cerr << "instance: " << instance << endl;
         compareSpecific( false, N, batchSize, dim, 1, instance );
     }
 }
@@ -752,7 +752,7 @@ TEST( testforward, softmax ) {
     float const*output = net->getOutput();
     float sum = 0;
     for( int i = 0; i < net->getLayer(0)->getOutputPlanes(); i++ ) {
-        cout << "output[" << i << "]=" << output[i] << endl;
+        cerr << "output[" << i << "]=" << output[i] << endl;
         sum += output[i];
         EXPECT_LE( 0, output[i] );
         EXPECT_GE( 1, output[i] );
@@ -767,28 +767,28 @@ TEST( testforward, softmax ) {
     memset( expected, 0, sizeof(float) * net->getLayer(0)->getOutputPlanes() );
     expected[2] = 1;
     float loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[2]), loss );
 
     memset( expected, 0, sizeof(float) * net->getLayer(0)->getOutputPlanes() );
     expected[0] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[0]), loss );
 
     memset( expected, 0, sizeof(float) * net->getLayer(0)->getOutputPlanes() );
     expected[1] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[1]), loss );
 
     memset( expected, 0, sizeof(float) * net->getLayer(0)->getOutputPlanes() );
     expected[3] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[3]), loss );
 
@@ -813,7 +813,7 @@ TEST( testforward, softmax_byplane ) {
     float const*output = net->getOutput();
     float sum = 0;
     for( int i = 0; i < imageSizeSquared; i++ ) {
-        cout << "output[" << i << "]=" << output[i] << endl;
+        cerr << "output[" << i << "]=" << output[i] << endl;
         sum += output[i];
         EXPECT_LE( 0, output[i] );
         EXPECT_GE( 1, output[i] );
@@ -828,28 +828,28 @@ TEST( testforward, softmax_byplane ) {
     memset( expected, 0, sizeof(float) * imageSizeSquared );
     expected[2] = 1;
     float loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[2]), loss );
 
     memset( expected, 0, sizeof(float) * imageSizeSquared );
     expected[0] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[0]), loss );
 
     memset( expected, 0, sizeof(float) * imageSizeSquared );
     expected[1] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[1]), loss );
 
     memset( expected, 0, sizeof(float) * imageSizeSquared );
     expected[3] = 1;
     loss = net->calcLoss( expected );
-    cout << "loss " << loss << endl;
+    cerr << "loss " << loss << endl;
     EXPECT_LT( 0, loss );
     EXPECT_FLOAT_NEAR( - log(output[3]), loss );
 
@@ -860,7 +860,7 @@ TEST( testforward, softmax_byplane ) {
 }
 
 void testPerf( int instance, int N, int batchSize, LayerDimensions dim ) {
-    cout << dim.buildOptionsString() << endl;  
+    cerr << dim.buildOptionsString() << endl;  
 
     int inputsSize = batchSize * dim.inputCubeSize;
     int filtersSize = dim.filtersSize;

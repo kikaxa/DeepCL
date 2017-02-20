@@ -40,7 +40,7 @@ VIRTUAL void ForwardFc_workgroupPerFilterPlane::forward(int batchSize, CLWrapper
     int numWorkgroups = dim.filterSize;
 
     int globalSize = workgroupSize * numWorkgroups;
-/////    cout << "forward3 numworkgroups " << numWorkgroups << " globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
+/////    cerr << "forward3 numworkgroups " << numWorkgroups << " globalsize " << globalSize << " workgroupsize " << workgroupsize << endl;
     kernel1->run_1d(globalSize, workgroupSize);
     cl->finish();
     StatefulTimer::timeCheck("ForwardFc_workgroupPerFilterPlane::forward after first kernel");

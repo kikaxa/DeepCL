@@ -84,7 +84,7 @@ VIRTUAL void BackpropWeightsCpu::calcGradWeights(int batchSize, float *gradOutpu
                             }
                         }
                     }
-//                    cout << "weight change " << weightIndex << " " << learningMultiplier * thiswchange << endl;
+//                    cerr << "weight change " << weightIndex << " " << learningMultiplier * thiswchange << endl;
                     gradWeights[ weightIndex ] = thiswchange * learningMultiplier;
                     if(dim.biased) {
                         if(filterRow == margin && filterCol == margin && inputPlane == 0) {

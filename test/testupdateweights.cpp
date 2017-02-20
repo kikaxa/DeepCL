@@ -38,10 +38,10 @@ void checkWeightsUpdate(NeuralNet *net, int targetLayerIndex) {
     // calculate gradWeights
     // change some of the weights, forward prop, recalculate loss, check corresponds
     // to the gradient
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     int batchSize = dynamic_cast< InputLayer *>(net->getLayer(0))->batchSize;
-    cout << "batchSize: " << batchSize << endl;
+    cerr << "batchSize: " << batchSize << endl;
 //    const int outputPlanes = net->getOutputPlanes();
 
     int inputCubeSize = net->getInputCubeSize();
@@ -50,19 +50,19 @@ void checkWeightsUpdate(NeuralNet *net, int targetLayerIndex) {
     int inputTotalSize = inputCubeSize * batchSize;
     int outputTotalSize = outputCubeSize * batchSize;
 
-    cout << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
+    cerr << "inputtotalsize=" << inputTotalSize << " outputTotalSize=" << outputTotalSize << endl;
 
     float *input = new float[inputTotalSize];
     float *expectedOutput = new float[outputTotalSize];
     Layer *layer = net->getLayer(targetLayerIndex);
 
-    cout << "layer " << layer->asString() << endl;
+    cerr << "layer " << layer->asString() << endl;
     WeightRandomizer::randomize(1, input, inputTotalSize, -1.0f, 1.0f);
     WeightRandomizer::randomize(2, expectedOutput, outputTotalSize, -1.0f, 1.0f);
 
     int weightsSize = layer->getWeightsSize();
     int biasSize = layer->getBiasSize();
-    cout << "weightsize=" << weightsSize << " biassize=" << biasSize << endl;
+    cerr << "weightsize=" << weightsSize << " biassize=" << biasSize << endl;
     float *weights = new float[weightsSize];
     WeightRandomizer::randomize(3, weights, weightsSize, -0.1f, 0.1f);
     float *bias = 0;
@@ -94,18 +94,18 @@ void checkWeightsUpdate(NeuralNet *net, int targetLayerIndex) {
     for(int i = 0; i < numSamples; i++) {
         int weightIndex;
         WeightRandomizer::randomizeInts(i + 1, &weightIndex, 1, 0, weightsSize);
-//        cout << "i=" << i << " index " << inputIndex << endl;
+//        cerr << "i=" << i << " index " << inputIndex << endl;
         float oldValue = weights[weightIndex];
         // grad for this index is....
         float grad = layer->getGradWeights()[weightIndex];
-//        cout << "grad=" << grad << endl;
+//        cerr << "grad=" << grad << endl;
         // tweak slightly
         float newValue = oldValue * 1.01f;
         float inputDelta = newValue - oldValue;
         float predictedLossChange = inputDelta * grad;
         weights[weightIndex] = newValue;
         layer->setWeights(weights, bias);
-//        cout << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
+//        cerr << "oldvalue=" << oldValue << " newvalue=" << newValue << endl;
         // forwardProp
         net->forward(input);
         weights[weightIndex] = oldValue;
@@ -113,7 +113,7 @@ void checkWeightsUpdate(NeuralNet *net, int targetLayerIndex) {
 //        net->printOutput();
         float lossAfter = net->calcLoss(expectedOutput);
         float lossChange = lossAfter - lossBefore;
-        cout << "idx=" << weightIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
+        cerr << "idx=" << weightIndex << " predicted losschange=" << predictedLossChange << " actual=" << lossChange << endl;
     }
 
     delete[] weights;
@@ -128,7 +128,7 @@ TEST(testupdateweights, conv1) {
     NeuralNet *net = new NeuralNet(cl, 2, 5);
     net->addLayer(ConvolutionalMaker::instance()->numFilters(2)->filterSize(3)->biased(0)->padZeros(0));
     net->addLayer(SquareLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     net->setBatchSize(4);
 
@@ -143,7 +143,7 @@ TEST(testupdateweights, conv1z) {
     NeuralNet *net = new NeuralNet(cl, 2, 3);
     net->addLayer(ConvolutionalMaker::instance()->numFilters(2)->filterSize(3)->biased(0)->padZeros(1));
     net->addLayer(SquareLossMaker::instance());
-    cout << net->asString() << endl;
+    cerr << net->asString() << endl;
 
     net->setBatchSize(4);
 
@@ -193,7 +193,7 @@ void test(int imageSize, int filterSize, int numPlanes, int batchSize) {
     net->print();
     float loss2 = net->calcLoss(expectedOutput);
     float lossChange = loss - loss2;
-    cout << " loss " << loss << " loss2 " << loss2 << " change: " << lossChange << endl;
+    cerr << " loss " << loss << " loss2 " << loss2 << " change: " << lossChange << endl;
 
     dynamic_cast<ConvolutionalLayer*>(net->getLayer(1))->weightsWrapper->copyToHost();
     float const*newWeights = net->getLayer(1)->getWeights();
@@ -204,12 +204,12 @@ void test(int imageSize, int filterSize, int numPlanes, int batchSize) {
         sumWeightDiff += diff;
         sumWeightDiffSquared += diff * diff;
     }
-    cout << "sumweightsdiff " << sumWeightDiff << endl;
+    cerr << "sumweightsdiff " << sumWeightDiff << endl;
 
     float estimatedLossChangeFromW = sumWeightDiffSquared/ learningRate; // / filterSize;
 
-    cout << " loss change              " << lossChange << endl;
-    cout << " estimatedLossChangeFromW " << estimatedLossChangeFromW << endl;
+    cerr << " loss change              " << lossChange << endl;
+    cerr << " estimatedLossChangeFromW " << estimatedLossChangeFromW << endl;
     EXPECT_GT(0.01f * imageSize * imageSize, abs(estimatedLossChangeFromW - lossChange) / lossChange); 
     EXPECT_GT(0.01f * imageSize * imageSize, abs(estimatedLossChangeFromW - lossChange) / estimatedLossChangeFromW); 
 
@@ -300,11 +300,11 @@ void testBackpropWeights(LayerDimensions &dim, int batchSize, float learningMult
     delete backpropWeightsImpl;
     
 //    for(int i = 0; i < 20; i++) {
-//        cout << "weights[" << i << "]=" << weights[i] << endl;
+//        cerr << "weights[" << i << "]=" << weights[i] << endl;
 //    }
     for(int i = 0; i < dim.filtersSize; i++) {
         if(expectedOutput[i] != -999 && expectedOutput[i] != weights[i]) {
-            cout << "mismatch for i " << i << endl;
+            cerr << "mismatch for i " << i << endl;
             EXPECT_EQ(- expectedOutput[i], weights[i]);
         }
     }
@@ -467,7 +467,7 @@ TEST(testupdateweights, backprop_weights_2_upstreamimagesize17_filtersize1) {
         .setBiased(0).setPadZeros(0);
     int batchSize = 1;
     const float learningMultiplier = 1;
-    cout << dim << endl;
+    cerr << dim << endl;
 
     float *data = allocateInputCleared(batchSize, dim);
     data[0] = 2;
@@ -508,7 +508,7 @@ TEST(testupdateweights, backprop_weights_2_upstreamimagesize17_filtersize1_mored
     for (int i = 0; i < square(dim.inputSize); i++) {
         expectedOutput[0] += - data[i] * errors[i];
     }
-    cout << "expectedresult: " << expectedOutput[0] << endl;
+    cerr << "expectedresult: " << expectedOutput[0] << endl;
 
     testBackpropWeights(dim, batchSize, learningMultiplier, data, errors, expectedOutput);
 }
@@ -527,7 +527,7 @@ TEST(testupdateweights, backprop_instance3_smaller2) {
     int weightsSize = dim.filtersSize;
 //    int biasSize = dim.numFilters;
 
-    cout << "numweights: " << weightsSize << endl;
+    cerr << "numweights: " << weightsSize << endl;
 
     float *errors = new float[max(10000, outputNumElements)];
     float *inputData = new float[max(10000, inputNumElements)];
@@ -568,49 +568,49 @@ TEST(testupdateweights, backprop_instance3_smaller2) {
 
     for(int i = 0; i < 6; i++) {
         for(int j = 0; j < 6; j++) {
-            cout << weights0[i*6+j] << " ";
+            cerr << weights0[i*6+j] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
     for(int i = 0; i < 6; i++) {
         for(int j = 0; j < 6; j++) {
-            cout << weights1[i*6+j] << " ";
+            cerr << weights1[i*6+j] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
 
-    cout << endl;
+    cerr << endl;
     int isok = 1;
     for(int i = 0; i < 6; i++) {
         for(int j = 0; j < 6; j++) {
             if(weights0[i*6+j] == weights1[i*6+j]) {
-                cout << ".";
+                cerr << ".";
             } else {
-                cout << "!";
+                cerr << "!";
                 isok = 0;
             }
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
     EXPECT_EQ(1, isok);
 
     for(int i = 0; i < 12; i++) {
-        cout << i << "=";
+        cerr << i << "=";
         for(int slice = 0; slice < 8; slice++) {
-            cout << weights1[100+ 12 * slice + i] << " ";
+            cerr << weights1[100+ 12 * slice + i] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
 
     for(int i = 0; i < 20; i++) {
-        cout << i << "=";
+        cerr << i << "=";
         for(int slice = 0; slice < 8; slice++) {
-            cout << weights1[200+ 20 * slice + i] << " ";
+            cerr << weights1[200+ 20 * slice + i] << " ";
         }
-        cout << endl;
+        cerr << endl;
     }
     delete backpropWeightsImpl0;
     delete backpropWeightsImpl1;
@@ -699,7 +699,7 @@ public:
 namespace testupdateweights {
 
 void compareSpecific(bool debug, float learningRate, int its, int batchSize, LayerDimensions dim, int instance0, int instance1) {
-    cout << dim << endl;
+    cerr << dim << endl;
 
     int outputNumElements = batchSize * dim.outputCubeSize;
     int inputNumElements = batchSize * dim.inputCubeSize;
@@ -711,7 +711,7 @@ void compareSpecific(bool debug, float learningRate, int its, int batchSize, Lay
     int weightsAllocated = max(10000, weightsSize);
     int biasAllocated = max(10000, biasSize);
 
-//    cout << "numweights: " << weightsSize << endl;
+//    cerr << "numweights: " << weightsSize << endl;
 
     float *bias1 = new float[ biasAllocated ];
     float *bias2 = new float[ biasAllocated ];
@@ -761,37 +761,37 @@ void compareSpecific(bool debug, float learningRate, int its, int batchSize, Lay
     }
     delete instanceObjects[0];
     delete instanceObjects[1];
-    cout << dim << endl;
+    cerr << dim << endl;
     for(int i = 0; i < 25; i++) {
-        cout << "weights[" << i << "]=" << weights1[i] << " " << weights2[i];
+        cerr << "weights[" << i << "]=" << weights1[i] << " " << weights2[i];
         if(i < weightsSize) {
             if(abs(weights1[i] - weights2[i]) <= abs(weights1[i]) / 10000.0f) {
-                if(debug) cout << " SAME";
+                if(debug) cerr << " SAME";
             } else {
-                cout << " DIFF";
+                cerr << " DIFF";
             }
         } else {
-            if(debug) cout << "     ";
+            if(debug) cerr << "     ";
         }
-        if(debug) cout << "  || " << weights2[100+i] ;
-        if(debug) cout << "  || " << weights2[200+i] ;
-        if(debug) cout << "  || " << weights2[300+i] ;
-        if(debug) cout << "  || " << weights2[400+i] ;
-        if(debug) cout << "  || " << weights2[500+i] ;
-        if(debug) cout << "  || " << weights2[600+i] ;
-        if(debug) cout << "  || " << weights2[700+i];
-        cout << endl;
+        if(debug) cerr << "  || " << weights2[100+i] ;
+        if(debug) cerr << "  || " << weights2[200+i] ;
+        if(debug) cerr << "  || " << weights2[300+i] ;
+        if(debug) cerr << "  || " << weights2[400+i] ;
+        if(debug) cerr << "  || " << weights2[500+i] ;
+        if(debug) cerr << "  || " << weights2[600+i] ;
+        if(debug) cerr << "  || " << weights2[700+i];
+        cerr << endl;
     }
     bool same = true;
     int errCount = 0;
     for(int i = 0; i < weightsSize; i++) {
         if(abs(weights1[i] - weights2[i]) > 0.001 * max(abs(weights1[i]), abs(weights2[i]))) {
 //        if(abs(weights1[i] - weights2[i]) > abs(weights1[i]) / 10000.0f) {
-            cout << "DIFF: weights i " << i << " " << weights1[i] << " != " << weights2[i] << endl;
+            cerr << "DIFF: weights i " << i << " " << weights1[i] << " != " << weights2[i] << endl;
             same = false;
             errCount++;
             if(errCount == 5) {
-                cout << " ... " << endl;
+                cerr << " ... " << endl;
                 break;
             }
         }
@@ -801,11 +801,11 @@ void compareSpecific(bool debug, float learningRate, int its, int batchSize, Lay
         for(int i = 0; i < biasSize; i++) {
             if(abs(bias1[i] - bias2[i]) > 0.001 * max(abs(bias1[i]), abs(bias2[i]))) {
     //        if(abs(weights1[i] - weights2[i]) > abs(weights1[i]) / 10000.0f) {
-                cout << "DIFF: bias i " << i << " " << bias1[i] << " != " << bias2[i] << endl;
+                cerr << "DIFF: bias i " << i << " " << bias1[i] << " != " << bias2[i] << endl;
                 same = false;
                 errCount++;
                 if(errCount == 5) {
-                    cout << " etc ... " << endl;
+                    cerr << " etc ... " << endl;
                     break;
                 }
             }
@@ -917,7 +917,7 @@ void measurePerf(int batchSize, LayerDimensions dim, int instance) {
     int weightsAllocated = weightsSize;
     int biasAllocated = biasSize;
 
-    cout << "numweights: " << weightsSize << endl;
+    cerr << "numweights: " << weightsSize << endl;
 
     float *bias = new float[ biasAllocated ];
     memset(bias, 0, sizeof(float) * biasAllocated);

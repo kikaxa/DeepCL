@@ -38,8 +38,8 @@ PUBLIC VIRTUAL void BackwardIm2Col::backward(int batchSize,
     float *gradColumns = new float[gradColumnsSize];
     CLWrapper *gradColumnsWrapper = cl->wrap(gradColumnsSize, gradColumns);
     gradColumnsWrapper->createOnDevice();
-//    cout << "gradColumnsSize: " << gradColumnsSize << endl;
-//    cout << "weightsize: " << weightsWrapper->size() << endl;
+//    cerr << "gradColumnsSize: " << gradColumnsSize << endl;
+//    cerr << "weightsize: " << weightsWrapper->size() << endl;
 
     StatefulTimer::timeCheck("BackwardIm2Col::backward after alloc");
 
@@ -47,11 +47,11 @@ PUBLIC VIRTUAL void BackwardIm2Col::backward(int batchSize,
         gradInputWrapper->createOnDevice();
     }
     for (int b = 0; b < batchSize; b ++) {
-//        cout << "b=" << b << " numkernels=" << numKernels << endl;
+//        cerr << "b=" << b << " numkernels=" << numKernels << endl;
         long m = dim.outputSizeSquared;
         long n = dim.inputPlanes * dim.filterSizeSquared;
         long k = dim.numFilters;
-//        cout << "m=" << m << " k=" << k << " n=" << n << endl;
+//        cerr << "m=" << m << " k=" << k << " n=" << n << endl;
 
         ClBlasHelper::Gemm(
             cl, clblasColumnMajor, clblasNoTrans, clblasTrans,

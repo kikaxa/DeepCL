@@ -14,7 +14,7 @@ public:
         random.seed(1);
         for( int sample = 0; sample < numSamples; sample++ ) {
             int index = random() % arraySize;
-            std::cout << "EXPECT_FLOAT_NEAR( " << array[index] << ", " << arrayName << "[" << index << "] );" << std::endl;
+            std::cerr << "EXPECT_FLOAT_NEAR( " << array[index] << ", " << arrayName << "[" << index << "] );" << std::endl;
         }
     }
     static void sampleWeights( std::string label, Layer *layer ) {
@@ -27,7 +27,7 @@ public:
         for( int sample = 0; sample < 5; sample++ ) {
             int sampleIdx = random() % ( numWeights - 1 );
 //            sampleIdxs[sample] = sampleIdx;
-            std::cout << label << ": weights[" << sampleIdx << "]=" << weights[sampleIdx] << std::endl;
+            std::cerr << label << ": weights[" << sampleIdx << "]=" << weights[sampleIdx] << std::endl;
         }
     }
     static void sampleFloatWrapper( std::string label, CLWrapper *wrapper ) {
@@ -38,7 +38,7 @@ public:
         float *hostArray = (float *)wrapper->getHostArray();
         for( int sample = 0; sample < 5; sample++ ) {
             int idx = random() % N;
-            std::cout << label + ": sample[" << idx << "]=" << hostArray[idx] << std::endl;
+            std::cerr << label + ": sample[" << idx << "]=" << hostArray[idx] << std::endl;
         }
     }
     static void sampleFloats( std::string label, int N, float *floats ) {
@@ -46,7 +46,7 @@ public:
         random.seed(1);
         for( int sample = 0; sample < 5; sample++ ) {
             int idx = random() % N;
-            std::cout << label + ": sample[" << idx << "]=" << floats[idx] << std::endl;
+            std::cerr << label + ": sample[" << idx << "]=" << floats[idx] << std::endl;
         }
     }
 };

@@ -140,7 +140,7 @@ void sampleWeights(NeuralNet *net) {
             continue;
         }
 
-        cout << "layer " << layerId << endl;
+        cerr << "layer " << layerId << endl;
         float const*weights = conv->getWeights();
         conv->getBias();
         LayerDimensions &dim = conv->dim;
@@ -158,7 +158,7 @@ void sampleWeights(NeuralNet *net) {
             int inputPlane = planefilter % inputPlanes;
             int row = rowcol / filterSize;
             int col = rowcol % filterSize;
-            cout << "weights[" << filter << "," << inputPlane << "," << row << "," << col << "]=" << weights[ seq ] << endl;
+            cerr << "weights[" << filter << "," << inputPlane << "," << row << "," << col << "]=" << weights[ seq ] << endl;
         }
     }
 }
@@ -183,7 +183,7 @@ void go(Config config) {
     GenericLoader::getDimensions((config.dataDir + "/" + config.trainFile).c_str(), &Ntrain, &numPlanes, &imageSize);
     Ntrain = config.numTrain == -1 ? Ntrain : config.numTrain;
 //    long allocateSize = (long)Ntrain * numPlanes * imageSize * imageSize;
-    cout << "Ntrain " << Ntrain << " numPlanes " << numPlanes << " imageSize " << imageSize << endl;
+    cerr << "Ntrain " << Ntrain << " numPlanes " << numPlanes << " imageSize " << imageSize << endl;
     trainAllocateN = Ntrain;
     trainData = new float[ (long)trainAllocateN * numPlanes * imageSize * imageSize ];
     trainLabels = new int[trainAllocateN];
@@ -209,7 +209,7 @@ void go(Config config) {
     if(config.normalization == "stddev") {
         float mean, stdDev;
         NormalizationHelper::getMeanAndStdDev(trainData, normalizationExamples * inputCubeSize, &mean, &stdDev);
-        cout << " image stats mean " << mean << " stdDev " << stdDev << endl;
+        cerr << " image stats mean " << mean << " stdDev " << stdDev << endl;
         translate = - mean;
         scale = 1.0f / stdDev / config.normalizationNumStds;
     } else if(config.normalization == "maxmin") {
@@ -218,11 +218,11 @@ void go(Config config) {
         translate = - mean;
         scale = 1.0f / stdDev;
     } else {
-        cout << "Error: Unknown normalization: " << config.normalization << endl;
+        cerr << "Error: Unknown normalization: " << config.normalization << endl;
         return;
     }
     
-    cout << " image norm translate " << translate << " scale " << scale << endl;
+    cerr << " image norm translate " << translate << " scale " << scale << endl;
     timer.timeCheck("after getting stats");
 
 //    const int numToTrain = Ntrain;
@@ -250,7 +250,7 @@ void go(Config config) {
         int weightsSize = conv->getWeightsSize();
     //int weightsSize = layer->getPersistSize();
         if(weightsSize > 0) {
-            cout << "weightsSize " << weightsSize << endl;
+            cerr << "weightsSize " << weightsSize << endl;
             float *weights = new float[weightsSize];
             for(int j = 0; j < weightsSize; j++) {
                 int thisrand = (int)initrand();
@@ -273,7 +273,7 @@ void go(Config config) {
         }
     }
 
-    cout << "weight samples before learning:" << endl;
+    cerr << "weight samples before learning:" << endl;
     sampleWeights(net);
 
     bool afterRestart = false;
@@ -301,7 +301,7 @@ void go(Config config) {
     netLearner.setDumpTimings(config.dumpTimings);
 //    netLearner.learn(config.learningRate, 1.0f);
 
-    cout << "forward output" << endl;
+    cerr << "forward output" << endl;
     for(int layerId = 0; layerId < net->getNumLayers(); layerId++) {
         Layer *layer = net->getLayer(layerId);
         FullyConnectedLayer *fc = dynamic_cast< FullyConnectedLayer * >(layer);
@@ -314,26 +314,26 @@ void go(Config config) {
         int planes = 0;
         int imageSize = 0;
         if(conv != 0) {
-            cout << "convolutional (or conv based, ie fc)" << endl;
+            cerr << "convolutional (or conv based, ie fc)" << endl;
             planes = conv->dim.numFilters;
             imageSize = conv->dim.outputSize;
           //  continue;
         } else if(pool != 0) {
-            cout << "pooling" << endl;
+            cerr << "pooling" << endl;
             planes = pool->numPlanes;
             imageSize = pool->outputSize;
         } else if(softMax != 0) {
-            cout << "softmax" << endl;
+            cerr << "softmax" << endl;
             planes = softMax->numPlanes;
             imageSize = softMax->imageSize;
         } else {
             continue;
         }
-        cout << "layer " << layerId << endl;
+        cerr << "layer " << layerId << endl;
 //        conv->getOutput();
         float const*output = layer->getOutput();
 //        for(int i = 0; i < 3; i++) {
-//            cout << conv->getOutput()[i] << endl;
+//            cerr << conv->getOutput()[i] << endl;
 //        }
         initrand.seed(0);
 //        LayerDimensions &dim = conv->dim;
@@ -344,14 +344,14 @@ void go(Config config) {
             int rowcol = seq % (imageSize * imageSize);
             int row = rowcol / imageSize;
             int col = rowcol % imageSize;
-            cout << "out[" << outPlane << "," << row << "," << col << "]=" << output[ seq ] << endl;
+            cerr << "out[" << outPlane << "," << row << "," << col << "]=" << output[ seq ] << endl;
         }
     }
 
-    cout << "weight samples after learning:" << endl;
+    cerr << "weight samples after learning:" << endl;
     sampleWeights(net);
 
-    cout << "backprop output" << endl;
+    cerr << "backprop output" << endl;
     for(int layerId = net->getNumLayers() - 1; layerId >= 0; layerId--) {
         Layer *layer = net->getLayer(layerId);
         FullyConnectedLayer *fc = dynamic_cast< FullyConnectedLayer * >(layer);
@@ -363,18 +363,18 @@ void go(Config config) {
             continue;
         }
 
-        cout << "layer " << layerId << endl;
+        cerr << "layer " << layerId << endl;
         float const*weights = conv->getWeights();
         float const*biases = conv->getBias();
         int weightsSize = conv->getWeightsSize() / conv->dim.numFilters;
         for(int i = 0; i < weightsSize; i++) {
-            cout << " weight " << i << " " << weights[i] << endl;
+            cerr << " weight " << i << " " << weights[i] << endl;
         }
         for(int i = 0; i < 3; i++) {
-            cout << " bias " << i << " " << biases[i] << endl;
+            cerr << " bias " << i << " " << biases[i] << endl;
         }
     }
-    cout << "done" << endl;
+    cerr << "done" << endl;
 
     delete sgd;
     delete net;
@@ -395,33 +395,33 @@ void go(Config config) {
 }
 
 void printUsage(char *argv[], Config config) {
-    cout << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
-    cout << endl;
-    cout << "Possible key=value pairs:" << endl;
+    cerr << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
+    cerr << endl;
+    cerr << "Possible key=value pairs:" << endl;
     // [[[cog
     // cog.outl('// generated using cog:')
     // for name in strings:
-    //    cog.outl('cout << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
+    //    cog.outl('cerr << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
     // for name in ints:
-    //    cog.outl('cout << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
+    //    cog.outl('cerr << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
     // for name in floats:
-    //    cog.outl('cout << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
+    //    cog.outl('cerr << "    ' + name.lower() + '=[' + descriptions[name.lower()] + '] (" << config.' + name + ' << ")" << endl;')
     // ]]]
     // generated using cog:
-    cout << "    datadir=[directory to search for train and validate files] (" << config.dataDir << ")" << endl;
-    cout << "    trainfile=[path to training data file] (" << config.trainFile << ")" << endl;
-    cout << "    validatefile=[path to validation data file] (" << config.validateFile << ")" << endl;
-    cout << "    netdef=[network definition] (" << config.netDef << ")" << endl;
-    cout << "    normalization=[[stddev|maxmin]] (" << config.normalization << ")" << endl;
-    cout << "    dataset=[choose datadir,trainfile,and validatefile for certain datasets [mnist|norb|kgsgo|cifar10]] (" << config.dataset << ")" << endl;
-    cout << "    numtrain=[num training examples] (" << config.numTrain << ")" << endl;
-    cout << "    numtest=[num test examples]] (" << config.numTest << ")" << endl;
-    cout << "    batchsize=[batch size] (" << config.batchSize << ")" << endl;
-    cout << "    numepochs=[number epochs] (" << config.numEpochs << ")" << endl;
-    cout << "    dumptimings=[dump detailed timings each epoch? [1|0]] (" << config.dumpTimings << ")" << endl;
-    cout << "    normalizationexamples=[number of examples to read to determine normalization parameters] (" << config.normalizationExamples << ")" << endl;
-    cout << "    learningrate=[learning rate, a float value] (" << config.learningRate << ")" << endl;
-    cout << "    normalizationnumstds=[with stddev normalization, how many stddevs from mean is 1?] (" << config.normalizationNumStds << ")" << endl;
+    cerr << "    datadir=[directory to search for train and validate files] (" << config.dataDir << ")" << endl;
+    cerr << "    trainfile=[path to training data file] (" << config.trainFile << ")" << endl;
+    cerr << "    validatefile=[path to validation data file] (" << config.validateFile << ")" << endl;
+    cerr << "    netdef=[network definition] (" << config.netDef << ")" << endl;
+    cerr << "    normalization=[[stddev|maxmin]] (" << config.normalization << ")" << endl;
+    cerr << "    dataset=[choose datadir,trainfile,and validatefile for certain datasets [mnist|norb|kgsgo|cifar10]] (" << config.dataset << ")" << endl;
+    cerr << "    numtrain=[num training examples] (" << config.numTrain << ")" << endl;
+    cerr << "    numtest=[num test examples]] (" << config.numTest << ")" << endl;
+    cerr << "    batchsize=[batch size] (" << config.batchSize << ")" << endl;
+    cerr << "    numepochs=[number epochs] (" << config.numEpochs << ")" << endl;
+    cerr << "    dumptimings=[dump detailed timings each epoch? [1|0]] (" << config.dumpTimings << ")" << endl;
+    cerr << "    normalizationexamples=[number of examples to read to determine normalization parameters] (" << config.normalizationExamples << ")" << endl;
+    cerr << "    learningrate=[learning rate, a float value] (" << config.learningRate << ")" << endl;
+    cerr << "    normalizationnumstds=[with stddev normalization, how many stddevs from mean is 1?] (" << config.normalizationNumStds << ")" << endl;
     // [[[end]]]
 }
 
@@ -433,12 +433,12 @@ int main(int argc, char *argv[]) {
     for(int i = 1; i < argc; i++) {
         vector<string> splitkeyval = split(argv[i], "=");
         if(splitkeyval.size() != 2) {
-          cout << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
+          cerr << "Usage: " << argv[0] << " [key]=[value] [[key]=[value]] ..." << endl;
           exit(1);
         } else {
             string key = splitkeyval[0];
             string value = splitkeyval[1];
-//            cout << "key [" << key << "]" << endl;
+//            cerr << "key [" << key << "]" << endl;
             // [[[cog
             // cog.outl('// generated using cog:')
             // cog.outl('if(false) {')
@@ -484,11 +484,11 @@ int main(int argc, char *argv[]) {
                 config.normalizationNumStds = atof(value);
             // [[[end]]]
             } else {
-                cout << endl;
-                cout << "Error: key '" << key << "' not recognised" << endl;
-                cout << endl;
+                cerr << endl;
+                cerr << "Error: key '" << key << "' not recognised" << endl;
+                cerr << endl;
                 printUsage(argv, config);
-                cout << endl;
+                cerr << endl;
                 return -1;
             }
         }
@@ -508,18 +508,18 @@ int main(int argc, char *argv[]) {
             config.trainFile = "train-dat.mat";
             config.validateFile = "test-dat.mat";
         } else {
-            cout << "dataset " << dataset << " not known.  please choose from: mnist, norb, cifar10, kgsgo" << endl;
+            cerr << "dataset " << dataset << " not known.  please choose from: mnist, norb, cifar10, kgsgo" << endl;
             return -1;
         }
-        cout << "Using dataset " << dataset << ":" << endl;
-        cout << "   datadir: " << config.dataDir << ":" << endl;
-        cout << "   trainfile: " << config.trainFile << ":" << endl;
-        cout << "   validatefile: " << config.validateFile << ":" << endl;
+        cerr << "Using dataset " << dataset << ":" << endl;
+        cerr << "   datadir: " << config.dataDir << ":" << endl;
+        cerr << "   trainfile: " << config.trainFile << ":" << endl;
+        cerr << "   validatefile: " << config.validateFile << ":" << endl;
     }
     try {
         go(config);
     } catch(runtime_error e) {
-        cout << "Something went wrong: " << e.what() << endl;
+        cerr << "Something went wrong: " << e.what() << endl;
         return -1;
     }
 }

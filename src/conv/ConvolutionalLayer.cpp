@@ -135,21 +135,21 @@ VIRTUAL std::string ConvolutionalLayer::getClassName() const {
 //}
 VIRTUAL float *ConvolutionalLayer::getGradInput() {
     if(gradInputWrapper->isDeviceDirty()) {
-//        std::cout << "copying gradInput to host, from GPU" << std::endl;
+//        std::cerr << "copying gradInput to host, from GPU" << std::endl;
         gradInputWrapper->copyToHost();
     }
     return gradInput;
 }
 VIRTUAL float *ConvolutionalLayer::getGradWeights() {
     if(gradWeightsWrapper->isDeviceDirty()) {
-//        std::cout << "copying gradWeights to host, from GPU" << std::endl;
+//        std::cerr << "copying gradWeights to host, from GPU" << std::endl;
         gradWeightsWrapper->copyToHost();
     }
     return gradWeights;
 }
 VIRTUAL float *ConvolutionalLayer::getGradBias() {
     if(gradBiasWrapper->isDeviceDirty()) {
-//        std::cout << "copying gradBias to host, from GPU" << std::endl;
+//        std::cerr << "copying gradBias to host, from GPU" << std::endl;
         gradBiasWrapper->copyToHost();
     }
     return gradBias;
@@ -198,7 +198,7 @@ VIRTUAL int ConvolutionalLayer::getOutputSize() const {
 }
 // filters are organized like [filterid][plane][row][col]
 void ConvolutionalLayer::randomizeWeights(WeightsInitializer *weightsInitializer) {
-//        std::cout << "convolutional layer randomzing weights" << std::endl;
+//        std::cerr << "convolutional layer randomzing weights" << std::endl;
     int fanin = dim.inputPlanes * dim.filterSize * dim.filterSize;
     if(dim.biased) {
         fanin++;
@@ -210,68 +210,68 @@ void ConvolutionalLayer::randomizeWeights(WeightsInitializer *weightsInitializer
     }
 }
 VIRTUAL void ConvolutionalLayer::print() {
-    std::cout << "ConvolutionalLayer " << dim << std::endl;
+    std::cerr << "ConvolutionalLayer " << dim << std::endl;
     printWeights();
     if(output != 0) {
         printOutput();
     }
 }
 VIRTUAL void ConvolutionalLayer::printWeights() {
-    std::cout << "  weights: " << std::endl;
+    std::cerr << "  weights: " << std::endl;
     getWeights();
 // filters are organized like [filterid][plane][row][col]
     for(int filter = 0; filter < std::min(5, dim.numFilters); filter++) {
-       std::cout << "    filter " << filter << std::endl;
+       std::cerr << "    filter " << filter << std::endl;
        if(dim.biased) {
-           std::cout << "       bias=" << bias[filter] << std::endl;            
+           std::cerr << "       bias=" << bias[filter] << std::endl;            
        }
        for(int plane = 0; plane < std::min(5, dim.inputPlanes); plane++) {
-           if(dim.inputPlanes > 1) std::cout << "    inplane " << plane << std::endl;
+           if(dim.inputPlanes > 1) std::cerr << "    inplane " << plane << std::endl;
             for(int i = 0; i < std::min(5, dim.filterSize); i++) {
-                std::cout << "      ";
+                std::cerr << "      ";
                 for(int j = 0; j < std::min(5, dim.filterSize); j++) {
-                   std::cout << getWeight(filter, plane, i, j) << " ";
+                   std::cerr << getWeight(filter, plane, i, j) << " ";
                 }
                 if(dim.filterSize > 5) {
-                   std::cout << " ...";
+                   std::cerr << " ...";
                 }
-                std::cout << std::endl;
+                std::cerr << std::endl;
             }
             if(dim.filterSize > 5) {
-               std::cout << " ..." << std::endl;
+               std::cerr << " ..." << std::endl;
             }
         }
-        if(dim.inputPlanes > 5) std::cout << " ... other inplanes ... " << std::endl;
+        if(dim.inputPlanes > 5) std::cerr << " ... other inplanes ... " << std::endl;
     }
-    if(dim.numFilters > 5) std::cout << " ... other filters ... " << std::endl;
+    if(dim.numFilters > 5) std::cerr << " ... other filters ... " << std::endl;
  }
 VIRTUAL void ConvolutionalLayer::printOutput() { 
     if(output == 0) {
         return;
     }
     //    getOutput();
-    std::cout << "  outputs: " << std::endl;
+    std::cerr << "  outputs: " << std::endl;
 // output are organized like [imageid][filterid][row][col]
     for(int n = 0; n < std::min(5, batchSize); n++) {
-        std::cout << "    n: " << n << std::endl;
+        std::cerr << "    n: " << n << std::endl;
         for(int plane = 0; plane < std::min(5, dim.numFilters); plane++) {
-            if(dim.numFilters > 1) std::cout << "      plane " << plane << std::endl;
+            if(dim.numFilters > 1) std::cerr << "      plane " << plane << std::endl;
             if(dim.outputSize == 1) {
-                 std::cout << "        " << getOutput(n, plane, 0, 0) << std::endl;
+                 std::cerr << "        " << getOutput(n, plane, 0, 0) << std::endl;
             } else {
                 for(int i = 0; i < std::min(5, dim.outputSize); i++) {
-                    std::cout << "      ";
+                    std::cerr << "      ";
                     for(int j = 0; j < std::min(5, dim.outputSize); j++) {
-                        std::cout << getOutput(n, plane, i, j) << " ";
+                        std::cerr << getOutput(n, plane, i, j) << " ";
                     }
-                    if(dim.outputSize > 5) std::cout << " ... ";
-                    std::cout << std::endl;
+                    if(dim.outputSize > 5) std::cerr << " ... ";
+                    std::cerr << std::endl;
                 }
-                if(dim.outputSize > 5) std::cout << " ... " << std::endl;
+                if(dim.outputSize > 5) std::cerr << " ... " << std::endl;
             }
-            if(dim.numFilters > 5) std::cout << " ... other planes ... " << std::endl;
+            if(dim.numFilters > 5) std::cerr << " ... other planes ... " << std::endl;
         }
-        if(batchSize > 5) std::cout << " ... other n ... " << std::endl;
+        if(batchSize > 5) std::cerr << " ... other n ... " << std::endl;
     }
 }
 VIRTUAL void ConvolutionalLayer::setBatchSize(int batchSize) {
@@ -298,7 +298,7 @@ VIRTUAL void ConvolutionalLayer::setBatchSize(int batchSize) {
     }
 }
 VIRTUAL void ConvolutionalLayer::setWeights(float *weights, float *bias) {
-//    cout << "setweights" << endl;
+//    cerr << "setweights" << endl;
     initWeights(weights);
     if(dim.biased) {
         initBias(bias);
@@ -331,7 +331,7 @@ VIRTUAL void ConvolutionalLayer::unpersistFromArray(int version, float const*arr
     }
 }
 VIRTUAL void ConvolutionalLayer::initWeights(float const*weights) {
-//    cout << "initweights()" << endl;
+//    cerr << "initweights()" << endl;
     int weightsSize = getWeightsSize();
     memcpy(this->weights, weights, sizeof(float) * weightsSize);
     weightsWrapper->copyToDevice();
@@ -359,7 +359,7 @@ VIRTUAL float const *ConvolutionalLayer::getWeights() const {
 }
 VIRTUAL float *ConvolutionalLayer::getWeights() {
     if(weightsWrapper->isDeviceDirty()) {
-//        cout << "copying weights to host" << endl;
+//        cerr << "copying weights to host" << endl;
         cl->finish();
         weightsWrapper->copyToHost();
     }
@@ -393,10 +393,10 @@ VIRTUAL void ConvolutionalLayer::forward() {
 
     CLWrapper *upstreamWrapper = 0;
     if(previousLayer->hasOutputWrapper()) {
-//            std::cout << "layer " << previousLayer->layerIndex << " has outputWrapper" << std::endl;
+//            std::cerr << "layer " << previousLayer->layerIndex << " has outputWrapper" << std::endl;
         upstreamWrapper = previousLayer->getOutputWrapper();
     } else {
-//            std::cout << "layer " << previousLayer->layerIndex << " has no outputWrapper" << std::endl;
+//            std::cerr << "layer " << previousLayer->layerIndex << " has no outputWrapper" << std::endl;
         upstreamWrapper = cl->wrap(previousLayer->getOutputNumElements(), (float *)previousLayer->getOutput());
         upstreamWrapper->copyToDevice();
     }

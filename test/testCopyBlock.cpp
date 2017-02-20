@@ -30,7 +30,7 @@ TEST( testCopyBlock, testPos ) {
     in[2] = 14;
 
     for( int i = 0; i < 3; i++ ) {
-        cout << "in[" << i << "]=" << in[i] << endl;
+        cerr << "in[" << i << "]=" << in[i] << endl;
     }
     
     CLKernel *kernel = makeTestPosKernel( cl );
@@ -39,7 +39,7 @@ TEST( testCopyBlock, testPos ) {
     cl->finish();
 
     for( int i = 0; i < 5; i++ ) {
-        cout << "res[" << i << "]=" << res[i] << endl;
+        cerr << "res[" << i << "]=" << res[i] << endl;
     }
 }
 
@@ -78,18 +78,18 @@ TEST( testCopyBlock, basic ) {
                          6,7,8 }; 
     for( int i = 0; i < 2; i++ ) {
         for( int j = 0; j < 3; j++ ) {
-            cout << b[i*3+j] << " ";
+            cerr << b[i*3+j] << " ";
             EXPECT_EQ( expected[i*3+j], b[i*3+j] );
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
     for( int i = 6; i < 10; i++ ) {
-        cout << b[i] << " ";
+        cerr << b[i] << " ";
         EXPECT_EQ( 0, b[i] );
     }
-    cout << endl;
-        cout << endl;
+    cerr << endl;
+        cerr << endl;
 
     kernel->in( 12, a )->out( 6, b )->in( ( 3<<10)|4)->in( (1<<10)|0)->in((2<<10)|3);
     kernel->localFloats( 2 * 3 );
@@ -100,18 +100,18 @@ TEST( testCopyBlock, basic ) {
                          9,10,11 }; 
     for( int i = 0; i < 2; i++ ) {
         for( int j = 0; j < 3; j++ ) {
-            cout << b[i*3+j] << " ";
+            cerr << b[i*3+j] << " ";
             EXPECT_EQ( expected2[i*3+j], b[i*3+j] );
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
     for( int i = 6; i < 10; i++ ) {
-        cout << b[i] << " ";
+        cerr << b[i] << " ";
         EXPECT_EQ( 0, b[i] );
     }
-    cout << endl;
-        cout << endl;
+    cerr << endl;
+        cerr << endl;
 
     delete kernel;
     delete cl;

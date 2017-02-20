@@ -17,7 +17,7 @@ using namespace std;
 #define VIRTUAL 
 
 VIRTUAL BackpropWeightsNaive::~BackpropWeightsNaive() {
-//    cout << "~backpropgradWeights2naive: deleting kernel" << endl;
+//    cerr << "~backpropgradWeights2naive: deleting kernel" << endl;
     delete kernel;
 }
 VIRTUAL void BackpropWeightsNaive::calcGradWeights(int batchSize, CLWrapper *gradOutputWrapper, CLWrapper *imagesWrapper, CLWrapper *gradWeightsWrapper, CLWrapper *gradBiasWrapper) {

@@ -17,7 +17,7 @@ void go(string dataDir, string setName, int n, int translateRows, int translateC
     unsigned char *imagesUchar = new unsigned char[ N * numPlanes * imageSize * imageSize ];
     int *labels = new int[ N ];
     NorbLoader::load(filePath, imagesUchar, labels, 0, N);
-    cout << "n " << n << " N " << N << endl;
+    cerr << "n " << n << " N " << N << endl;
     float *images = new float[ N * numPlanes * imageSize * imageSize ];
     for(int i = 0; i < N * numPlanes * imageSize * imageSize; i++) {
         images[i] = imagesUchar[i];
@@ -30,7 +30,7 @@ void go(string dataDir, string setName, int n, int translateRows, int translateC
 
 int main(int argc, char *argv[]) {
     if(argc != 6) {
-        cout << "Usage: [datadir] [setname] [n] [translaterows] [translatecols]" << endl;
+        cerr << "Usage: [datadir] [setname] [n] [translaterows] [translatecols]" << endl;
         return -1;
     }
     string dataDir = string(argv[1]);

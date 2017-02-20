@@ -77,7 +77,7 @@ VIRTUAL std::string PoolingLayer::getClassName() const {
     return "PoolingLayer";
 }
 VIRTUAL void PoolingLayer::setBatchSize(int batchSize) {
-//    cout << "PoolingLayer::setBatchSize" << endl;
+//    cerr << "PoolingLayer::setBatchSize" << endl;
     if(batchSize <= allocatedSize) {
         this->batchSize = batchSize;
         return;
@@ -178,15 +178,15 @@ VIRTUAL void PoolingLayer::forward() {
         delete upstreamOutputWrapper;
     }
 
-//    cout << "PoolingLayer::forward() selectors after forward: " << endl;
+//    cerr << "PoolingLayer::forward() selectors after forward: " << endl;
 //    for(int i = 0; i < outputSize; i++) {
 //        for(int j = 0; j < outputSize; j++) {
-//            cout << selectors[ i * outputSize + j ] << " ";
+//            cerr << selectors[ i * outputSize + j ] << " ";
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
 
-//    cout << "PoolingLayer::forward() selectorsWrapper after forward: " << endl;
+//    cerr << "PoolingLayer::forward() selectorsWrapper after forward: " << endl;
 //    PrintBuffer::printInts(cl, selectorsWrapper, outputSize, outputSize);
 }
 VIRTUAL void PoolingLayer::backward() {
@@ -202,24 +202,24 @@ VIRTUAL void PoolingLayer::backward() {
         weOwnErrorsWrapper = true;
     }
 
-//    cout << "PoolingLayer::backward selectorsWrapper:" << endl;
+//    cerr << "PoolingLayer::backward selectorsWrapper:" << endl;
 //    PrintBuffer::printInts(cl, selectorsWrapper, outputSize, outputSize);
 
 //    int *selectors = reinterpret_cast< int * >(selectorsWrapper->getHostArray());
-//    cout << "PoolingLayer::backward selectors before copy to host:" << endl;
+//    cerr << "PoolingLayer::backward selectors before copy to host:" << endl;
 //    for(int i = 0; i < outputSize; i++) {
 //        for(int j = 0; j < outputSize; j++) {
-//            cout << " " << selectors[i * outputSize + j];
+//            cerr << " " << selectors[i * outputSize + j];
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
 //    selectorsWrapper->copyToHost();
-//    cout << "PoolingLayer::backward selectors after copy to host:" << endl;
+//    cerr << "PoolingLayer::backward selectors after copy to host:" << endl;
 //    for(int i = 0; i < outputSize; i++) {
 //        for(int j = 0; j < outputSize; j++) {
-//            cout << " " << selectors[i * outputSize + j];
+//            cerr << " " << selectors[i * outputSize + j];
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
 //    selectorsWrapper->copyToDevice();
 
@@ -229,17 +229,17 @@ VIRTUAL void PoolingLayer::backward() {
 
 //    gradInputWrapper->copyToHost();
 //    float *gradInput = reinterpret_cast< float * >(gradInputWrapper->getHostArray());
-//    cout << "gradInput:" << endl;
+//    cerr << "gradInput:" << endl;
 //    for(int i = 0; i < inputSize; i++) {
 //        for(int j = 0; j < inputSize; j++) {
-////            cout << " " << gradInput[i * inputSize + j];
+////            cerr << " " << gradInput[i * inputSize + j];
 //            if(gradInput[i * inputSize + j] != 0) {
-//                cout << " *";
+//                cerr << " *";
 //            } else {
-//                cout << " .";
+//                cerr << " .";
 //            }
 //        }
-//        cout << endl;
+//        cerr << endl;
 //    }
 
     if(weOwnErrorsWrapper) {

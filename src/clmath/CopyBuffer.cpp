@@ -43,10 +43,10 @@ CopyBuffer::CopyBuffer(EasyCL *cl) :
     std::string kernelName = "copy.copy";
     if(cl->kernelExists(kernelName) ) {
         this->kernel = cl->getKernel(kernelName);
-//        cout << "CopyBuffer kernel already built => reusing" << endl;
+//        cerr << "CopyBuffer kernel already built => reusing" << endl;
         return;
     }
-//    cout << "CopyBuffer: building kernel" << endl;
+//    cerr << "CopyBuffer: building kernel" << endl;
 
     string options = "";
 

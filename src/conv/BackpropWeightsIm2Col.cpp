@@ -51,8 +51,8 @@ PUBLIC VIRTUAL void BackpropWeightsIm2Col::calcGradWeights(int batchSize, CLWrap
     CLMathWrapper ones_(onesWrapper);
     ones_ = 1.0f;
 
-//    cout << "gradColumnsSize: " << gradColumnsSize << endl;
-//    cout << "weightsize: " << weightsWrapper->size() << endl;
+//    cerr << "gradColumnsSize: " << gradColumnsSize << endl;
+//    cerr << "weightsize: " << weightsWrapper->size() << endl;
 
     StatefulTimer::timeCheck("BackpropWeightsIm2Col::calcGradWeights after alloc");
 
@@ -63,7 +63,7 @@ PUBLIC VIRTUAL void BackpropWeightsIm2Col::calcGradWeights(int batchSize, CLWrap
         gradBias_ = 0.0f;
     }
     for (int b = 0; b < batchSize; b ++) {
-//        cout << "b=" << b << " numkernels=" << numKernels << endl;
+//        cerr << "b=" << b << " numkernels=" << numKernels << endl;
 
         im2Col->im2Col(
             inputWrapper, b * dim.inputCubeSize,

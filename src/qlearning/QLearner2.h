@@ -43,7 +43,7 @@ public:
         throw std::runtime_error("reset not implemented");
     }
     virtual int getNumActions() {
-//        std::cout << "numActions: " << numActions << std::endl;
+//        std::cerr << "numActions: " << numActions << std::endl;
         return numActions;
 //        throw runtime_error("getNumActions not implemented");
     }

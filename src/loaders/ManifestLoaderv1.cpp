@@ -25,12 +25,12 @@ using namespace std;
 #define VIRTUAL
 
 PUBLIC STATIC bool ManifestLoaderv1::isFormatFor(std::string imagesFilepath) {
-    cout << "ManifestLoaderv1 checking format for " << imagesFilepath << endl;
+    cerr << "ManifestLoaderv1 checking format for " << imagesFilepath << endl;
     string sigString = "# format=deepcl-jpeg-list-v1 ";
     char *headerBytes = FileHelper::readBinaryChunk(imagesFilepath, 0, sigString.length() + 1);
     headerBytes[sigString.length()] = 0;
     bool matched = string(headerBytes) == sigString;
-    cout << "matched: " << matched << endl;
+    cerr << "matched: " << matched << endl;
     return matched;
 }
 PUBLIC ManifestLoaderv1::ManifestLoaderv1(std::string imagesFilepath) {
@@ -53,7 +53,7 @@ PRIVATE void ManifestLoaderv1::init(std::string imagesFilepath) {
         int n = 0;
         bool dryrun = it == 0 ? true : false;
 
-        cout << "read file it=" << it << endl;
+        cerr << "read file it=" << it << endl;
         ifstream infile(imagesFilepath);
         char lineChars[1024];
         infile.getline(lineChars, 1024); // skip first, header, line
@@ -67,7 +67,7 @@ PRIVATE void ManifestLoaderv1::init(std::string imagesFilepath) {
         }
 
         if(!dryrun) {
-            cout << "doing alloc N=" << N << endl;
+            cerr << "doing alloc N=" << N << endl;
             files = new string[N];
             if(hasLabels) {
                 labels = new int[N];
@@ -134,11 +134,11 @@ PRIVATE void ManifestLoaderv1::init(std::string imagesFilepath) {
         infile.close();
         if(dryrun) {
             N = n;
-            cout << "N is: " << N << endl;
+            cerr << "N is: " << N << endl;
         }
     }
 
-    cout << "manifest " << imagesFilepath << " read. N=" << N << " planes=" << planes << " size=" << size << " labels? " << hasLabels << endl;
+    cerr << "manifest " << imagesFilepath << " read. N=" << N << " planes=" << planes << " size=" << size << " labels? " << hasLabels << endl;
 }
 PUBLIC VIRTUAL std::string ManifestLoaderv1::getType() {
     return "ManifestLoaderv1";
@@ -168,7 +168,7 @@ int ManifestLoaderv1::readIntValue(std::vector< std::string > splitLine, std::st
 }
 PUBLIC VIRTUAL void ManifestLoaderv1::load(unsigned char *data, int *labels, int startRecord, int numRecords) {
     int imageCubeSize = planes * size * size;
-//    cout << "ManifestLoaderv1, loading " << numRecords << " jpegs" << endl;
+//    cerr << "ManifestLoaderv1, loading " << numRecords << " jpegs" << endl;
     for(int localN = 0; localN < numRecords; localN++) {
         int globalN = localN + startRecord;
         if(globalN >= N) {

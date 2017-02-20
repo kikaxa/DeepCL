@@ -37,7 +37,7 @@ VIRTUAL float CrossEntropyLoss::calcLoss(float const *expected) {
     float loss = 0;
     int inputNumElements = previousLayer->getOutputNumElements();
     float *input = previousLayer->getOutput();
-//    cout << "CrossEntropyLoss::calcLoss" << endl;
+//    cerr << "CrossEntropyLoss::calcLoss" << endl;
     for(int i = 0; i < inputNumElements; i++) {
         float expectedOutput = expected[i];
         float inputValue = input[i];

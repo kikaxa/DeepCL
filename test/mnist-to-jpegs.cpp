@@ -76,7 +76,7 @@ void run(string mnistImagesFile, string outDirectory, int numExamples) {
 
 int main( int argc, char *argv[] ) {
     if( argc != 4 ) {
-        cout << "Usage: " << argv[0] << " [mnist images file (input)] [output directory] [num examples]" << endl;
+        cerr << "Usage: " << argv[0] << " [mnist images file (input)] [output directory] [num examples]" << endl;
         return 1;
     }
     string mnistImagesFile = argv[1];
@@ -85,7 +85,7 @@ int main( int argc, char *argv[] ) {
     try {
         run(mnistImagesFile, outDirectory, numExamples);
     } catch(runtime_error e) {
-        cout << "something went wrong: " << e.what() << endl;
+        cerr << "something went wrong: " << e.what() << endl;
         return -1;
     }
 

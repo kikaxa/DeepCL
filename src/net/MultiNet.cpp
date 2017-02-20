@@ -126,8 +126,8 @@ VIRTUAL void MultiNet::setTraining(bool training) {
     }
 }
 VIRTUAL int MultiNet::calcNumRight(int const *labels) {
-//    cout << proxyInputLayer->asString() << endl;
-//    cout << lossLayer->asString() << endl;
+//    cerr << proxyInputLayer->asString() << endl;
+//    cerr << lossLayer->asString() << endl;
 //    proxyInputLayer->in(trainables[0]->getOutput());
 //    return dynamic_cast< SoftMaxLayer *>(lossLayer)->calcNumRight(labels);
 //    return trainables[0]->calcNumRight(labels);

@@ -12,7 +12,7 @@ void go(string dataDir, string setName, int n, int patchSize, int patchRow, int 
     int numPlanes;
     int imageSize;
     unsigned char *imagesUchar = NorbLoader::loadImages(dataDir + "/" + setName + "-dat.mat", &N, &numPlanes, &imageSize, n + 1);
-    cout << "n " << n << " N " << N << endl;
+    cerr << "n " << n << " N " << N << endl;
     N = n + 1;
     float *images = new float[ N * numPlanes * imageSize * imageSize ];
     for(int i = 0; i < N * numPlanes * imageSize * imageSize; i++) {
@@ -26,7 +26,7 @@ void go(string dataDir, string setName, int n, int patchSize, int patchRow, int 
 
 int main(int argc, char *argv[]) {
     if(argc != 7) {
-        cout << "Usage: [datadir] [setname] [n] [patchsize] [patchrow] [patchcol]" << endl;
+        cerr << "Usage: [datadir] [setname] [n] [patchsize] [patchrow] [patchcol]" << endl;
         return -1;
     }
     string dataDir = string(argv[1]);

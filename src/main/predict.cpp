@@ -123,7 +123,7 @@ void go(Config config) {
         numPlanes = loader->getPlanes();
         imageSize = loader->getImageSize();
         // GenericLoader::getDimensions(config.inputFile.c_str(), &N, &numPlanes, &imageSize);
-        if(verbose) cout << "N " << N << " planes " << numPlanes << " size " << imageSize << endl;
+        if(verbose) cerr << "N " << N << " planes " << numPlanes << " size " << imageSize << endl;
     }
 
     const long inputCubeSize = numPlanes * imageSize * imageSize ;
@@ -147,16 +147,16 @@ void go(Config config) {
     WeightsInitializer *weightsInitializer = new OriginalInitializer();
 
     if(config.weightsFile == "") {
-        cout << "weightsFile not specified" << endl;
+        cerr << "weightsFile not specified" << endl;
         return;
     }
 
     string netDef;
     if (!WeightsPersister::loadConfigString(config.weightsFile, netDef) ){
-        cout << "Cannot load network definition from weightsFile." << endl;
+        cerr << "Cannot load network definition from weightsFile." << endl;
         return;
     }
-//    cout << "net def from weights file: " << netDef << endl;
+//    cerr << "net def from weights file: " << netDef << endl;
 
     net->addLayer(InputLayerMaker::instance()->numPlanes(numPlanes)->imageSize(imageSize));
     net->addLayer(NormalizationLayerMaker::instance()->translate(0.0f)->scale(1.0f) ); // This will be read from weights file
@@ -172,7 +172,7 @@ void go(Config config) {
     // weights file contains normalization layer parameters as 'weights' now.  We should probably rename weights to parameters
     // sooner or later ,but anyway, tehcnically, works for onw
     if(!WeightsPersister::loadWeights(config.weightsFile, string("netDef=")+netDef, net, &ignI, &ignI, &ignF, &ignI, &ignF) ){
-        cout << "Cannot load network weights from weightsFile." << endl;
+        cerr << "Cannot load network weights from weightsFile." << endl;
         return;
     }
 
@@ -180,7 +180,7 @@ void go(Config config) {
         net->print();
     }
     net->setBatchSize(config.batchSize);
-    if(verbose) cout << "batchSize: " << config.batchSize << endl;
+    if(verbose) cerr << "batchSize: " << config.batchSize << endl;
 
 
     //
@@ -193,7 +193,7 @@ void go(Config config) {
     int n = 0;
     bool more = true;
     ostream *outFile = 0;
-    if(verbose) cout << "outputFile: '" << config.outputFile << "'"<< endl;
+    if(verbose) cerr << "outputFile: '" << config.outputFile << "'"<< endl;
     if(config.outputFile == "") {
         #ifdef _WIN32
         // refs:
@@ -201,7 +201,7 @@ void go(Config config) {
         // http://www.cplusplus.com/forum/windows/77812/
         _setmode(_fileno(stdout), _O_BINARY);
         #endif
-        outFile = &cout;
+        outFile = &cerr;
     } else {
         if(config.outputFormat == "text") {
             outFile = new ofstream(config.outputFile, ios::out);
@@ -214,13 +214,13 @@ void go(Config config) {
     if(config.outputLayer == -1) {
         config.outputLayer = net->getNumLayers() - 1;
     }
-    if(verbose) cout << "inputFile: '" << config.inputFile << "'"<< endl;
+    if(verbose) cerr << "inputFile: '" << config.inputFile << "'"<< endl;
     if(config.inputFile == "") {
         cin.read(reinterpret_cast< char * >(inputData), inputCubeSize * config.batchSize * 4l);
         more = !cin.eof();
 
         if (config.renormalizationWeight > 0.01)
-            cout << "renormalization not supported for stdin, disabled" << endl;
+            cerr << "renormalization not supported for stdin, disabled" << endl;
     } else {
         if (config.renormalizationWeight > 0.01) {
             float translate;
@@ -230,7 +230,7 @@ void go(Config config) {
                 NormalizeGetStdDev normalizeGetStdDev(inputData, 0);
                 BatchProcessv2::run(loader, 0, config.batchSize, N, inputCubeSize, &normalizeGetStdDev);
                 normalizeGetStdDev.calcMeanStdDev(&mean, &stdDev);
-                cout << " image stats mean " << mean << " stdDev " << stdDev << endl;
+                cerr << " image stats mean " << mean << " stdDev " << stdDev << endl;
                 translate = - mean;
                 scale = 1.0f / stdDev / config.normalizationNumStds;
             } else if(config.normalization == "maxmin") {
@@ -238,7 +238,7 @@ void go(Config config) {
                 BatchProcessv2::run(loader, 0, config.batchSize, N, inputCubeSize, &normalizeGetMinMax);
                 normalizeGetMinMax.calcMinMaxTransform(&translate, &scale);
             } else {
-                cout << "Error: Unknown normalization: " << config.normalization << endl;
+                cerr << "Error: Unknown normalization: " << config.normalization << endl;
                 return;
             }
 
@@ -278,7 +278,7 @@ void go(Config config) {
             if(config.outputFormat == "text") {
                 float const*output = net->getLayer(config.outputLayer)->getOutput();
                 const int numFields = net->getLayer(config.outputLayer)->getOutputCubeSize();
-                //cout << "writing as text n=" << n << " N=" << N << " batchsize=" << config.batchSize <<
+                //cerr << "writing as text n=" << n << " N=" << N << " batchsize=" << config.batchSize <<
                 //     " numFields=" << numFields << endl;
                 for(int i = 0; i < config.batchSize && (N==-1 || n + i < N); i++) {
                     for(int f = 0; f < numFields; f++) {
@@ -286,7 +286,7 @@ void go(Config config) {
                             *outFile << " ";
                         }
                         *outFile << output[ i * numFields + f ];
-                        //cout << "writing " << output[ i * numFields + f ] << endl;
+                        //cerr << "writing " << output[ i * numFields + f ] << endl;
                     }
                     *outFile << "\n";
                 }
@@ -296,7 +296,7 @@ void go(Config config) {
         } else {
             SoftMaxLayer *softMaxLayer = dynamic_cast< SoftMaxLayer *>(net->getLayer(config.outputLayer) );
             if(softMaxLayer == 0) {
-                cout << "must choose softmaxlayer, if want to output labels" << endl;
+                cerr << "must choose softmaxlayer, if want to output labels" << endl;
                 return;
             }
             softMaxLayer->getLabels(labels);
@@ -367,8 +367,8 @@ void printUsage(char *argv[], Config config) {
     cout << "    normalization=[[stddev|maxmin]] (" << config.normalization << ")" << endl;
     cout << "    normalizationnumstds=[with stddev normalization, how many stddevs from mean is 1?] (" << config.normalizationNumStds << ")" << endl;
     cout << "    renormalizationweight=[interpolate between input(1.) and stored(0.) normalizations] (" << config.renormalizationWeight << ")" << endl;
-    cout << "" << endl; 
-    cout << "unstable, might change within major version:" << endl; 
+    cout << "" << endl;
+    cout << "unstable, might change within major version:" << endl;
     cout << "    inputfile=[file to read inputs from, if empty, read stdin (default)] (" << config.inputFile << ")" << endl;
     cout << "    outputfile=[file to write outputs to, if empty, write to stdout] (" << config.outputFile << ")" << endl;
     cout << "    outputlayer=[layer to write output from, default -1 means: last layer] (" << config.outputLayer << ")" << endl;
@@ -431,25 +431,25 @@ int main(int argc, char *argv[]) {
                 config.outputFormat = (value);
             // [[[end]]]
             } else {
-                cout << endl;
-                cout << "Error: key '" << key << "' not recognised" << endl;
-                cout << endl;
+                cerr << endl;
+                cerr << "Error: key '" << key << "' not recognised" << endl;
+                cerr << endl;
                 printUsage(argv, config);
-                cout << endl;
+                cerr << endl;
                 return -1;
             }
         }
     }
     if(config.outputFormat != "text" && config.outputFormat != "binary") {
-        cout << endl;
-        cout << "outputformat must be 'text' or 'binary'" << endl;
-        cout << endl;
+        cerr << endl;
+        cerr << "outputformat must be 'text' or 'binary'" << endl;
+        cerr << endl;
         return -1;
     }
     try {
         go(config);
     } catch(runtime_error e) {
-        cout << "Something went wrong: " << e.what() << endl;
+        cerr << "Something went wrong: " << e.what() << endl;
         return -1;
     }
 }

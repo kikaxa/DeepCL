@@ -62,7 +62,7 @@ public:
       double timemilliseconds = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds> (change).count());
         #endif
       last = thistime;
-      std::cout << label << " " << timemilliseconds << " ms" << std::endl;
+      std::cerr << label << " " << timemilliseconds << " ms" << std::endl;
    }
 
     double interval() { // gets interval since last 'lap' or 'timecheck', 

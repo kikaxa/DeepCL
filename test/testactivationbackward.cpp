@@ -157,18 +157,18 @@ TEST( SLOW_testactivationbackward, compare_args ) {
         int numErrors = 0;
         for( int i = 0; i < inputNumElements; i++ ) {
             if( gradInput0[i] != gradInput1[i] ) {
-                cout << "diff: i=" << i << " " << gradInput0[i] << " != " << gradInput1[i] << endl;
+                cerr << "diff: i=" << i << " " << gradInput0[i] << " != " << gradInput1[i] << endl;
                 ok = false;
                 numErrors++;
                 if( numErrors > 20 ) {
-                    cout << " ... etc ...." << endl;
+                    cerr << " ... etc ...." << endl;
                     break;
                 }
             }
         }
         EXPECT_EQ( true, ok );
         if( !ok ) {
-            cout << " breaking after " << it << " its, because of FAIL gradOutput" << endl;
+            cerr << " breaking after " << it << " its, because of FAIL gradOutput" << endl;
             break; // no point in continuing...
         }
     }

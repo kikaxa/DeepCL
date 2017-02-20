@@ -24,7 +24,7 @@ ActivationForwardCpu::ActivationForwardCpu(EasyCL *cl, int numPlanes, int inputS
         ActivationForward(cl, numPlanes, inputSize, fn) {
 }
 VIRTUAL void ActivationForwardCpu::forward(int batchSize, CLWrapper *inputWrapper, CLWrapper *outputWrapper) {
-//    cout << "ActivationForwardCpu::forward(CLWrapper *)" << endl;
+//    cerr << "ActivationForwardCpu::forward(CLWrapper *)" << endl;
 
     inputWrapper->copyToHost();
 
@@ -42,7 +42,7 @@ VIRTUAL void ActivationForwardCpu::forward(int batchSize, CLWrapper *inputWrappe
 }
 VIRTUAL void ActivationForwardCpu::forward(int batchSize, float *input, float *output) {
 //    float *output = new float[ getOutputNumElements(batchSize) ];
-//    cout << "ActivationForwardCpu::forward(float *)" << endl;
+//    cerr << "ActivationForwardCpu::forward(float *)" << endl;
     StatefulTimer::instance()->timeCheck("ActivationForwardCpu::forward start");
     int totalLinearSize = batchSize * numPlanes * inputSize * inputSize;
     for(int i = 0; i < totalLinearSize; i++) {

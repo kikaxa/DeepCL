@@ -37,14 +37,14 @@ STATIC std::string expandMultipliers(std::string netdef) {
         } else {
             prefixEnd--;
             prefix = netdef.substr(0, prefixEnd + 1);
-            cout << "prefix: [" << prefix << "]" << endl;
+            cerr << "prefix: [" << prefix << "]" << endl;
             nnString = netdef.substr(prefixEnd + 2, starPos - prefixEnd - 2);
         }
-        cout << "nnString: [" << nnString << "]" << endl;
+        cerr << "nnString: [" << nnString << "]" << endl;
         int repeatNum = atoi(nnString);
-        cout << "repeatNum " << repeatNum << endl;
+        cerr << "repeatNum " << repeatNum << endl;
         string remainderString = netdef.substr(starPos + 1);
-        cout << "remainderString [" << remainderString << "]" << endl;
+        cerr << "remainderString [" << remainderString << "]" << endl;
         string inner = "";
         string postfix = "";
         if(remainderString.substr(0, 1) == "(") {
@@ -54,15 +54,15 @@ STATIC std::string expandMultipliers(std::string netdef) {
                 throw runtime_error("matching bracket not found in " + remainderString);
             }
             inner = remainderString.substr(1, rhBracket - 1);
-            cout << "inner [" << inner << "]" << endl;
+            cerr << "inner [" << inner << "]" << endl;
             string newRemainder = remainderString.substr(rhBracket + 1);
-            cout << "newRemainder [" << newRemainder << "]" << endl;
+            cerr << "newRemainder [" << newRemainder << "]" << endl;
             if(newRemainder != "") {
                 if(newRemainder[0] != '-') {
                     throw runtime_error("expect '-' after ')' in " + remainderString);
                 }
                 postfix = newRemainder.substr(1);
-                cout << "postfix [" << postfix << "]" << endl;
+                cerr << "postfix [" << postfix << "]" << endl;
             }
         } else {
             size_t innerEnd = remainderString.find("-");
@@ -71,10 +71,10 @@ STATIC std::string expandMultipliers(std::string netdef) {
             } else {
 //                innerEnd;
                 postfix = remainderString.substr(innerEnd + 1);
-                cout << "postfix [" << postfix << "]" << endl;
+                cerr << "postfix [" << postfix << "]" << endl;
             }
             inner = remainderString.substr(0, innerEnd);
-            cout << "inner [" << inner << "]" << endl;
+            cerr << "inner [" << inner << "]" << endl;
 //            if(remainderString.find("-") != string::npos) {
 //                sectionEndPos = remainderString.find("-");
 //            }
@@ -94,7 +94,7 @@ STATIC std::string expandMultipliers(std::string netdef) {
         if(postfix != "") {
             newString += "-" + expandMultipliers(postfix);
         }
-        cout << "multiplied string: " << newString << endl;
+        cerr << "multiplied string: " << newString << endl;
         return newString;
     } else {
         return netdef;
@@ -102,15 +102,15 @@ STATIC std::string expandMultipliers(std::string netdef) {
 }
 
 STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, NeuralNet *net, std::string substring, bool isLast) {
-//    cout << "substring [" << substring << "]" << endl;
+//    cerr << "substring [" << substring << "]" << endl;
     vector<string>splitLayerDef = split(substring, "{");
     string baseLayerDef = splitLayerDef[0];
 //         optionsDef = "";
     vector<string> splitOptionsDef;
-//    cout << "splitlayerdef.size() " << splitLayerDef.size() << endl;
+//    cerr << "splitlayerdef.size() " << splitLayerDef.size() << endl;
     if(splitLayerDef.size() == 2) {
         string  optionsDef = split(splitLayerDef[1], "}")[0];
-//        cout << "optionsDef [" << optionsDef << "]" << endl;
+//        cerr << "optionsDef [" << optionsDef << "]" << endl;
         splitOptionsDef = split(optionsDef, ",");
     }
     if(baseLayerDef.find("c") != string::npos) {
@@ -124,14 +124,14 @@ STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, 
 
         for(int i = 0; i < (int)splitOptionsDef.size(); i++) {
             string optionDef = splitOptionsDef[i];
-//            cout << "optionDef [" << optionDef << "]" << endl;
+//            cerr << "optionDef [" << optionDef << "]" << endl;
             vector<string> splitOptionDef = split(optionDef, "=");
             string optionName = splitOptionDef[0];
             if(splitOptionDef.size() == 2) {
                 string optionValue = splitOptionDef[1];
                 if(optionName == "skip") {
                     skip = atoi(optionValue);
-                    cout << "got skip: " << skip << endl;
+                    cerr << "got skip: " << skip << endl;
                 }
             } else if(splitOptionDef.size() == 1) {
                 if(optionName == "tanh") {
@@ -149,11 +149,11 @@ STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, 
                 } else if(optionName == "padzeros" || optionName == "z") {
                     padZeros = true;
                 } else {
-                    cout << "Error: unknown subkey: [" << optionName << "]" << endl;
+                    cerr << "Error: unknown subkey: [" << optionName << "]" << endl;
                     return false;
                 }
             } else {
-                cout << "Error: unknown subkey: [" << optionName << "]" << endl;
+                cerr << "Error: unknown subkey: [" << optionName << "]" << endl;
                 return false;
             }
         }
@@ -194,7 +194,7 @@ STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, 
         bool biased = true;
         for(int i = 0; i < (int)splitOptionsDef.size(); i++) {
             string optionDef = splitOptionsDef[i];
-//                cout << "optionDef: " << optionDef << endl;
+//                cerr << "optionDef: " << optionDef << endl;
             vector<string> splitOptionDef = split(optionDef, "=");
             string optionName = splitOptionDef[0];
             if(splitOptionDef.size() == 1) {
@@ -211,16 +211,16 @@ STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, 
                 } else if(optionName == "linear") {
                     fn = new LinearActivation();
                 } else {
-                    cout << "Error: unknown subkey: [" << splitOptionsDef[i] << "]" << endl;
+                    cerr << "Error: unknown subkey: [" << splitOptionsDef[i] << "]" << endl;
                     return false;
                 }
             } else {
-                cout << "Error: unknown subkey: [" << splitOptionsDef[i] << "]" << endl;
+                cerr << "Error: unknown subkey: [" << splitOptionsDef[i] << "]" << endl;
                 return false;
             }
         }
         if(isLast && fn != 0) {
-            cout << "Last fullyconnectedlayer must be linear (because softmax is the 'activationlayer' for this layer)" << endl;
+            cerr << "Last fullyconnectedlayer must be linear (because softmax is the 'activationlayer' for this layer)" << endl;
             return false;
         }
         net->addLayer(FullyConnectedMaker::instance()->numPlanes(numPlanes)->imageSize(1)->biased(biased)->weightsInitializer(weightsInitializer) );
@@ -228,7 +228,7 @@ STATIC bool NetdefToNet::parseSubstring(WeightsInitializer *weightsInitializer, 
             net->addLayer(ActivationMaker::instance()->fn(fn) );
         }
     } else {
-        cout << "network definition " << baseLayerDef << " not recognised" << endl;
+        cerr << "network definition " << baseLayerDef << " not recognised" << endl;
         return false;
     }
     return true;
@@ -245,19 +245,19 @@ PUBLICAPI STATIC bool NetdefToNet::createNetFromNetdefCharStar(NeuralNet *net, c
 
 STATIC bool NetdefToNet::createNetFromNetdef(NeuralNet *net, std::string netdef, WeightsInitializer *weightsInitializer) {
     string netDefLower = toLower(netdef);
-//    cout << "netDefLower [" << netDefLower << "]" << endl;
+//    cerr << "netDefLower [" << netDefLower << "]" << endl;
     try {
         netDefLower = expandMultipliers(netDefLower);
     } catch(runtime_error &e) {
-        cout << e.what() << endl;
+        cerr << e.what() << endl;
         return false;
     }
-//    cout << "netDefLower [" << netDefLower << "]" << endl;
+//    cerr << "netDefLower [" << netDefLower << "]" << endl;
     vector<string> splitNetDef = split(netDefLower, "-");
     if(netdef != "") {
         for(int i = 0; i < (int)splitNetDef.size(); i++) {
             string thisLayerDef = splitNetDef[i];
-//            cout << "thisLayerDef [" << thisLayerDef << "]" << endl;
+//            cerr << "thisLayerDef [" << thisLayerDef << "]" << endl;
             if(!parseSubstring(weightsInitializer, net, thisLayerDef, i == (int)splitNetDef.size() - 1) ) {
                 return false;
             }

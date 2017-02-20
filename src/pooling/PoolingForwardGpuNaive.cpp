@@ -27,18 +27,18 @@ VIRTUAL PoolingForwardGpuNaive::~PoolingForwardGpuNaive() {
     delete kernel;
 }
 VIRTUAL void PoolingForwardGpuNaive::forward(int batchSize, CLWrapper *inputWrapper, CLWrapper *selectorsWrapper, CLWrapper *outputWrapper) {
-//    cout << StatefulTimer::instance()->prefix << "PoolingForwardGpuNaive::forward(CLWrapper *)" << endl;
+//    cerr << StatefulTimer::instance()->prefix << "PoolingForwardGpuNaive::forward(CLWrapper *)" << endl;
     StatefulTimer::instance()->timeCheck("PoolingForwardGpuNaive::forward start");
 
     kernel->input(batchSize)->input(inputWrapper)->output(selectorsWrapper)->output(outputWrapper);
     int globalSize = batchSize * numPlanes * outputSize * outputSize;
     int workgroupsize = cl->getMaxWorkgroupSize();
     globalSize = (( globalSize + workgroupsize - 1) / workgroupsize) * workgroupsize;
-//    cout << "PoolingForwardGpuNaive::forward batchsize=" << batchSize << " g=" << globalSize << " w=" << workgroupsize << endl;
+//    cerr << "PoolingForwardGpuNaive::forward batchsize=" << batchSize << " g=" << globalSize << " w=" << workgroupsize << endl;
     kernel->run_1d(globalSize, workgroupsize);
     cl->finish();
 
-//    cout << "PoolingForwardGpuNaive::forward selectorswrapper:" << endl;
+//    cerr << "PoolingForwardGpuNaive::forward selectorswrapper:" << endl;
 //    PrintBuffer::printInts(cl, selectorsWrapper, outputSize, outputSize);
 
     StatefulTimer::instance()->timeCheck("PoolingForwardGpuNaive::forward end");

@@ -116,13 +116,13 @@ PUBLICAPI VIRTUAL void NetLearnerOnDemand::reset() {
     testBatcher->reset();
 }
 VIRTUAL void NetLearnerOnDemand::postEpochTesting() {
-    cout << "dumpTimings " << dumpTimings << endl;
+    cerr << "dumpTimings " << dumpTimings << endl;
     if(dumpTimings) {
         StatefulTimer::dump(true);
     }
 //        cout << "-----------------------" << endl;
     cout << endl;
-    timer.timeCheck("after epoch " + toString(nextEpoch + 1) );
+    std::cout << "after epoch " + toString(nextEpoch+1) << " " << timer.lap() << " ms" << std::endl;
 //    cout << "annealed learning rate: " << learnAction->getLearningRate()
     cout << " training loss: " << learnBatcher->getLoss() << endl;
     cout << " train accuracy: " << learnBatcher->getNumRight() << "/" << learnBatcher->getN() << " " << (learnBatcher->getNumRight() * 100.0f/ learnBatcher->getN()) << "%" << std::endl;

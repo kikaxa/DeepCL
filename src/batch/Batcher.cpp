@@ -82,19 +82,19 @@ VIRTUAL void Batcher::setN(int N) {
 /// if most recent epoch has finished, then resets, and starts a new
 /// set of learning
 PUBLICAPI bool Batcher::tick(int epoch) {
-//    cout << "Batcher::tick epochDone=" << epochDone << " batch=" <<  nextBatch << endl;
+//    cerr << "Batcher::tick epochDone=" << epochDone << " batch=" <<  nextBatch << endl;
 //    updateVars();
     if(epochDone) {
         reset();
     }
     int batch = nextBatch;
-//    std::cout << "BatchLearner.tick() batch=" << batch << std::endl;
+//    std::cerr << "BatchLearner.tick() batch=" << batch << std::endl;
     int batchStart = batch * batchSize;
     int thisBatchSize = batchSize;
     if(batch == numBatches - 1) {
         thisBatchSize = N - batchStart;
     }
-//    std::cout << "batchSize=" << batchSize << " thisBatchSize=" << thisBatchSize << " batch=" << batch <<
+//    std::cerr << "batchSize=" << batchSize << " thisBatchSize=" << thisBatchSize << " batch=" << batch <<
 //            " batchStart=" << batchStart << " data=" << (void *)data << " labels=" << labels << 
 //            std::endl;
     net->setBatchSize(thisBatchSize);
@@ -102,7 +102,7 @@ PUBLICAPI bool Batcher::tick(int epoch) {
 //        netAction->run(net, &(data[ batchStart * inputCubeSize ]), &(labels[batchStart]));
     float thisLoss = net->calcLossFromLabels(&(labels[batchStart]));
     int thisNumRight = net->calcNumRight(&(labels[batchStart]));
-//        std::cout << "thisloss " << thisLoss << " thisnumright " << thisNumRight << std::endl; 
+//        std::cerr << "thisloss " << thisLoss << " thisnumright " << thisNumRight << std::endl; 
     loss += thisLoss;
     numRight += thisNumRight;
     nextBatch++;
@@ -137,7 +137,7 @@ LearnBatcher::LearnBatcher(Trainer *trainer, Trainable *net,
     trainer(trainer) {
 }
 VIRTUAL void LearnBatcher::internalTick(int epoch, float const*batchData, int const*batchLabels) {
-//    cout << "LearnBatcher learningRate=" << learningRate << " batchdata=" << (void *)batchData << 
+//    cerr << "LearnBatcher learningRate=" << learningRate << " batchdata=" << (void *)batchData << 
 //        " batchLabels=" << batchLabels << endl;
     TrainingContext context(epoch, nextBatch);
     trainer->trainFromLabels(net, &context, batchData, batchLabels);

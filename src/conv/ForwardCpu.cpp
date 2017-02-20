@@ -40,7 +40,7 @@ VIRTUAL void ForwardCpu::forward(int batchSize, CLWrapper *inputDataWrapper, CLW
     delete[] output;
 }
 VIRTUAL float *ForwardCpu::forward(int batchSize, float *inputData, float *weights, float *bias) {
-//    cout << "ForwardCpu::forward outputcubesize=" << dim.outputCubeSize << " batchSize=" << batchSize << endl;
+//    cerr << "ForwardCpu::forward outputcubesize=" << dim.outputCubeSize << " batchSize=" << batchSize << endl;
     float *output = new float[ dim.outputCubeSize * batchSize ];
     for(int n = 0; n < batchSize; n++) {
         for(int filter = 0; filter < dim.numFilters; filter++) {
@@ -48,10 +48,10 @@ VIRTUAL float *ForwardCpu::forward(int batchSize, float *inputData, float *weigh
                 for(int outCol = 0; outCol < dim.outputSize; outCol += 1 + dim.skip) {
                     float sum = 0;
                     for(int inPlane = 0; inPlane < dim.inputPlanes; inPlane++) {
-//                        cout << "inplane=" << inPlane << endl;
+//                        cerr << "inplane=" << inPlane << endl;
                         for(int u = -dim.halfFilterSize; u <= dim.halfFilterSize; u++) {
                             int inRow = outRow * (dim.skip + 1) + u + (dim.padZeros ? 0 : dim.halfFilterSize);
-//                                cout << "candidate inRow " << inRow << endl;
+//                                cerr << "candidate inRow " << inRow << endl;
                             if(inRow < 0 || inRow > dim.inputSize - 1) {
                                 continue;
                             }
@@ -70,14 +70,14 @@ VIRTUAL float *ForwardCpu::forward(int batchSize, float *inputData, float *weigh
                                     * dim.inputPlanes + inPlane) 
                                     * dim.filterSize  + filterRow)
                                     * dim.filterSize  + filterCol;
-//                                    cout << "inpos " << inRow << "," << inCol << " outpos " << outRow << "," << outCol
+//                                    cerr << "inpos " << inRow << "," << inCol << " outpos " << outRow << "," << outCol
 //                                        << " filterpos " << filterRow << "," << filterCol << endl;
                                 float sumchange = inputData[ inputIndex] * weights[ weightIndex ];
                                 if(sumchange != 0) {
-//                                        cout << inputData[inputIndex] << " * " << weights[weightIndex] << " = " << sumchange << endl;
+//                                        cerr << inputData[inputIndex] << " * " << weights[weightIndex] << " = " << sumchange << endl;
                                 }
                                 sum += sumchange;
-//                                cout << "inputIndex=" << inputIndex << " weightIndex=" << weightIndex << 
+//                                cerr << "inputIndex=" << inputIndex << " weightIndex=" << weightIndex << 
 //                                    "  inputData[inputIndex]=" << inputData[inputIndex] << " weights[weightIndex]=" << weights[weightIndex] << " sumchange " << sumchange << " sum=" << sum << endl;
                             }
                         }
@@ -91,7 +91,7 @@ VIRTUAL float *ForwardCpu::forward(int batchSize, float *inputData, float *weigh
                         * dim.outputSize + outRow)
                         * dim.outputSize + outCol;
                     output[outputIndex] = sum;
-//                    cout << "outputIndex=" << outputIndex << " sum=" << sum << " output[outputIndex]=" <<
+//                    cerr << "outputIndex=" << outputIndex << " sum=" << sum << " output[outputIndex]=" <<
 //                        output[outputIndex] << endl;
                 }
             }

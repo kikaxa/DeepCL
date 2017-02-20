@@ -44,7 +44,7 @@ STATIC DropoutForward *DropoutForward::instanceSpecific(int idx, EasyCL *cl, int
     if(idx == 1) {
         return new DropoutForwardGpuNaive(cl, numPlanes, inputSize, dropRatio);
     }
-    cout << "idx " << idx << " not known" << endl;
+    cerr << "idx " << idx << " not known" << endl;
     throw runtime_error("DropoutForward::instanceSpecific idx not known: " + toString(idx) );
 }
 VIRTUAL void DropoutForward::forward(int batchSize, CLWrapper *masksWrapper, CLWrapper *inputData, CLWrapper *outputData) {

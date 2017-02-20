@@ -13,7 +13,7 @@ public:
     //        float uniformrand = random() / (float)random.max();     
         float signeduniformrand = RandomSingleton::uniform() * 2.0f - 1.0f;
         float result = rangesize * signeduniformrand;
-//        cout << "generateWeight result=" << result << endl;
+//        cerr << "generateWeight result=" << result << endl;
         return result;
     }
 };

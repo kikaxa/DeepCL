@@ -28,10 +28,10 @@ TEST( testCopyLocal, basic ) {
     float b[16];
     memset(b, 0, sizeof(float)*16);
     for( int i = 12; i < 16; i++ ) {
-        cout << b[i] << " ";
+        cerr << b[i] << " ";
         EXPECT_FLOAT_NEAR( 0, b[i] );
     }
-    cout << endl;
+    cerr << endl;
 
     CLKernel *kernel = makeKernel( cl );
     kernel->in( 12, a )->inout( 16, b )->in( 12 );
@@ -40,17 +40,17 @@ TEST( testCopyLocal, basic ) {
     cl->finish();
     for( int i = 0; i < 3; i++ ) {
         for( int j = 0; j < 4; j++ ) {
-            cout << b[i*4+j] << " ";
+            cerr << b[i*4+j] << " ";
             EXPECT_EQ( i * 4 + j + 1, b[i*4+j] );
         }
-        cout << endl;
+        cerr << endl;
     }
-    cout << endl;
+    cerr << endl;
     for( int i = 12; i < 16; i++ ) {
-        cout << b[i] << " ";
+        cerr << b[i] << " ";
         EXPECT_FLOAT_NEAR( 0, b[i] );
     }
-    cout << endl;
+    cerr << endl;
 
     delete kernel;
     delete cl;

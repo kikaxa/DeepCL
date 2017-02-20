@@ -31,14 +31,14 @@ void TestArgsParser::_arg( std::string key, float *p_value ) {
     args.push_back( new ArgFloat( key, p_value ) );
 }
 void TestArgsParser::_printAvailableKeys() {
-    cout << "Available keys:" << endl;
+    cerr << "Available keys:" << endl;
     for( vector< Arg * >::iterator it = args.begin(); it != args.end(); it++ ) {
-        cout << "   " << (*it)->key << endl;
+        cerr << "   " << (*it)->key << endl;
     }
 }
 void TestArgsParser::_printValues() {
     for( vector< Arg * >::iterator it = args.begin(); it != args.end(); it++ ) {
-        cout << "   " << (*it)->key << "=" << (*it)->valueAsString() << endl;
+        cerr << "   " << (*it)->key << "=" << (*it)->valueAsString() << endl;
     }
 }
 void TestArgsParser::_go() {
@@ -63,7 +63,7 @@ void TestArgsParser::_go() {
         }
         if( !found ) {
             _printAvailableKeys();
-            cout << endl;
+            cerr << endl;
             throw runtime_error("key [" + key + "] not found");
         }
     }

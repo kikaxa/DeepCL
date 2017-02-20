@@ -163,8 +163,8 @@ void GpuOp::buildKernel(std::string name, Op2 *op, bool inPlace) {
     LuaTemplater templater;
     templater.set("operation", op->getOperationString());
     string renderedKernel = templater.render(kernelSource);
-    // cout << "renderedKernel:" << endl;
-    // cout << renderedKernel << endl;
+    // cerr << "renderedKernel:" << endl;
+    // cerr << renderedKernel << endl;
 
     string clKernelName = "per_element_op2_outofplace";
     if(inPlace) {
@@ -212,8 +212,8 @@ void GpuOp::buildKernel(std::string name, Op1 *op, bool inPlace) {
     LuaTemplater templater;
     templater.set("operation", op->getOperationString());
     string renderedKernel = templater.render(kernelSource);
-    // cout << "renderedKernel:" << endl;
-    // cout << renderedKernel << endl;
+    // cerr << "renderedKernel:" << endl;
+    // cerr << renderedKernel << endl;
 
     string clKernelName = "per_element_op1_outofplace";
     if(inPlace) {
@@ -261,8 +261,8 @@ void GpuOp::buildKernelScalar(std::string name, Op2 *op, bool inPlace) {
     LuaTemplater templater;
     templater.set("operation", op->getOperationString());
     string renderedKernel = templater.render(kernelSource);
-    // cout << "renderedKernel:" << endl;
-    // cout << renderedKernel << endl;
+    // cerr << "renderedKernel:" << endl;
+    // cerr << renderedKernel << endl;
 
     string clKernelName = "per_element_op2_outofplace";
     if(inPlace) {

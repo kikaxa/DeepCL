@@ -37,7 +37,7 @@ void LayerDimensions::deriveOthers() {
     this->outputCubeSize = numFilters * outputSizeSquared;
 
     this->halfFilterSize = filterSize >> 1;
-//    cout << "deriveOthers()" << *this << endl;
+//    cerr << "deriveOthers()" << *this << endl;
 }
 
 string LayerDimensions::buildOptionsString() {

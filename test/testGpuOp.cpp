@@ -28,7 +28,7 @@ TEST( testGpuOp, addinplace ) {
     a->copyToHost();
 
     for( int i = 0; i < 5; i++ ) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR( 5.0f, adat[0] );
     EXPECT_FLOAT_NEAR( 5.1f, adat[1] );
@@ -59,10 +59,10 @@ TEST( testGpuOp, addoutofplace ) {
     c->copyToHost();
 
     for( int i = 0; i < 5; i++ ) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     for( int i = 0; i < 5; i++ ) {
-        cout << "c[" << i << "]=" << cdat[i] << endl;
+        cerr << "c[" << i << "]=" << cdat[i] << endl;
     }
     EXPECT_FLOAT_NEAR( 1.0f, adat[0] );
     EXPECT_FLOAT_NEAR( 3.0f, adat[1] );
@@ -90,7 +90,7 @@ TEST( testGpuOp, inverse ) {
     a->copyToHost();
 
     for( int i = 0; i < 5; i++ ) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR( 1, adat[0] );
     EXPECT_FLOAT_NEAR( 0.333333f, adat[1] );
@@ -112,7 +112,7 @@ TEST( testGpuOp, addscalarinplace ) {
     a->copyToHost();
 
     for( int i = 0; i < 5; i++ ) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR( 5.2f, adat[0] );
     EXPECT_FLOAT_NEAR( 7.2f, adat[1] );

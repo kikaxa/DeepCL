@@ -43,7 +43,7 @@ TEST(testDeepCL, basic) {
         (-0.5f) * (-19) + 0.5f * 2.3f,
         0.2f*13 + 0.3f* 17 + 0.7f *(-19) -1.1f * 2.3f 
     };
-    cout << "expected number of output: " << resultSize << endl;
+    cerr << "expected number of output: " << resultSize << endl;
 //    int outputSize = 0;
     for( int i = 1; i <= 4; i++ ) {
         Forward *forward = Forward::instanceSpecific( 3, cl,

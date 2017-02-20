@@ -52,7 +52,7 @@ VIRTUAL int ActivationBackward::getOutputNumElements(int batchSize) {
     return batchSize * numPlanes * outputSize * outputSize;
 }
 VIRTUAL void ActivationBackward::backward(int batchSize, float *inputs, float *gradOutput, float *gradInput) {
-//    cout << "ActivationBackward::backward(float *)" << endl;
+//    cerr << "ActivationBackward::backward(float *)" << endl;
     StatefulTimer::instance()->timeCheck("ActivationBackward::backward float->wrapper start");
 
     CLWrapper *inputsWrapper = cl->wrap(getInputNumElements(batchSize), inputs);

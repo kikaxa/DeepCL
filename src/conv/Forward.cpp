@@ -71,7 +71,7 @@ STATIC Forward *Forward::instanceSpecific(int idx, EasyCL *cl, LayerDimensions l
     } else if(idx == -1) {
         return instance(cl, layerDimensions);
     } else if(idx == -2) {
-        cout << "Forward::instanceSpeicfic, choosing: ForwardAuto" << endl;
+        cerr << "Forward::instanceSpeicfic, choosing: ForwardAuto" << endl;
         return new ForwardAuto(cl, layerDimensions);
     } else if(idx == 1) {
         return new Forward1(cl, layerDimensions);
@@ -136,7 +136,7 @@ VIRTUAL void Forward::forward(int batchSize, float *inputData, float *filters, f
     }
 
 //    int outputDataSize = batchSize * dim.outputCubeSize;
-//    cout << " batchsize " << batchSize << " " << dim << endl;
+//    cerr << " batchsize " << batchSize << " " << dim << endl;
 //    int allocatedOutputNumElements = std::max(5000, outputDataSize);
 //    int allocatedOutputNumElements = outputDataSize;
 //    float *output = new float[allocatedOutputNumElements];
@@ -152,7 +152,7 @@ VIRTUAL void Forward::forward(int batchSize, float *inputData, float *filters, f
     outputWrapper->copyToHost();
     StatefulTimer::timeCheck("Forward::forward after copytohost");
 //    for(int i = 0; i < 20; i++) {
-//        cout << "output[" << i << "]=" << output[i] << endl;
+//        cerr << "output[" << i << "]=" << output[i] << endl;
 //    }
     delete outputWrapper;
 

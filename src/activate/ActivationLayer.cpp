@@ -76,33 +76,33 @@ VIRTUAL void ActivationLayer::printOutput() {
 //    float const*output = getOutput();
 //    int outPlanes = getOutputPlanes();
 //    int outputNumElements = getOutputSize();
-    //std::cout << "  outputs: " << std::endl;
+    //std::cerr << "  outputs: " << std::endl;
     getOutput();
 // output are organized like [imageid][filterid][row][col]
     for(int n = 0; n < std::min(5, batchSize); n++) {
-        std::cout << "    n: " << n << std::endl;
+        std::cerr << "    n: " << n << std::endl;
         for(int plane = 0; plane < std::min(5, numPlanes); plane++) {
-            if(numPlanes > 1) std::cout << "      plane " << plane << std::endl;
+            if(numPlanes > 1) std::cerr << "      plane " << plane << std::endl;
             if(outputSize == 1) {
-                 std::cout << "        " << getOutput(n, plane, 0, 0) << std::endl;
+                 std::cerr << "        " << getOutput(n, plane, 0, 0) << std::endl;
             } else {
                 for(int i = 0; i < std::min(5, outputSize); i++) {
-                    std::cout << "      ";
+                    std::cerr << "      ";
                     for(int j = 0; j < std::min(5, outputSize); j++) {
-                        std::cout << getOutput(n, plane, i, j) << " ";
+                        std::cerr << getOutput(n, plane, i, j) << " ";
                     }
-                    if(outputSize > 5) std::cout << " ... ";
-                    std::cout << std::endl;
+                    if(outputSize > 5) std::cerr << " ... ";
+                    std::cerr << std::endl;
                 }
-                if(outputSize > 5) std::cout << " ... " << std::endl;
+                if(outputSize > 5) std::cerr << " ... " << std::endl;
             }
-            if(numPlanes > 5) std::cout << " ... other planes ... " << std::endl;
+            if(numPlanes > 5) std::cerr << " ... other planes ... " << std::endl;
         }
-        if(batchSize > 5) std::cout << " ... other n ... " << std::endl;
+        if(batchSize > 5) std::cerr << " ... other n ... " << std::endl;
     }
 }
 VIRTUAL void ActivationLayer::setBatchSize(int batchSize) {
-//    cout << "ActivationLayer::setBatchSize" << endl;
+//    cerr << "ActivationLayer::setBatchSize" << endl;
     if(batchSize <= allocatedSize) {
         this->batchSize = batchSize;
         return;
@@ -136,7 +136,7 @@ VIRTUAL float *ActivationLayer::getOutput() {
         outputWrapper->copyToHost();
 //        outputCopiedToHost = true;
     }
-//    cout << "getOutput output[0] " << output[0] << " output[1] " << output[1] << endl;
+//    cerr << "getOutput output[0] " << output[0] << " output[1] " << output[1] << endl;
     return output;
 }
 VIRTUAL bool ActivationLayer::needsBackProp() {

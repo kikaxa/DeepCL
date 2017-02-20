@@ -29,7 +29,7 @@ TEST(testCLMathWrapper, assign) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(2.1f, adat[1]);
     EXPECT_FLOAT_NEAR(9.2f, adat[4]);
@@ -52,7 +52,7 @@ TEST(testCLMathWrapper, assignScalar) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(3.4f, adat[1]);
     EXPECT_FLOAT_NEAR(3.4f, adat[4]);
@@ -76,7 +76,7 @@ TEST(testCLMathWrapper, addinplace) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(5.0f, adat[0]);
     EXPECT_FLOAT_NEAR(5.1f, adat[1]);
@@ -105,7 +105,7 @@ TEST(testCLMathWrapper, multiplyinplace) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(1.5f, adat[0]);
     EXPECT_FLOAT_NEAR(4.5f, adat[1]);
@@ -129,7 +129,7 @@ TEST(testCLMathWrapper, addscalar) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(2.5f, adat[0]);
     EXPECT_FLOAT_NEAR(4.5f, adat[1]);
@@ -150,7 +150,7 @@ TEST(testCLMathWrapper, sqrt) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(1, adat[0]);
     EXPECT_FLOAT_NEAR(1.73205f, adat[1]);
@@ -172,7 +172,7 @@ TEST(testCLMathWrapper, squared) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(1, adat[0]);
     EXPECT_FLOAT_NEAR(9, adat[1]);
@@ -194,7 +194,7 @@ TEST(testCLMathWrapper, inverse) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(1, adat[0]);
     EXPECT_FLOAT_NEAR(0.333333f, adat[1]);
@@ -220,7 +220,7 @@ TEST(testCLMathWrapper, perelementmult) {
     a_->copyToHost();
 
     for(int i = 0; i < 5; i++) {
-        cout << "a[" << i << "]=" << adat[i] << endl;
+        cerr << "a[" << i << "]=" << adat[i] << endl;
     }
     EXPECT_FLOAT_NEAR(4.0f, adat[0]);
     EXPECT_FLOAT_NEAR(6.3f, adat[1]);

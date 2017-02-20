@@ -20,7 +20,7 @@ using namespace std;
 #include "test/DeepCLGtestGlobals.h"
 
 //TEST( testlogicaloperators, DISABLED_FullyConnected_Biased_Tanh_And_1layer ) {
-////    cout << "And" << endl;
+////    cerr << "And" << endl;
 //    LogicalDataCreator ldc;
 //    ldc.applyAndGate();
 
@@ -33,25 +33,25 @@ using namespace std;
 //           ->inputData(ldc.data)->expectedOutputs(ldc.expectedOutput)
 //           ->run();
 //        if( epoch % 20 == 0 ) {
-//            cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+//            cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //            AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 //        }
 ////        net->printWeights();
 //    }
 ////    net->print();
 //    int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-//    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+//    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
 //    EXPECT_EQ( numCorrect, ldc.N );
 
 //    float loss = net->calcLoss(ldc.expectedOutput);
-//    cout << "loss, E, " << loss << endl;
+//    cerr << "loss, E, " << loss << endl;
 //    EXPECT_GE( 0.4, loss );
 
 //    delete net;
 //}
 
 //TEST( testlogicaloperators, DISABLED_FullyConnected_1layer_biased_tanh_Or ) {
-//    cout << "Or" << endl;
+//    cerr << "Or" << endl;
 //    LogicalDataCreator ldc;
 ////    ldc.applyAndGate();
 //    ldc.applyOrGate();
@@ -61,25 +61,25 @@ using namespace std;
 //    for( int epoch = 0; epoch < 10; epoch++ ) {
 //        net->doEpoch( 5, 4, 4, ldc.data, ldc.expectedOutput );
 //        if( epoch % 5 == 0 ) {
-//            cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+//            cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //            AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 //        }
 ////        net->printWeights();
 //    }
 
 //    int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-//    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+//    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
 //    EXPECT_EQ( numCorrect, ldc.N );
 
 //    float loss = net->calcLoss(ldc.expectedOutput);
-//    cout << "loss, E, " << loss << endl;
+//    cerr << "loss, E, " << loss << endl;
 //    EXPECT_GE( 0.4, loss );
 
 //    delete net;
 //}
 
 //TEST( testlogicaloperators, DISABLED_FullyConnected_2layer_Xor ) {
-////    cout << "Xor" << endl;
+////    cerr << "Xor" << endl;
 //    LogicalDataCreator ldc;
 //    ldc.applyXorGate();
 ////    NeuralNet *net = new NeuralNet(2, 1 );
@@ -99,7 +99,7 @@ using namespace std;
 
 //        if( epoch % 50 == 0 ) {
 //            float loss = net->calcLoss(ldc.expectedOutput);
-//            cout << "loss, E, " << loss << endl;
+//            cerr << "loss, E, " << loss << endl;
 //        }
 ////        AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 ////        net->printWeights();
@@ -107,23 +107,23 @@ using namespace std;
 ////            break;
 ////        }
 //    }
-//    cout << " Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+//    cerr << " Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //    int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-//    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+//    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
 ////    if( numCorrect != ldc.N ) {
 ////        net->print();
 ////    }
 //    EXPECT_EQ( numCorrect, ldc.N );
 
 //    float loss = net->calcLoss(ldc.expectedOutput);
-//    cout << "loss, E, " << loss << endl;
+//    cerr << "loss, E, " << loss << endl;
 //    EXPECT_GE( 0.00001, loss );
 
 //    delete net;
 //}
 
 TEST( testlogicaloperators, DISABLED_Convolve_1layer_And_Nobias ) {
-    cout << "And" << endl;
+    cerr << "And" << endl;
     LogicalDataCreator ldc;
     ldc.applyAndGate();
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
@@ -134,12 +134,12 @@ TEST( testlogicaloperators, DISABLED_Convolve_1layer_And_Nobias ) {
     for( int epoch = 0; epoch < 20; epoch++ ) {
         net->epochMaker(sgd)->batchSize(4)->numExamples(4)->inputData(ldc.data)
            ->expectedOutputs(ldc.expectedOutput)->run(epoch);
-        cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+        cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //        net->printWeights();
     }
 //    net->print();
     int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
     EXPECT_EQ( numCorrect, ldc.N );
     delete sgd;
     delete net;
@@ -147,7 +147,7 @@ TEST( testlogicaloperators, DISABLED_Convolve_1layer_And_Nobias ) {
 }
 
 TEST( testlogicaloperators, Convolve_1layer_biased_And ) {
-    cout << "And" << endl;
+    cerr << "And" << endl;
     LogicalDataCreator ldc;
     ldc.applyAndGate();
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
@@ -159,16 +159,16 @@ TEST( testlogicaloperators, Convolve_1layer_biased_And ) {
     for( int epoch = 0; epoch < 20; epoch++ ) {
         net->epochMaker(sgd)->batchSize(4)->numExamples(4)->inputData(ldc.data)
            ->expectedOutputs(ldc.expectedOutput)->run( epoch );
-        if( epoch % 5 == 0 ) cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+        if( epoch % 5 == 0 ) cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //        net->printWeights();
     }
 //        net->print();
     int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
     EXPECT_EQ( numCorrect, ldc.N );
 
     float loss = net->calcLoss(ldc.expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.4f, loss );
 
     delete sgd;
@@ -177,7 +177,7 @@ TEST( testlogicaloperators, Convolve_1layer_biased_And ) {
 }
 
 TEST( testlogicaloperators, Convolve_1layerbiased_Or ) {
-    cout << "Or, convolve" << endl;
+    cerr << "Or, convolve" << endl;
     LogicalDataCreator ldc;
     ldc.applyOrGate();
     EasyCL *cl = DeepCLGtestGlobals_createEasyCL();
@@ -189,7 +189,7 @@ TEST( testlogicaloperators, Convolve_1layerbiased_Or ) {
     for( int epoch = 0; epoch < 20; epoch++ ) {
         net->epochMaker(sgd)->batchSize(4)->numExamples(4)->inputData(ldc.data)
            ->expectedOutputs(ldc.expectedOutput)->run( epoch );
-        if( epoch % 5 == 0 ) cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+        if( epoch % 5 == 0 ) cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //        AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 //        net->printWeights();
     }
@@ -197,7 +197,7 @@ TEST( testlogicaloperators, Convolve_1layerbiased_Or ) {
         AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 
     float loss = net->calcLoss(ldc.expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.4f, loss );
 
     delete sgd;
@@ -219,7 +219,7 @@ TEST( testlogicaloperators, Convolve_1layerbiased_Or ) {
 //      plane1=1 "planes both -1 or planes both 1"
 //      weights = plane0*(1) + plane1*(1)
 TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
-    cout << "Xor, convolve" << endl;
+    cerr << "Xor, convolve" << endl;
 //    LogicalDataCreator ldc(new TanhActivation());
 //    ldc.applyXorGate();
 
@@ -269,7 +269,7 @@ TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
     net->addLayer( ConvolutionalMaker::instance()->numFilters(2)->filterSize(1)->biased(1) );
     net->addLayer( ActivationMaker::instance()->relu() );
     net->addLayer( SquareLossMaker::instance() );;
-    cout << "hand-setting weights..." << endl;
+    cerr << "hand-setting weights..." << endl;
     net->initWeights( 1, layer1weights, layer1bias );
     net->initWeights( 3, layer2weights, layer2bias );
 //    net->printWeights();
@@ -280,13 +280,13 @@ TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
     for( int epoch = 0; epoch < 200; epoch++ ) {
         net->epochMaker(sgd)->batchSize(numExamples)->numExamples(numExamples)->inputData(data)
            ->expectedOutputs(expectedOutput)->run( epoch );
-        if( epoch % 5 == 0 ) cout << "Loss L " << net->calcLoss(expectedOutput) << endl;
+        if( epoch % 5 == 0 ) cerr << "Loss L " << net->calcLoss(expectedOutput) << endl;
     }
     net->print();
     AccuracyHelper::printAccuracy( numExamples, 2, labels, net->getOutput() );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.0000001f, loss );
 
     delete sgd;
@@ -295,7 +295,7 @@ TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
 }
 
 //TEST( testlogicaloperators, DISABLED_Convolve_1layer_relu_biased_And ) {
-//    cout << "And" << endl;
+//    cerr << "And" << endl;
 //    LogicalDataCreator ldc( new ReluActivation() );
 //    ldc.applyAndGate();
 
@@ -307,20 +307,20 @@ TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
 //           ->learningRate(3)->batchSize(4)->numExamples(4)
 //           ->inputData(ldc.data)->expectedOutputs(ldc.expectedOutput)
 //           ->run();
-//        cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+//        cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 //        AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 ////        net->printWeights();
 //    }
 //    net->print();
 //    int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-//    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+//    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
 //    EXPECT_EQ( numCorrect, ldc.N );
 //    delete net;
 
 //}
 
 //TEST( testlogicaloperators, DISABLED_FullyConnected_1layer_biased_linear_And ) {
-//    cout << "And" << endl;
+//    cerr << "And" << endl;
 //    LogicalDataCreator ldc( new ReluActivation() );
 //    ldc.applyAndGate();
 
@@ -333,17 +333,17 @@ TEST( testlogicaloperators, Convolve_2layers_relu_Xor ) {
 //           ->inputData(ldc.data)->expectedOutputs(ldc.expectedOutput)
 //           ->run();
 //                
-//        if( epoch % 5 == 0 ) cout << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
+//        if( epoch % 5 == 0 ) cerr << "Loss L " << net->calcLoss(ldc.expectedOutput) << endl;
 ////        AccuracyHelper::printAccuracy( ldc.N, 2, ldc.labels, net->getOutput() );
 ////        net->printWeights();
 //    }
 ////    net->print();
 //    int numCorrect = AccuracyHelper::calcNumRight( ldc.N, 2, ldc.labels, net->getOutput() );
-//    cout << "accuracy: " << numCorrect << "/" << ldc.N << endl;
+//    cerr << "accuracy: " << numCorrect << "/" << ldc.N << endl;
 //    EXPECT_EQ( numCorrect, ldc.N );
 
 //    float loss = net->calcLoss(ldc.expectedOutput);
-//    cout << "loss, E, " << loss << endl;
+//    cerr << "loss, E, " << loss << endl;
 //    EXPECT_GE( 0.4, loss );
 
 //    delete net;

@@ -55,7 +55,7 @@ void prepareTraining( string norbDir ) {
 	}
     //random_shuffle( sequence.begin(), sequence.end(), std::minstd_rand(0) ); // use seed 0, so repeatable
     for( int i = 0; i < 10; i++ ) {
-        cout << i << "=" << sequence[i] << endl;
+        cerr << i << "=" << sequence[i] << endl;
     }
     // now sequence is shuffled, and has the numbers 0 to N, each exactly once
     // write out new, shuffled, training set
@@ -115,19 +115,19 @@ void prepareTest( string norbDir, int numSamples ) {
 
 int main( int argc, char *argv[] ) {
 	if( argc != 2 ) {
-		cout << "usage: " << argv[0] << " [norb data directory]" << endl;
+		cerr << "usage: " << argv[0] << " [norb data directory]" << endl;
 		return -1;
 	}
     string norbDir = argv[1];
 
 	try {
-		cout << "shuffling training set...." << endl;
+		cerr << "shuffling training set...." << endl;
 		prepareTraining( norbDir );
-		cout << "sampling test set...." << endl;
+		cerr << "sampling test set...." << endl;
 		prepareTest( norbDir, 1000 );
-		cout << "done" << endl;
+		cerr << "done" << endl;
 	} catch( runtime_error &e ) {
-		cout << "something went wrong: " << e.what() << endl;
+		cerr << "something went wrong: " << e.what() << endl;
 	}
 
     return 0;

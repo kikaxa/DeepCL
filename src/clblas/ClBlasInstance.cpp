@@ -8,12 +8,12 @@ using namespace std;
 #define PUBLIC
 
 PUBLIC ClBlasInstance::ClBlasInstance() {
-    // cout << "initializing clblas" << endl;
+    // cerr << "initializing clblas" << endl;
     clblasSetup();
 }
 
 PUBLIC ClBlasInstance::~ClBlasInstance() {
-    // cout << "clblas teardown" << endl;
+    // cerr << "clblas teardown" << endl;
     clblasTeardown();
 }
 
@@ -22,7 +22,7 @@ PUBLIC ClBlasInstance::~ClBlasInstance() {
 // assume single-threaded, at least for now
 //void ClBlasInstance::initializeIfNecessary() {
 //    if(!initialized) {
-//        cout << "initializing clblas" << endl;
+//        cerr << "initializing clblas" << endl;
 //        clblasSetup();
 //        initialized = true;
 //    }

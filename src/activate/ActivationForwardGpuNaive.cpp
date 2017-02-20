@@ -28,7 +28,7 @@ VIRTUAL ActivationForwardGpuNaive::~ActivationForwardGpuNaive() {
     delete kernel;
 }
 VIRTUAL void ActivationForwardGpuNaive::forward(int batchSize, CLWrapper *inputWrapper, CLWrapper *outputWrapper) {
-//    cout << StatefulTimer::instance()->prefix << "ActivationForwardGpuNaive::forward(CLWrapper *)" << endl;
+//    cerr << StatefulTimer::instance()->prefix << "ActivationForwardGpuNaive::forward(CLWrapper *)" << endl;
     StatefulTimer::instance()->timeCheck("ActivationForwardGpuNaive::forward start");
 
     kernel->input(batchSize * numPlanes * outputSize * outputSize);
@@ -38,18 +38,18 @@ VIRTUAL void ActivationForwardGpuNaive::forward(int batchSize, CLWrapper *inputW
     int globalSize = batchSize * numPlanes * outputSize * outputSize;
     int workgroupsize = cl->getMaxWorkgroupSize();
     globalSize = (( globalSize + workgroupsize - 1) / workgroupsize) * workgroupsize;
-//    cout << "ActivationForwardGpuNaive::forward batchsize=" << batchSize << " g=" << globalSize << " w=" << workgroupsize << endl;
+//    cerr << "ActivationForwardGpuNaive::forward batchsize=" << batchSize << " g=" << globalSize << " w=" << workgroupsize << endl;
     kernel->run_1d(globalSize, workgroupsize);
     cl->finish();
 
-//    cout << "ActivationForwardGpuNaive::forward selectorswrapper:" << endl;
+//    cerr << "ActivationForwardGpuNaive::forward selectorswrapper:" << endl;
 //    PrintBuffer::printInts(cl, selectorsWrapper, outputSize, outputSize);
 
     StatefulTimer::instance()->timeCheck("ActivationForwardGpuNaive::forward end");
 }
 ActivationForwardGpuNaive::ActivationForwardGpuNaive(EasyCL *cl, int numPlanes, int inputSize, ActivationFunction const*fn) :
         ActivationForward(cl, numPlanes, inputSize, fn) {
-    // cout << "fn->getDefintName() " << fn->getDefineName() << endl;
+    // cerr << "fn->getDefintName() " << fn->getDefineName() << endl;
     string options = "";
     options += " -DgOutputSize=" + toString(outputSize);
     options += " -DgOutputSizeSquared=" + toString(outputSize * outputSize);

@@ -70,11 +70,11 @@ STATIC void Kgsv2Loader::load(std::string filepath, unsigned char *data, int *la
     const long recordSize = getRecordSize(numPlanes, imageSize);
     long pos = (long)startRecord * recordSize + 1024 /* for header */;
     long chunkByteSize = (long)numRecords * recordSize;
-//    cout << "chunkByteSize: " << chunkByteSize << endl;
+//    cerr << "chunkByteSize: " << chunkByteSize << endl;
     unsigned char *kgsData = reinterpret_cast<unsigned char *>(FileHelper::readBinaryChunk(filepath, pos, chunkByteSize) );
     for(int n = 0; n < numRecords; n++) {
         long recordOffset = (long)n * recordSize;
-//        cout << "recordOffset: " << recordOffset << endl;
+//        cerr << "recordOffset: " << recordOffset << endl;
         unsigned char *record = kgsData + recordOffset;
         if(record[ 0 ] != 'G') {
             throw std::runtime_error("alignment error, for record " + toString(n));
@@ -98,7 +98,7 @@ STATIC void Kgsv2Loader::load(std::string filepath, unsigned char *data, int *la
             unsigned char *dataPlane = data + ((long)n * numPlanes + plane) * imageSizeSquared;
             for(int intraImagePos = 0; intraImagePos < imageSizeSquared; intraImagePos++) {
                 unsigned char thisbyte = (thisrecordbyte >> (7 - bitPos) ) & 1;
-//                cout << "thisbyte: " << (int)thisbyte << endl;
+//                cerr << "thisbyte: " << (int)thisbyte << endl;
                 dataPlane[ intraImagePos ] = thisbyte * 255;
                 bitPos++;
                 if(bitPos == 8) {
@@ -148,7 +148,7 @@ STATIC int Kgsv2Loader::getRecordSize(int numPlanes, int imageSize) {
     int numBits = numPlanes * imageSize * imageSize;
     int numBytes = (numBits + 8 - 1) / 8;
     recordSize += numBytes;
-//    cout << "numBits " << numBits << " numBytes " << numBytes << " recordSize " << recordSize << endl;
+//    cerr << "numBits " << numBits << " numBytes " << numBytes << " recordSize " << recordSize << endl;
     return recordSize;
 }
 

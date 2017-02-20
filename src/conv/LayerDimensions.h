@@ -42,7 +42,7 @@ public:
         {
         skip = 0;
         deriveOthers();
-//        std::cout << "outputSize " << outputSize << " padZeros " << padZeros << " filtersize "
+//        std::cerr << "outputSize " << outputSize << " padZeros " << padZeros << " filtersize "
 //            << filterSize << " inputSize " << inputSize << std::endl;
     }
     LayerDimensions &setInputPlanes(int _planes) {

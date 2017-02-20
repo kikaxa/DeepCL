@@ -61,19 +61,19 @@ TEST( testsimpleconvolvenet, imagesize1_planes2_filters2_unbiased_tanh ) {
         learnBatcher.run( epoch );
 //        batchLearner.runEpochFromExpected( sgd, batchSize, batchSize, data, expectedOutput );
         if( epoch % 10 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
             float const*output = net->getOutput();
             AccuracyHelper::printAccuracy( 2, 2, labels, output );
         }
     }
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( 2, 2, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( 2, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 2 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 2 << endl;
     EXPECT_EQ( numCorrect, 2 );
     EXPECT_GE( 0.03, loss );
 
@@ -123,19 +123,19 @@ TEST( testsimpleconvolvenet, imagesize1_planes2_filters2_tanh ) {
         learnBatcher.run( epoch );
 //        batchLearner.runEpochFromExpected( sgd, batchSize, batchSize, data, expectedOutput );
         if( epoch % 10 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
             float const*output = net->getOutput();
             AccuracyHelper::printAccuracy( 2, 2, labels, output );
         }
     }
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( 2, 2, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( 2, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 2 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 2 << endl;
     EXPECT_EQ( numCorrect, 2 );
     EXPECT_GE( 0.01, loss );
 
@@ -200,17 +200,17 @@ TEST( testsimpleconvolvenet, imagesize3_n4_filtersize3_tanh ) {
 //        net->printWeightsAsCode();
 //        net->printBiasAsCode();
         if( epoch % 5 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
             output = net->getOutput();
             AccuracyHelper::printAccuracy( 4, 2, labels, output );
         }
     }
 //    net->print();
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     AccuracyHelper::printAccuracy( 4, 2, labels, output );
     int numCorrect = AccuracyHelper::calcNumRight( 4, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 4 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 4 << endl;
     EXPECT_EQ( numCorrect, 4 );
     EXPECT_GE( 0.0001f, loss );
     
@@ -255,7 +255,7 @@ TEST( testsimpleconvolvenet, imagesize1_2planes_filtersize1 ) {
 //    for( int epoch = 0; epoch < 40; epoch++ ) {
 //        batchLearner.runEpochFromExpected( sgd, 2, 2, data, expectedOutput );
         if( epoch % 5 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
 //            net->print();
     //        net->printWeightsAsCode();
     //        net->printBiasAsCode();
@@ -268,11 +268,11 @@ TEST( testsimpleconvolvenet, imagesize1_2planes_filtersize1 ) {
     AccuracyHelper::printAccuracy( 2, 2, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( 2, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 2 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 2 << endl;
     EXPECT_EQ( numCorrect, 2 );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.001f, loss );
 
     delete sgd;
@@ -340,19 +340,19 @@ TEST( testsimpleconvolvenet, imagesize3_n4_filtersize3_relu ) {
             output = net->getOutput();
     //        net->printWeightsAsCode();
     //        net->printBiasAsCode();
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
             AccuracyHelper::printAccuracy( 4, 2, labels, output );
         }
     }
 //    net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     AccuracyHelper::printAccuracy( 4, 2, labels, output );
     int numCorrect = AccuracyHelper::calcNumRight( 4, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 4 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 4 << endl;
     EXPECT_EQ( numCorrect, 4 );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.000001, loss );
 
     delete sgd;
@@ -415,20 +415,20 @@ TEST( testsimpleconvolvenet, imagesize3_n4_filtersize3_linear ) {
 //        net->printWeightsAsCode();
 //        net->printBiasAsCode();
         if( epoch % 5 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
             output = net->getOutput();
             AccuracyHelper::printAccuracy( 4, 2, labels, output );
         }
     }
 //    net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     AccuracyHelper::printAccuracy( 4, 2, labels, output );
     int numCorrect = AccuracyHelper::calcNumRight( 4, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 4 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 4 << endl;
     EXPECT_EQ( numCorrect, 4 );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.001f, loss );
 
     delete sgd;
@@ -475,25 +475,25 @@ TEST( testsimpleconvolvenet, imagesize1_n2_2layers_unbiased ) {
             ->inputData(data)
             ->expectedOutputs(expectedOutput)
             ->run(epoch);
-        cout << "epoch " << epoch << " loss, E, " << net->calcLoss(expectedOutput) << endl;
+        cerr << "epoch " << epoch << " loss, E, " << net->calcLoss(expectedOutput) << endl;
 //        net->print();
 //        float const*output = net->getOutput();
 //        AccuracyHelper::printAccuracy( 2, 2, labels, output );
     }
     net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( 2, 2, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( 2, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 2 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 2 << endl;
     EXPECT_EQ( numCorrect, 2 );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.0001f, loss );
 
-        cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+        cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     net->print();
     net->getLayer(1)->getWeights();
     net->getLayer(3)->getWeights();
@@ -545,7 +545,7 @@ float bias2[] = {-0.071288f, 0.443919f};
         if( epoch % 5 == 0 ) {
 //           net->printWeightsAsCode();
 //            net->printBiasAsCode();
-        cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+        cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
         }
 //        net->print();
 //        float const*output = net->getOutput();
@@ -555,16 +555,16 @@ float bias2[] = {-0.071288f, 0.443919f};
 
     StatefulTimer::dump(true);
 
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( 2, 2, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( 2, 2, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << 2 << endl;
+    cerr << "accuracy: " << numCorrect << "/" << 2 << endl;
     EXPECT_EQ( numCorrect, 2 );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.0001f, loss );
 
     delete sgd;
@@ -629,22 +629,22 @@ TEST( testsimpleconvolvenet, imagesize_5_4_2layers_filtersize_2_4_biased_n3 ) {
             ->inputData(data)
             ->expectedOutputs(expectedOutput)
             ->run(epoch);
-        if( epoch % 100 == 0 ) cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+        if( epoch % 100 == 0 ) cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
 //        net->print();
 //        float const*output = net->getOutput();
 //        AccuracyHelper::printAccuracy( 2, 2, labels, output );
     }
 //    net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( N, numOutPlanes, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( N, numOutPlanes, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << N << endl;
     EXPECT_EQ( numCorrect, N );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.01f, loss );
 
     delete sgd;
@@ -745,7 +745,7 @@ float bias2[] = {0.232961f, 0.141537f, 0.159074f};
             ->expectedOutputs(expectedOutput)
             ->run(epoch);
         if( epoch % 100 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
 //        net->print();
 //           net->printWeightsAsCode();
 //            net->printBiasAsCode();
@@ -754,16 +754,16 @@ float bias2[] = {0.232961f, 0.141537f, 0.159074f};
 //        AccuracyHelper::printAccuracy( 2, 2, labels, output );
     }
 //    net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( N, numOutPlanes, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( N, numOutPlanes, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << N << endl;
     EXPECT_EQ( numCorrect, N );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.00001f, loss );
 
     delete sgd;
@@ -862,7 +862,7 @@ float bias2[] = {-0.0863176f, -0.227985f, -0.147554f};
             ->expectedOutputs(expectedOutput)
             ->run(epoch);
         if( epoch % 100 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
 //        net->print();
 //           net->printWeightsAsCode();
 //            net->printBiasAsCode();
@@ -871,16 +871,16 @@ float bias2[] = {-0.0863176f, -0.227985f, -0.147554f};
 //        AccuracyHelper::printAccuracy( 2, 2, labels, output );
     }
 //    net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( N, numOutPlanes, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( N, numOutPlanes, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << N << endl;
     EXPECT_EQ( numCorrect, N );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.1f, loss );
 
     delete sgd;
@@ -1039,7 +1039,7 @@ TEST( testsimpleconvolvenet, imagesize_5_3_2layers_filtersize_3_3_biased_n18 ) {
             ->expectedOutputs(expectedOutput)
             ->run(epoch);
         if( epoch % 100 == 0 ) {
-            cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+            cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
 //        net->print();
 //           net->printWeightsAsCode();
 //            net->printBiasAsCode();
@@ -1048,16 +1048,16 @@ TEST( testsimpleconvolvenet, imagesize_5_3_2layers_filtersize_3_3_biased_n18 ) {
 //        AccuracyHelper::printAccuracy( 2, 2, labels, output );
     }
     net->print();
-    cout << "loss, E, " << net->calcLoss(expectedOutput) << endl;
+    cerr << "loss, E, " << net->calcLoss(expectedOutput) << endl;
     float const*output = net->getOutput();
     AccuracyHelper::printAccuracy( N, numOutPlanes, labels, output );
 
     int numCorrect = AccuracyHelper::calcNumRight( N, numOutPlanes, labels, net->getOutput() );
-    cout << "accuracy: " << numCorrect << "/" << N << endl;
+    cerr << "accuracy: " << numCorrect << "/" << N << endl;
     EXPECT_EQ( numCorrect, N );
 
     float loss = net->calcLoss(expectedOutput);
-    cout << "loss, E, " << loss << endl;
+    cerr << "loss, E, " << loss << endl;
     EXPECT_GE( 0.1f, loss );
 
     delete sgd;

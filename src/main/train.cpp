@@ -175,7 +175,7 @@ void go(Config config) {
     if(config.dumpTimings) {
         StatefulTimer::setEnabled(true);
     }
-    cout << "Statefultimer enabled: " << StatefulTimer::enabled << endl;
+    cerr << "Statefultimer enabled: " << StatefulTimer::enabled << endl;
 
 //    int totalLinearSize;
     GenericLoaderv2 trainLoader(config.dataDir + "/" + config.trainFile);
@@ -185,7 +185,7 @@ void go(Config config) {
     // GenericLoader::getDimensions(, &Ntrain, &numPlanes, &imageSize);
     Ntrain = config.numTrain == -1 ? Ntrain : config.numTrain;
 //    long allocateSize = (long)Ntrain * numPlanes * imageSize * imageSize;
-    cout << "Ntrain " << Ntrain << " numPlanes " << numPlanes << " imageSize " << imageSize << endl;
+    cerr << "Ntrain " << Ntrain << " numPlanes " << numPlanes << " imageSize " << imageSize << endl;
     if(config.loadOnDemand) {
         trainAllocateN = config.batchSize; // can improve this later
     } else {
@@ -212,7 +212,7 @@ void go(Config config) {
     if(!config.loadOnDemand && Ntest > 0) {
         testLoader.load(testData, testLabels, 0, Ntest);
     }
-    cout << "Ntest " << Ntest << " Ntest" << endl;
+    cerr << "Ntest " << Ntest << " Ntest" << endl;
     
     timer.timeCheck("after load images");
 
@@ -224,7 +224,7 @@ void go(Config config) {
         if(config.normalization == "stddev") {
             float mean, stdDev;
             NormalizationHelper::getMeanAndStdDev(trainData, normalizationExamples * inputCubeSize, &mean, &stdDev);
-            cout << " image stats mean " << mean << " stdDev " << stdDev << endl;
+            cerr << " image stats mean " << mean << " stdDev " << stdDev << endl;
             translate = - mean;
             scale = 1.0f / stdDev / config.normalizationNumStds;
         } else if(config.normalization == "maxmin") {
@@ -233,7 +233,7 @@ void go(Config config) {
             translate = - mean;
             scale = 1.0f / stdDev;
         } else {
-            cout << "Error: Unknown normalization: " << config.normalization << endl;
+            cerr << "Error: Unknown normalization: " << config.normalization << endl;
             return;
         }
     } else {
@@ -242,7 +242,7 @@ void go(Config config) {
             NormalizeGetStdDev normalizeGetStdDev(trainData, trainLabels); 
             BatchProcessv2::run(&trainLoader, 0, config.batchSize, normalizationExamples, inputCubeSize, &normalizeGetStdDev);
             normalizeGetStdDev.calcMeanStdDev(&mean, &stdDev);
-            cout << " image stats mean " << mean << " stdDev " << stdDev << endl;
+            cerr << " image stats mean " << mean << " stdDev " << stdDev << endl;
             translate = - mean;
             scale = 1.0f / stdDev / config.normalizationNumStds;
         } else if(config.normalization == "maxmin") {
@@ -250,11 +250,11 @@ void go(Config config) {
             BatchProcessv2::run(&trainLoader, 0, config.batchSize, normalizationExamples, inputCubeSize, &normalizeGetMinMax);
             normalizeGetMinMax.calcMinMaxTransform(&translate, &scale);
         } else {
-            cout << "Error: Unknown normalization: " << config.normalization << endl;
+            cerr << "Error: Unknown normalization: " << config.normalization << endl;
             return;
         }
     }
-    cout << " image norm translate " << translate << " scale " << scale << endl;
+    cerr << " image norm translate " << translate << " scale " << scale << endl;
     timer.timeCheck("after getting stats");
 
 //    const int numToTrain = Ntrain;
@@ -277,7 +277,7 @@ void go(Config config) {
     } else if(toLower(config.weightsInitializer) == "uniform") {
         weightsInitializer = new UniformInitializer(config.initialWeights);
     } else {
-        cout << "Unknown weights initializer " << config.weightsInitializer << endl;
+        cerr << "Unknown weights initializer " << config.weightsInitializer << endl;
         return;
     }
 
@@ -317,10 +317,10 @@ void go(Config config) {
         Adadelta *adadelta = new Adadelta(cl, config.rho);
         trainer = adadelta;
     } else {
-        cout << "trainer " << config.trainer << " unknown." << endl;
+        cerr << "trainer " << config.trainer << " unknown." << endl;
         return;
     }
-    cout << "Using trainer " << trainer->asString() << endl;
+    cerr << "Using trainer " << trainer->asString() << endl;
 //    trainer->bindTo(net);
 //    net->setTrainer(trainer);
     net->setBatchSize(config.batchSize);
@@ -333,7 +333,7 @@ void go(Config config) {
     int restartNumRight = 0;
     float restartLoss = 0;
     if(config.loadWeights && config.weightsFile != "") {
-        cout << "loadingweights" << endl;
+        cerr << "loadingweights" << endl;
         afterRestart = WeightsPersister::loadWeights(config.weightsFile, config.getTrainingString(), net, &restartEpoch, &restartBatch, &restartAnnealedLearningRate, &restartNumRight, &restartLoss);
         if(!afterRestart && FileHelper::exists(config.weightsFile)) {
             // try old trainingstring
@@ -368,7 +368,7 @@ void go(Config config) {
     if(config.loadOnDemand) {
         if (!config.batchNormalization || config.multiNet > 1) {
             if (config.batchNormalization)
-                cout << "batch normalization is not supported with multinet, disabled it";
+                cerr << "batch normalization is not supported with multinet, disabled it";
 
             netLearner = new NetLearnerOnDemandv2(trainer, trainable,
                                                   &trainLoader, Ntrain,
@@ -389,7 +389,7 @@ void go(Config config) {
         }
     } else {
         if (config.batchNormalization)
-            cout << "batch normalization is unsupported without on-demand loading, disabled it";
+            cerr << "batch normalization is unsupported without on-demand loading, disabled it";
 
         netLearner = new NetLearner(trainer, trainable,
             Ntrain, trainData, trainLabels,
@@ -411,7 +411,7 @@ void go(Config config) {
         netLearner->tickBatch();
 
         if(netLearner->getEpochDone()) {
-//            cout << "epoch done" << endl;
+//            cerr << "epoch done" << endl;
             if(config.weightsFile != "") {
                 cout << "record epoch=" << netLearner->getNextEpoch() << endl;
                 WeightsPersister::persistWeights(config.weightsFile, config.getTrainingString(), net, netLearner->getNextEpoch(), 0, 0, 0, 0);
@@ -426,9 +426,9 @@ void go(Config config) {
             }
         } else {
             if(config.writeWeightsInterval > 0) {
-//                cout << "batch done" << endl;
+//                cerr << "batch done" << endl;
                 float timeMinutes = weightsWriteTimer.interval() / 1000.0f / 60.0f;
-//                cout << "timeMinutes " << timeMinutes << endl;
+//                cerr << "timeMinutes " << timeMinutes << endl;
                 if(timeMinutes >= config.writeWeightsInterval) {
                     int nextEpoch = netLearner->getNextEpoch();
                     int nextBatch = netLearner->getNextBatch();
@@ -512,8 +512,8 @@ void printUsage(char *argv[], Config config) {
     cout << "    learningrate=[learning rate, a float value, used by all trainers] (" << config.learningRate << ")" << endl;
     cout << "    momentum=[momentum, used by sgd and nesterov trainers] (" << config.momentum << ")" << endl;
     cout << "    weightdecay=[weight decay, 0 means no decay; 1 means full decay, used by sgd trainer] (" << config.weightDecay << ")" << endl;
-    cout << "" << endl; 
-    cout << "unstable, might change within major version:" << endl; 
+    cout << "" << endl;
+    cout << "unstable, might change within major version:" << endl;
     cout << "    initialweights=[for uniform initializer, weights will be initialized randomly within range -initialweights to +initialweights, divided by fanin, (default: 1.0f)] (" << config.initialWeights << ")" << endl;
     cout << "    rho=[rho decay, in adadelta trainer. 1 is no decay. 0 is full decay (default 0.9)] (" << config.rho << ")" << endl;
     cout << "    anneal=[multiply learningrate by this amount each epoch, used by anneal trainer, default 1.0] (" << config.anneal << ")" << endl;
@@ -608,11 +608,11 @@ int main(int argc, char *argv[]) {
                 config.anneal = atof(value);
             // [[[end]]]
             } else {
-                cout << endl;
-                cout << "Error: key '" << key << "' not recognised" << endl;
-                cout << endl;
+                cerr << endl;
+                cerr << "Error: key '" << key << "' not recognised" << endl;
+                cerr << endl;
                 printUsage(argv, config);
-                cout << endl;
+                cerr << endl;
                 return -1;
             }
         }
@@ -642,18 +642,18 @@ int main(int argc, char *argv[]) {
             config.validateFile = "kgsgo-test-v2.dat";
             config.loadOnDemand = 1;
         } else {
-            cout << "dataset " << dataset << " not known.  please choose from: mnist, norb, cifar10, kgsgo" << endl;
+            cerr << "dataset " << dataset << " not known.  please choose from: mnist, norb, cifar10, kgsgo" << endl;
             return -1;
         }
-        cout << "Using dataset " << dataset << ":" << endl;
-        cout << "   datadir: " << config.dataDir << ":" << endl;
-        cout << "   trainfile: " << config.trainFile << ":" << endl;
-        cout << "   validatefile: " << config.validateFile << ":" << endl;
+        cerr << "Using dataset " << dataset << ":" << endl;
+        cerr << "   datadir: " << config.dataDir << ":" << endl;
+        cerr << "   trainfile: " << config.trainFile << ":" << endl;
+        cerr << "   validatefile: " << config.validateFile << ":" << endl;
     }
     try {
         go(config);
     } catch(runtime_error e) {
-        cout << "Something went wrong: " << e.what() << endl;
+        cerr << "Something went wrong: " << e.what() << endl;
         return -1;
     }
 }

@@ -42,7 +42,7 @@ void QLearner::learnFromPast() {
     const int numActions = scenario->getNumActions();
     net->setBatchSize(batchSize);
 
-//    cout << "batchSize: " << batchSize << endl;
+//    cerr << "batchSize: " << batchSize << endl;
 
     // draw samples
     Experience **experiences = new Experience *[ batchSize ];
@@ -129,11 +129,11 @@ int QLearner::step(float lastReward, bool wasReset, float *perception) { // do o
         }
         learnFromPast();
     }
-//        cout << "see: " << toString(perception, perceptionSize + numActions) << endl;
+//        cerr << "see: " << toString(perception, perceptionSize + numActions) << endl;
     int action = -1;
     if(lastAction == -1 || (myrand() % 10000 / 10000.0f) <= epsilon) {
         action = myrand() % numActions;
-//            cout << "action, rand: " << action << endl;
+//            cerr << "action, rand: " << action << endl;
     } else {
         net->setBatchSize(1);
         net->forward(perception);
@@ -147,7 +147,7 @@ int QLearner::step(float lastReward, bool wasReset, float *perception) { // do o
             }
         }
         action = bestAction;
-//            cout << "action, q: " << action << endl;
+//            cerr << "action, q: " << action << endl;
     }
     arrayCopy(this->lastPerception, perception, size * size * planes);
 //        printDirections(net, scenario->height, scenario->width);

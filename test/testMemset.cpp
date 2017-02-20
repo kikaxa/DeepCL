@@ -47,7 +47,7 @@ TEST( testMemset, basic ) {
     cl->finish();
     myArrayWrapper->copyToHost();
     for( int i = 0; i < 10; i++ ) {
-//        cout << "myArray[" << i << "]=" << myArray[i] << endl;
+//        cerr << "myArray[" << i << "]=" << myArray[i] << endl;
     }
     for( int i = 0; i < N; i++ ) {
         EXPECT_EQ( 99.0f, myArray[i] );

@@ -27,11 +27,11 @@ STATIC int WeightsPersister::getTotalNumWeights(NeuralNet *net) {
 }
 STATIC int WeightsPersister::getTotalNumWeights(int version, NeuralNet *net) {
     int totalWeightsSize = 0;
-//    cout << "layers size " << net->layers.size() << endl;
+//    cerr << "layers size " << net->layers.size() << endl;
     for(int layerIdx = 1; layerIdx < net->getNumLayers(); layerIdx++) {
         Layer *layer = net->getLayer(layerIdx);
         int thisPersistSize = layer->getPersistSize(version);
-//        cout << "layer " << layerIdx << " this persist size " << thisPersistSize << endl;
+//        cerr << "layer " << layerIdx << " this persist size " << thisPersistSize << endl;
         totalWeightsSize += thisPersistSize;
     }
     return totalWeightsSize;
@@ -127,9 +127,9 @@ STATIC bool WeightsPersister::loadWeightsv1or3(char *data, long fileSize, std::s
         data[headerSize - 1] = 0; // null-terminate the string, if not already done
 
         if(trainingConfigString != std::string(data + 7 * 4)) {
-            std::cout << "training options dont match weights file" << std::endl;
-            std::cout << "in file: [" + std::string(data + 7 * 4) + "]" << std::endl;
-            std::cout << "current options: [" + trainingConfigString + "]" << std::endl;
+            std::cerr << "training options dont match weights file" << std::endl;
+            std::cerr << "in file: [" + std::string(data + 7 * 4) + "]" << std::endl;
+            std::cerr << "current options: [" + trainingConfigString + "]" << std::endl;
 
             delete [] data;
             return false;
@@ -149,7 +149,7 @@ STATIC bool WeightsPersister::loadWeightsv1or3(char *data, long fileSize, std::s
             throw runtime_error("Unrecognized version " + toString(version) );
         }
 
-//        std::cout << "read weights from file "  << (fileSize/1024) << "KB" << std::endl;
+//        std::cerr << "read weights from file "  << (fileSize/1024) << "KB" << std::endl;
         int expectedTotalWeightsSize = getTotalNumWeights(version, net);
         int numFloatsRead = (fileSize - headerSize) / sizeof(float);
 
@@ -165,18 +165,18 @@ STATIC bool WeightsPersister::loadWeightsv1or3(char *data, long fileSize, std::s
 }
 STATIC bool WeightsPersister::checkData(const char * data, long headerSize, long fileSize) {
     if(fileSize < headerSize) {
-        std::cout << "weights file has invalid size" << std::endl;
+        std::cerr << "weights file has invalid size" << std::endl;
         return false;
     }
 
     if(data[0] != 'C' || data[1] != 'l' || data[2] != 'C' || data[3] != 'n') {
-        std::cout << "weights file not ClConvolve format" << std::endl;
+        std::cerr << "weights file not ClConvolve format" << std::endl;
         return false;
     }
 
     const int *dataAsInts = reinterpret_cast<const int *>(data);
     if(dataAsInts[1] != 1 && dataAsInts[1] != 3) {
-        std::cout << "weights file version not known" << std::endl;
+        std::cerr << "weights file version not known" << std::endl;
         return false;
     }
 

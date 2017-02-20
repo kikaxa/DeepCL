@@ -16,8 +16,8 @@ using namespace std;
 
 int main( int argc, char *argv[] ) {
     if( argc != 4 ) {
-        cout << "Usage: " << argv[0] << " [mnist images file (input)] [floats file (output, overwritten)] [num examples]" << endl;
-        cout << "note: for testing deepclexec, 1280 examples are probably 'good enough'" << endl;
+        cerr << "Usage: " << argv[0] << " [mnist images file (input)] [floats file (output, overwritten)] [num examples]" << endl;
+        cerr << "note: for testing deepclexec, 1280 examples are probably 'good enough'" << endl;
         return 1;
     }
     string mnistImagesFile = argv[1];

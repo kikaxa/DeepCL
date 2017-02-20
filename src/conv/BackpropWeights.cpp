@@ -126,7 +126,7 @@ VIRTUAL void BackpropWeights::calcGradWeights(int batchSize, float *gradOutput, 
 float BackpropWeights::learningRateToMultiplier(int batchSize) {
 //        float multiplier = rate / batchSize / sqrt(dim.outputSize);
 //    float multiplier = rate;
-//    std::cout << "rate " << rate << " multiplier " << multiplier << std::endl;
+//    std::cerr << "rate " << rate << " multiplier " << multiplier << std::endl;
     return 1.0f;
 }
 

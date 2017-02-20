@@ -233,8 +233,8 @@ public:
 };
 
 void compareSpecific( CompareSpecificArgs args ) {
-    cout << "instance0: " << args._instance0 << endl;
-    cout << "instance1: " << args._instance1 << endl;
+    cerr << "instance0: " << args._instance0 << endl;
+    cerr << "instance1: " << args._instance1 << endl;
 
     int batchSize = args._batchSize;
     int numPlanes = args._numPlanes;
@@ -258,9 +258,9 @@ void compareSpecific( CompareSpecificArgs args ) {
 
     WeightRandomizer::randomizeInts( mask, inputNumElements, 0, 2 );
 //    for( int i = 0; i < inputNumElements; i++ ) {
-//        cout << (int)mask[i] << " ";
+//        cerr << (int)mask[i] << " ";
 //    }
-//    cout << endl;
+//    cerr << endl;
     WeightRandomizer::randomize( input, inputNumElements, -0.1f, 0.1f );
 
     memset( output, 99, sizeof(int) * outputNumElements );
@@ -288,31 +288,31 @@ void compareSpecific( CompareSpecificArgs args ) {
     for( int i = 0; i < outputNumElements; i++ ) {
         bool ok = true;
         if( ( output[i] > 0 && output0[i] < 0 ) || ( output[i] < 0 && output0[i] > 0 ) ) {
-            cout << "signs differ" << endl;
+            cerr << "signs differ" << endl;
             ok = false;
         }
         if( ok ) {
             if( ( output[i] == 0 && output0[i] != 0 ) || ( output[i] != 0 && output0[i] == 0 ) ) {
-                cout << "equality to 0 differs" << endl;
+                cerr << "equality to 0 differs" << endl;
                 ok = false;
             }
         }
         if( ok && output[i] != 0 ) {
             if( ( output[i] / output0[i] ) > 1.0001f ) {
-                cout << "magnitudes differ 1" << endl;
+                cerr << "magnitudes differ 1" << endl;
                 ok = false;
             }
             if( ( output0[i] / output[i] ) > 1.0001f ) {
-                cout << "magnitudes differ 2" << endl;
+                cerr << "magnitudes differ 2" << endl;
                 ok = false;
             }
         }
         if( !ok ) {
-            cout << "ERROR: output[" << i << "] instance0:" << output0[i] << " != instance1:" << output[i] << endl;
+            cerr << "ERROR: output[" << i << "] instance0:" << output0[i] << " != instance1:" << output[i] << endl;
             numErrors++;
         }
         if( numErrors >= 10 ) {
-            cout << "More than 10 errors. Skipping the rest :-)" << endl;
+            cerr << "More than 10 errors. Skipping the rest :-)" << endl;
             break;
         }
     }
@@ -320,15 +320,15 @@ void compareSpecific( CompareSpecificArgs args ) {
     if( numErrors > 0 ) {
         int num2dPlanes = inputNumElements / imageSize / imageSize;
         for( int plane = 0; plane < num2dPlanes; plane++ ) {
-            cout << "2dplane " << plane << ":" << endl;
+            cerr << "2dplane " << plane << ":" << endl;
             for( int i = 0; i < imageSize; i++ ) {
                 string line = "";
                 for( int j = 0; j < imageSize; j++ ) {
                     line += toString( input[ plane * imageSize * imageSize + i * imageSize + j] ) + " ";
                 }
-                cout << line << endl;
+                cerr << line << endl;
             }
-            cout << endl;
+            cerr << endl;
         }
     }
 

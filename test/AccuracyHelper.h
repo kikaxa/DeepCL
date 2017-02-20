@@ -23,7 +23,7 @@ public:
                    bestCount++;
                 }
             }
-//            cout << "expected: " << labels[n] << " got " << bestIndex << endl;
+//            cerr << "expected: " << labels[n] << " got " << bestIndex << endl;
             if( bestIndex == labels[n] && bestCount == 1 ) {
                 correct++;
             }
@@ -41,12 +41,12 @@ public:
                     maxValue = output[ n * numPlanes + plane ];
                 }
             }
-//            cout << "expected: " << labels[n] << " got " << bestIndex << endl;
+//            cerr << "expected: " << labels[n] << " got " << bestIndex << endl;
             if( bestIndex == labels[n] ) {
                 correct++;
             }
         }
-        std::cout << " accuracy: " << correct << "/" << numImages << " " << ((float)correct * 100.0f / numImages ) << "%" << std::endl;
+        std::cerr << " accuracy: " << correct << "/" << numImages << " " << ((float)correct * 100.0f / numImages ) << "%" << std::endl;
     }
 };
 

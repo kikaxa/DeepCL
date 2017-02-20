@@ -142,7 +142,7 @@ void test(float learningRate, int numEpochs, int batchSize, NeuralNet *net, floa
             continue;
         }
         int weightsSize = layer->getWeightsSize();
-//        cout << "weightsSize, layer " << 1 << "= " << weightsSize << endl;
+//        cerr << "weightsSize, layer " << 1 << "= " << weightsSize << endl;
         for(int i = 0; i < weightsSize; i++) {
             layer->weights[i] = random() / (float)random.max() * 0.2f - 0.1f;
         }
@@ -155,12 +155,12 @@ void test(float learningRate, int numEpochs, int batchSize, NeuralNet *net, floa
 
     Timer timer;
     int weightsTotalSize = WeightsPersister::getTotalNumWeights(net);
-    cout << "weightsTotalSize=" << weightsTotalSize << endl;
+    cerr << "weightsTotalSize=" << weightsTotalSize << endl;
     float *lastWeights = new float[weightsTotalSize];
     float *currentWeights = new float[weightsTotalSize];
     WeightsPersister::copyNetWeightsToArray(net, lastWeights);
 //    Sampler::sampleFloats("lastWeights", weightsTotalSize, lastWeights);
-//    cout << "learningRate: " << args.learningRate << endl;
+//    cerr << "learningRate: " << args.learningRate << endl;
     float lastloss = 0;
     bool allOk = true;
     SGD *sgd = SGD::instance(net->getCl(), learningRate, 0.0f);
@@ -181,32 +181,32 @@ void test(float learningRate, int numEpochs, int batchSize, NeuralNet *net, floa
         net->forward(inputData);
         float thisloss = net->calcLoss(expectedOutput) ;
         float lossChange = (lastloss - thisloss);
-//        cout << "i=" << i << endl;
-////        cout << "loss " << thisloss << " loss diff " << lossChange << endl;
-////        cout << "compare:" << endl;
-//        cout << "    losschangefromw " << lossChangeFromW << endl;
-//        cout << "    actual loss change " << lossChange << endl;
+//        cerr << "i=" << i << endl;
+////        cerr << "loss " << thisloss << " loss diff " << lossChange << endl;
+////        cerr << "compare:" << endl;
+//        cerr << "    losschangefromw " << lossChangeFromW << endl;
+//        cerr << "    actual loss change " << lossChange << endl;
         if(isnan(lossChange)) {
-            cout << "DIFF, epoch=" << i << " :" << endl;
-            cout << "    losschangefromw " << lossChangeFromW << endl;
-            cout << "    actual loss change " << lossChange << endl;
+            cerr << "DIFF, epoch=" << i << " :" << endl;
+            cerr << "    losschangefromw " << lossChangeFromW << endl;
+            cerr << "    actual loss change " << lossChange << endl;
             allOk = false;
 //            EXPECT_TRUE(!isnan(lossChange));
         }
         if(lossChange / lossChangeFromW > tolerance) {
-            cout << "tolerance " << tolerance << endl;
-            cout << "DIFF, epoch=" << i << " :" << endl;
-            cout << "    losschangefromw " << lossChangeFromW << endl;
-            cout << "    actual loss change " << lossChange << endl;
-//            cout << "loss: " << lastloss << " -> " << thisloss << endl;
+            cerr << "tolerance " << tolerance << endl;
+            cerr << "DIFF, epoch=" << i << " :" << endl;
+            cerr << "    losschangefromw " << lossChangeFromW << endl;
+            cerr << "    actual loss change " << lossChange << endl;
+//            cerr << "loss: " << lastloss << " -> " << thisloss << endl;
 //            EXPECT_EQ(lossChange, lossChangeFromW);
             allOk = false;
         } else if(lossChangeFromW / lossChange > tolerance) {
-            cout << "tolerance " << tolerance << endl;
-            cout << "DIFF, epoch=" << i << " :" << endl;
-            cout << "    losschangefromw " << lossChangeFromW << endl;
-            cout << "    actual loss change " << lossChange << endl;
-//            cout << "loss: " << lastloss << " -> " << thisloss << endl;
+            cerr << "tolerance " << tolerance << endl;
+            cerr << "DIFF, epoch=" << i << " :" << endl;
+            cerr << "    losschangefromw " << lossChangeFromW << endl;
+            cerr << "    actual loss change " << lossChange << endl;
+//            cerr << "loss: " << lastloss << " -> " << thisloss << endl;
 //            EXPECT_EQ(lossChange, lossChangeFromW);
             allOk = false;
         }
@@ -300,7 +300,7 @@ void checkErrorsForLayer(int layerId, float lastLoss, NeuralNet *net, float *las
     // rollback all our changes, except our layer
     WeightsPersister::copyArrayToNetWeights(lastWeights, net);
     int offset = WeightsPersister::getArrayOffsetForLayer(net, layerId);
-    cout << "layer " << layerId << " offset: " << offset << endl;
+    cerr << "layer " << layerId << " offset: " << offset << endl;
     Layer *layer = net->getLayer(layerId);
     int numWeights = layer->getPersistSize();
     if(numWeights == 0) {
@@ -316,9 +316,9 @@ void checkErrorsForLayer(int layerId, float lastLoss, NeuralNet *net, float *las
     float lossChangeFromW = thisWSquaredDiffSum / learningRate;
     net->forward(inputData);
     float newLoss = net->calcLossFromLabels(labels);
-    cout << "layer " << layerId << endl;
-    cout << "    " << "from w: " << lossChangeFromW << endl;
-    cout << "    " << "actual: " << (lastLoss - newLoss) << endl;
+    cerr << "layer " << layerId << endl;
+    cerr << "    " << "from w: " << lossChangeFromW << endl;
+    cerr << "    " << "actual: " << (lastLoss - newLoss) << endl;
 }
 
 void testLabelled(TestArgs args) {
@@ -354,7 +354,7 @@ void testLabelled(TestArgs args) {
         ConvolutionalLayer *layer = dynamic_cast<ConvolutionalLayer*>(net->getLayer(layerIndex));
         if(layer != 0) {
             int weightsSize = layer->getWeightsSize();
-    //        cout << "weightsSize, layer " << 1 << "= " << weightsSize << endl;
+    //        cerr << "weightsSize, layer " << 1 << "= " << weightsSize << endl;
             for(int i = 0; i < weightsSize; i++) {
                 layer->weights[i] = random() / (float)random.max() * 0.2f - 0.1f;
             }
@@ -371,7 +371,7 @@ void testLabelled(TestArgs args) {
     float *lastWeights = new float[weightsTotalSize];
     float *currentWeights = new float[weightsTotalSize];
     WeightsPersister::copyNetWeightsToArray(net, lastWeights);
-//    cout << "learningRate: " << args.learningRate << endl;
+//    cerr << "learningRate: " << args.learningRate << endl;
     net->forward(inputData);
     float lastloss = 0;
     for(int i = 0; i < args.numEpochs; i++) {
@@ -385,37 +385,37 @@ void testLabelled(TestArgs args) {
         WeightsPersister::copyArrayToNetWeights(currentWeights, net);
         net->forward(inputData);
         float thisloss = net->calcLossFromLabels(labels);
-        cout << "full thisloss: " << thisloss << endl;
+        cerr << "full thisloss: " << thisloss << endl;
 
 //        float sumsquaredweightsdiff = sumWeightChangesSquared(lastWeights, currentWeights, net);
 //        float lossChangeFromW = (sumsquaredweightsdiff/args.learningRate);
 //        float thisloss = net->calcLossFromLabels(labels) ;
 //        float lossChange = (lastloss - thisloss);
-////        cout << "loss " << thisloss << " loss diff " << lossChange << endl;
+////        cerr << "loss " << thisloss << " loss diff " << lossChange << endl;
 //        if(i > 0) {
-//            cout << "compare:" << endl;
-//            cout << "    losschangefromw " << lossChangeFromW << endl;
-//            cout << "    actual loss change " << lossChange << endl;
+//            cerr << "compare:" << endl;
+//            cerr << "    losschangefromw " << lossChangeFromW << endl;
+//            cerr << "    actual loss change " << lossChange << endl;
 //            if(isnan(lossChange)) {
-//                cout << "epoch " << i << endl;
-//                cout << "compare:" << endl;
-//                cout << "    losschangefromw " << lossChangeFromW << endl;
-//                cout << "    actual loss change " << lossChange << endl;
+//                cerr << "epoch " << i << endl;
+//                cerr << "compare:" << endl;
+//                cerr << "    losschangefromw " << lossChangeFromW << endl;
+//                cerr << "    actual loss change " << lossChange << endl;
 //                EXPECT_TRUE(!isnan(lossChange));
 //            }
 //            if(lossChange / lossChangeFromW > 1.3f) {
-//                cout << "epoch " << i << endl;
-//                cout << "compare:" << endl;
-//                cout << "    losschangefromw " << lossChangeFromW << endl;
-//                cout << "    actual loss change " << lossChange << endl;
-//                cout << "loss: " << lastloss << " -> " << thisloss << endl;
+//                cerr << "epoch " << i << endl;
+//                cerr << "compare:" << endl;
+//                cerr << "    losschangefromw " << lossChangeFromW << endl;
+//                cerr << "    actual loss change " << lossChange << endl;
+//                cerr << "loss: " << lastloss << " -> " << thisloss << endl;
 //                EXPECT_EQ(lossChange, lossChangeFromW);
 //            } else if(lossChangeFromW / lossChange > 1.3f) {
-//                cout << "epoch " << i << endl;
-//                cout << "compare:" << endl;
-//                cout << "    losschangefromw " << lossChangeFromW << endl;
-//                cout << "    actual loss change " << lossChange << endl;
-//                cout << "loss: " << lastloss << " -> " << thisloss << endl;
+//                cerr << "epoch " << i << endl;
+//                cerr << "compare:" << endl;
+//                cerr << "    losschangefromw " << lossChangeFromW << endl;
+//                cerr << "    actual loss change " << lossChange << endl;
+//                cerr << "loss: " << lastloss << " -> " << thisloss << endl;
 //                EXPECT_EQ(lossChange, lossChangeFromW);
 //            }
 //        }
@@ -503,7 +503,7 @@ TEST(testsinglebatch, detailedregression) {
     for (int layerIndex = 1; layerIndex <= 3; layerIndex++) {
         ConvolutionalLayer *layer = dynamic_cast<ConvolutionalLayer*>(net->layers[layerIndex]);
         float const*output = layer->getOutput();
-        cout << "layer " << layerIndex << endl;
+        cerr << "layer " << layerIndex << endl;
         Sampler::printSamples("output", outputNumElements, (float*)output, 3);        
     }
 float *output = (float*)(net->layers[1]->getOutput());
@@ -529,7 +529,7 @@ EXPECT_FLOAT_NEAR(-0.0688307, weights[16044]);
 EXPECT_FLOAT_NEAR(0.0310387, weights[72239]);
 EXPECT_FLOAT_NEAR(-0.0746839, weights[98933]);
 
-cout << "=============== backprop ..." << endl;
+cerr << "=============== backprop ..." << endl;
 //float *errors = new float[100000];
 ConvolutionalLayer *layer3 = dynamic_cast<ConvolutionalLayer*>(net->layers[3]);
 ExpectedValuesLayer *expectedValuesLayer = dynamic_cast<ExpectedValuesLayer*>(net->getLastLayer());
@@ -544,7 +544,7 @@ EXPECT_FLOAT_NEAR(-0.296495, layer3errors[684]);
 EXPECT_FLOAT_NEAR(0.214934, layer3errors[559]);
 EXPECT_FLOAT_NEAR(0.1246, layer3errors[373]);
 
-cout << endl;
+cerr << endl;
 
 ConvolutionalLayer *layer2 = dynamic_cast<ConvolutionalLayer*>(net->layers[2]);
 int layer2OutputNumElements = layer2->getOutputNumElements();
@@ -563,7 +563,7 @@ EXPECT_FLOAT_NEAR(-0.00368077, layer2errors[1353333]);
 EXPECT_FLOAT_NEAR(-0.0292891, layer2errors[314560]);
 EXPECT_FLOAT_NEAR(0.0361823, layer2errors[176963]);
 
-cout << endl;
+cerr << endl;
 
 ConvolutionalLayer *layer1 = dynamic_cast<ConvolutionalLayer*>(net->layers[1]);
 int layer1OutputNumElements = layer1->getOutputNumElements();
@@ -576,7 +576,7 @@ EXPECT_FLOAT_NEAR(-0.0137842, layer1errors[199340]);
 EXPECT_FLOAT_NEAR(-0.015897, layer1errors[567855]);
 EXPECT_FLOAT_NEAR(0.0170709, layer1errors[2270837]);
 
-cout << endl;
+cerr << endl;
 
 layer1->nextLayer = layer2;
 layer1->backward(learningRate);
@@ -587,11 +587,11 @@ layer1->backward(learningRate);
         ConvolutionalLayer *layer = dynamic_cast<ConvolutionalLayer*>(net->layers[layerIndex]);
         weights = layer->weights;
         weightsSize = layer->getWeightsSize();
-        cout << "layer " << layerIndex << endl;
+        cerr << "layer " << layerIndex << endl;
         Sampler::printSamples("weights", weightsSize, (float*)weights, 3);        
         float *bias = layer->bias;
         int biasSize = layer->getBiasSize();
-        cout << "layer " << layerIndex << endl;
+        cerr << "layer " << layerIndex << endl;
         Sampler::printSamples("bias", biasSize, (float*)bias, 3);        
     }
 
@@ -647,11 +647,11 @@ net->backward(learningRate, expectedOutput);
         ConvolutionalLayer *layer = dynamic_cast<ConvolutionalLayer*>(net->layers[layerIndex]);
         weights = layer->weights;
         weightsSize = layer->getWeightsSize();
-        cout << "weights = net->layers[" << layerIndex << "]->weights;" << endl;
+        cerr << "weights = net->layers[" << layerIndex << "]->weights;" << endl;
         Sampler::printSamples("weights", weightsSize, (float*)weights, 3);        
         float *bias = layer->bias;
         int biasSize = layer->getBiasSize();
-        cout << "bias = net->layers[" << layerIndex << "]->bias;" << endl;
+        cerr << "bias = net->layers[" << layerIndex << "]->bias;" << endl;
         Sampler::printSamples("bias", biasSize, (float*)bias, 3);        
     }
 

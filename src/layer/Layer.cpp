@@ -88,7 +88,7 @@ VIRTUAL void Layer::print() {
     printOutput();
     printWeights();
 //    } else {
-//        std::cout << "No output yet " << std::endl;
+//        std::cerr << "No output yet " << std::endl;
 //    }
 }
 VIRTUAL void Layer::initWeights(float const*weights) {

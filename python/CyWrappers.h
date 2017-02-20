@@ -30,7 +30,7 @@ public:
 //        try {
 //            NetLearner::learn(learningRate);
 //        } catch(std::runtime_error &e) {
-//            std::cout << e.what() << std::endl;
+//            std::cerr << e.what() << std::endl;
 //            raiseException(e.what());
 //        }
 //    }

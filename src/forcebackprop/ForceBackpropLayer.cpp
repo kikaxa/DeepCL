@@ -46,27 +46,27 @@ VIRTUAL void ForceBackpropLayer::printOutput() {
          return;
     }
     for(int n = 0; n < std::min(5,batchSize); n++) {
-        std::cout << "ForceBackpropLayer n " << n << ":" << std::endl;
+        std::cerr << "ForceBackpropLayer n " << n << ":" << std::endl;
         for(int plane = 0; plane < std::min(5, outputPlanes); plane++) {
-            if(outputPlanes > 1) std::cout << "    plane " << plane << ":" << std::endl;
+            if(outputPlanes > 1) std::cerr << "    plane " << plane << ":" << std::endl;
             for(int i = 0; i < std::min(5, outputSize); i++) {
-                std::cout << "      ";
+                std::cerr << "      ";
                 for(int j = 0; j < std::min(5, outputSize); j++) {
-                    std::cout << getOutput(n, plane, i, j) << " ";
+                    std::cerr << getOutput(n, plane, i, j) << " ";
 //output[
 //                            n * numPlanes * imageSize*imageSize +
 //                            plane*imageSize*imageSize +
 //                            i * imageSize +
 //                            j ] << " ";
                 }
-                if(outputSize > 5) std::cout << " ... ";
-                std::cout << std::endl;
+                if(outputSize > 5) std::cerr << " ... ";
+                std::cerr << std::endl;
             }
-            if(outputSize > 5) std::cout << " ... " << std::endl;
+            if(outputSize > 5) std::cerr << " ... " << std::endl;
         }
-        if(outputPlanes > 5) std::cout << "   ... other planes ... " << std::endl;
+        if(outputPlanes > 5) std::cerr << "   ... other planes ... " << std::endl;
     }
-    if(batchSize > 5) std::cout << "   ... other n ... " << std::endl;
+    if(batchSize > 5) std::cerr << "   ... other n ... " << std::endl;
 }
 VIRTUAL void ForceBackpropLayer::print() {
     printOutput();

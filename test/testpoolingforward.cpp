@@ -201,8 +201,8 @@ public:
 };
 
 void compareSpecific( CompareSpecificArgs args ) {
-    cout << "instance0: " << args._instance0 << endl;
-    cout << "instance1: " << args._instance1 << endl;
+    cerr << "instance0: " << args._instance0 << endl;
+    cerr << "instance1: " << args._instance1 << endl;
 
     int batchSize = args._batchSize;
     int numPlanes = args._numPlanes;
@@ -257,15 +257,15 @@ void compareSpecific( CompareSpecificArgs args ) {
     int numErrors = 0;
     for( int i = 0; i < outputNumElements; i++ ) {
         if( selectors[i] != selectors0[i] ) {
-            cout << "ERROR: selectors[" << i << "] instance0:" << selectors0[i] << " != instance1:" << selectors[i] << endl;
+            cerr << "ERROR: selectors[" << i << "] instance0:" << selectors0[i] << " != instance1:" << selectors[i] << endl;
             numErrors++;
         }
         if( output[i] != output0[i] ) {
-            cout << "ERROR: output[" << i << "] instance0:" << output0[i] << " != instance1:" << output[i] << endl;
+            cerr << "ERROR: output[" << i << "] instance0:" << output0[i] << " != instance1:" << output[i] << endl;
             numErrors++;
         }
         if( numErrors >= 10 ) {
-            cout << "More than 10 errors. Skipping the rest :-)" << endl;
+            cerr << "More than 10 errors. Skipping the rest :-)" << endl;
             break;
         }
     }
@@ -273,15 +273,15 @@ void compareSpecific( CompareSpecificArgs args ) {
     if( numErrors > 0 ) {
         int num2dPlanes = inputNumElements / imageSize / imageSize;
         for( int plane = 0; plane < num2dPlanes; plane++ ) {
-            cout << "2dplane " << plane << ":" << endl;
+            cerr << "2dplane " << plane << ":" << endl;
             for( int i = 0; i < imageSize; i++ ) {
                 string line = "";
                 for( int j = 0; j < imageSize; j++ ) {
                     line += toString( input[ plane * imageSize * imageSize + i * imageSize + j] ) + " ";
                 }
-                cout << line << endl;
+                cerr << line << endl;
             }
-            cout << endl;
+            cerr << endl;
         }
     }
 

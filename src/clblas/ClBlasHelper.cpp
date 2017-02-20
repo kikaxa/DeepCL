@@ -36,7 +36,7 @@ PUBLIC STATIC void ClBlasHelper::Gemm(
                     // development/testing anyway.  we can fix any initialization-bugs on linux, and
                     // then it should work ok on Windows too
         if(!clblasInitialized) {
-            cout << "Didnt initialize clBLAS" << endl;
+            cerr << "Didnt initialize clBLAS" << endl;
             throw ClblasNotInitializedException();
         }
     #endif
@@ -78,7 +78,7 @@ PUBLIC STATIC void ClBlasHelper::Gemv(
         ) {
     #ifndef _WIN32
         if(!clblasInitialized) {
-            cout << "Didnt initialize clBLAS" << endl;
+            cerr << "Didnt initialize clBLAS" << endl;
             throw ClblasNotInitializedException();
         }
     #endif

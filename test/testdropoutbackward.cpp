@@ -152,18 +152,18 @@ TEST( testdropoutbackward, compare_args ) {
         int numErrors = 0;
         for( int i = 0; i < inputNumElements; i++ ) {
             if( errorsForUpstream0[i] != errorsForUpstream1[i] ) {
-                cout << "diff: i=" << i << " " << errorsForUpstream0[i] << " != " << errorsForUpstream1[i] << endl;
+                cerr << "diff: i=" << i << " " << errorsForUpstream0[i] << " != " << errorsForUpstream1[i] << endl;
                 ok = false;
                 numErrors++;
                 if( numErrors > 20 ) {
-                    cout << " ... etc ...." << endl;
+                    cerr << " ... etc ...." << endl;
                     break;
                 }
             }
         }
         EXPECT_FLOAT_NEAR( true, ok );
         if( !ok ) {
-            cout << " breaking after " << it << " its, because of FAIL errors" << endl;
+            cerr << " breaking after " << it << " its, because of FAIL errors" << endl;
             break; // no point in continuing...
         }
     }

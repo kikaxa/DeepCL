@@ -30,7 +30,7 @@ VIRTUAL float*MultinomialCrossEntropy::getGradInput() {
 VIRTUAL float MultinomialCrossEntropy::calcLoss(float const *expected) {
     float loss = 0;
     float *output = getOutput();
-//    cout << "MultinomialCrossEntropy::calcLoss" << endl;
+//    cerr << "MultinomialCrossEntropy::calcLoss" << endl;
     // this is matrix subtraction, then element-wise square, then aggregation
     int numPlanes = previousLayer->getOutputPlanes();
     int imageSize = previousLayer->getOutputSize();
@@ -52,7 +52,7 @@ VIRTUAL float MultinomialCrossEntropy::calcLoss(float const *expected) {
         }            
     }
     loss *= 0.5f;
-//    cout << "loss " << loss << endl;
+//    cerr << "loss " << loss << endl;
     return loss;
  }
 VIRTUAL void MultinomialCrossEntropy::setBatchSize(int batchSize) {
