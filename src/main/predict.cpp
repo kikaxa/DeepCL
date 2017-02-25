@@ -201,7 +201,7 @@ void go(Config config) {
         // http://www.cplusplus.com/forum/windows/77812/
         _setmode(_fileno(stdout), _O_BINARY);
         #endif
-        outFile = &cerr;
+        outFile = &cout;
     } else {
         if(config.outputFormat == "text") {
             outFile = new ofstream(config.outputFile, ios::out);
